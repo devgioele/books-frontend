@@ -7,6 +7,11 @@ import logoExtendedAvif from 'assets/logo_extended.avif';
 import logoExtendedWebp from 'assets/logo_extended.webp';
 import logoExtendedJp2 from 'assets/logo_extended.jp2';
 import logoExtendedJxr from 'assets/logo_extended.jxr';
+import { useHistory } from "react-router-dom";
+import {
+  EXPLORE_ROUTE,
+  SIGNUP_ROUTE
+} from "../../routing/helpers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LandingHeader() {
   const classes = useStyles();
+  const history = useHistory();
+
+  const changePage = (route) => {
+    history.push(route);
+  }
 
   return (
     <Grid
@@ -48,13 +58,21 @@ export default function LandingHeader() {
       <Grid item>
         <Grid container spacing={2}>
           <Grid item>
-            <Button className={classes.button} variant="outlined" color="default">
-              Login
+            <Button
+              className={classes.button}
+              variant="outlined"
+              color="default"
+              onClick={() => changePage(EXPLORE_ROUTE)}>
+              Log in
             </Button>
           </Grid>
           <Grid item>
-            <Button className={classes.button} variant="contained" color="primary">
-              Register for free
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              onClick={() => changePage(SIGNUP_ROUTE)}>
+              Sign up for free
             </Button>
           </Grid>
         </Grid>
