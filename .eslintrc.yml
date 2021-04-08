@@ -1,0 +1,28 @@
+env:
+  browser: true
+  es2021: true
+extends:
+  - 'plugin:react/recommended'
+  - 'plugin:react-hooks/recommended'
+  - airbnb-base
+  - prettier
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 12 # = 2021
+  sourceType: module
+plugins:
+  - react
+# Settings shared across all rules
+settings:
+  import/resolver:
+    node:
+      moduleDirectory:
+        - node_modules
+        - src
+# Custom rules
+rules:
+  no-undef:
+    - 'off'
+  react/prop-types:
+    - 'off'
