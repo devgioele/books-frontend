@@ -8,7 +8,7 @@ import MoneyOffIcon from '@material-ui/icons/MoneyOff';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import LockIcon from '@material-ui/icons/Lock';
 import HeartIcon from '@material-ui/icons/Favorite';
-import WelcomeGrid from 'components/WelcomeGrid';
+import LandingWelcome from 'components/LandingWelcome';
 import LandingHeader from 'components/LandingHeader';
 import LandingAbout from 'components/LandingAbout';
 
@@ -86,7 +86,7 @@ export default function Landing() {
           spacing={downXSmall ? 4 : 8}
         >
           <Grid item>
-            <WelcomeGrid className={classes.section} />
+            <LandingWelcome className={classes.section} />
           </Grid>
 
           <Grid item>

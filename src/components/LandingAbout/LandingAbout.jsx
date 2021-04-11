@@ -3,15 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
-import WebImg from 'components/WebImg';
-import riccardoBusettiAvif from 'assets/riccardo_busetti.avif';
-import riccardoBusettiWebp from 'assets/riccardo_busetti.webp';
-import riccardoBusettiJp2 from 'assets/riccardo_busetti.jp2';
-import riccardoBusettiJxr from 'assets/riccardo_busetti.jxr';
-import gioeleDeVittiAvif from 'assets/gioele_de_vitti.avif';
-import gioeleDeVittiWebp from 'assets/gioele_de_vitti.webp';
-import gioeleDeVittiJp2 from 'assets/gioele_de_vitti.jp2';
-import gioeleDeVittiJxr from 'assets/gioele_de_vitti.jxr';
+import CloudImage from 'components/CloudImage';
 
 // TODO: migrate texts to markdown.
 
@@ -21,19 +13,15 @@ const useStyles = makeStyles((theme) => ({
     height: '150px',
     borderRadius: 10,
     boxShadow: `0px 1px 3px 0px ${theme.colors.shadowGray}`,
-    objectFit: 'cover'
+    objectFit: 'cover',
   },
 }));
 
 const people = [
   {
     name: 'Gioele De Vitti',
-    images: {
-      avif: gioeleDeVittiAvif,
-      webp: gioeleDeVittiWebp,
-      jp2: gioeleDeVittiJp2,
-      jxr: gioeleDeVittiJxr,
-    },
+    img:
+      'https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163770/Books/gioele_de_vitti_l35mg9.',
     role: 'Frontend Developer',
     description:
       'Coming from an electronic engineering background, I enjoy developing' +
@@ -42,12 +30,8 @@ const people = [
   },
   {
     name: 'Riccardo Busetti',
-    images: {
-      avif: riccardoBusettiAvif,
-      webp: riccardoBusettiWebp,
-      jp2: riccardoBusettiJp2,
-      jxr: riccardoBusettiJxr,
-    },
+    img:
+      'https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/riccardo_busetti_nhobde.',
     role: 'Backend Developer',
     description:
       'I come from an IT background working on mainly on mobile ' +
@@ -84,7 +68,7 @@ function Person({ person }) {
   return (
     <Grid container justify="flex-start" alignItems="center" spacing={2}>
       <Grid item>
-        <WebImg className={classes.image} alt="person" {...person.images} />
+        <CloudImage className={classes.image} alt="person" url={person.img} />
       </Grid>
       <Grid item>
         <Grid

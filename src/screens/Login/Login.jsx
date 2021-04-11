@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  useHistory,
-  useLocation
-} from "react-router-dom";
-import { useAuth } from "../../hooks/auth";
+import { useHistory, useLocation } from 'react-router-dom';
+import { useAuth } from '../../hooks/auth';
 
 export default function Login() {
   const auth = useAuth();
@@ -11,8 +8,8 @@ export default function Login() {
   const history = useHistory();
 
   const onClick = () => {
-    auth.login(() => history.replace(location.state.from))
-  }
+    auth.login(() => history.replace(location.state.from));
+  };
 
   return (
     <>
