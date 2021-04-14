@@ -12,8 +12,6 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
   },
   logo: {
-    minWidth: '125px',
-    width: 'auto',
     height: '60px',
   },
   button: {
