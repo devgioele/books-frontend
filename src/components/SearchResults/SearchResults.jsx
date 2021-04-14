@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper } from '@material-ui/core';
+import { Link, Paper } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import BookCard from 'components/BookCard';
@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       boxShadow: `0px 20px 25px -5px ${theme.colors.shadowGray}`,
     },
+  },
+  link: {
+    alignSelf: 'center',
+    color: theme.colors.linkBlue,
   },
 }));
 
@@ -72,6 +76,15 @@ export default function SearchResults(props) {
               <BookCard book={book} />
             </Grid>
           ))}
+        <Link
+          className={classes.link}
+          variant={'body1'}
+          // Link disabled
+          onClick={(event) => event.preventDefault()}
+          href=""
+        >
+          See more...
+        </Link>
       </Grid>
     </Paper>
   );

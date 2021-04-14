@@ -65,5 +65,6 @@ export default createMuiTheme({
   colors: {
     black: '#000000',
     shadowGray: '#dadada',
+    linkBlue: '#2858f4',
   },
 });
