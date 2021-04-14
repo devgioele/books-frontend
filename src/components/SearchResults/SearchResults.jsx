@@ -44,8 +44,9 @@ const books = [
   },
 ];
 
-export default function SearchResults() {
+export default function SearchResults(props) {
   const classes = useStyles();
+  const { query } = props;
 
   return (
     <Paper className={classes.searchResults} variant="outlined">
@@ -56,11 +57,21 @@ export default function SearchResults() {
         justify="flex-start"
         alignItems="stretch"
       >
-        {books.map((book) => (
-          <Grid item key={book.isbn}>
-            <BookCard book={book} />
-          </Grid>
-        ))}
+        {books
+          /*
+          This is just an example of how the query can be used.
+          Later on the query will be sent to the backend.
+          A new state 'loading' should be created to show some component
+          until the backend replies.
+           */
+          .filter((book) =>
+            book.title.toLowerCase().includes(query.toLowerCase())
+          )
+          .map((book) => (
+            <Grid item key={book.isbn}>
+              <BookCard book={book} />
+            </Grid>
+          ))}
       </Grid>
     </Paper>
   );
