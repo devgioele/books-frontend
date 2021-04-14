@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Typography, useMediaQuery } from '@material-ui/core';
 import FeatureCard from 'components/FeatureCard';
-import SearchBar from 'components/SearchBar';
+import LandingSearch from 'components/LandingSearch';
 import MoneyOffIcon from '@material-ui/icons/MoneyOff';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import LockIcon from '@material-ui/icons/Lock';
@@ -95,7 +95,7 @@ export default function Landing() {
             </Typography>
           </Grid>
           <Grid item>
-            <SearchBar />
+            <LandingSearch />
           </Grid>
 
           <Grid item>
