@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import Routes from '../../components/Routes';
-import Navigation from '../../components/Navigation';
+import Routes from 'components/Routes';
+import Navigation from 'components/Navigation';
 
 export default function Dashboard({ routes }) {
   const history = useHistory();
