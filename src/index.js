@@ -6,13 +6,13 @@ import '@fontsource/roboto/700.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CssBaseline } from '@material-ui/core';
-import Main from './components/Main';
+import Main from './Main.jsx';
 
 ReactDOM.render(
   // Enable strict mode for debugging
   <React.StrictMode>
-    <CssBaseline/>
-    <Main/>
+    <CssBaseline />
+    <Main />
   </React.StrictMode>,
   document.getElementById('root'),
 );

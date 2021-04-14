@@ -11,6 +11,9 @@ import { createMuiTheme } from '@material-ui/core/styles';
  <color name="secondaryTextColor">#000000</color>
  */
 
+/**
+ * More info: [https://material-ui.com/customization/default-theme/]
+ */
 export default createMuiTheme({
   breakpoints: {
     values: {
@@ -31,7 +34,24 @@ export default createMuiTheme({
     },
   },
   typography: {
-    fontFamily: 'Libre Baskerville',
+    h1: {
+      fontFamily: 'Libre Baskerville',
+    },
+    h2: {
+      fontFamily: 'Libre Baskerville',
+    },
+    h3: {
+      fontFamily: 'Libre Baskerville',
+    },
+    h4: {
+      fontFamily: 'Libre Baskerville',
+    },
+    h5: {
+      fontFamily: 'Libre Baskerville',
+    },
+    h6: {
+      fontFamily: 'Libre Baskerville',
+    },
     body1: {
       fontFamily: 'Roboto',
     },
@@ -45,5 +65,6 @@ export default createMuiTheme({
   colors: {
     black: '#000000',
     shadowGray: '#dadada',
+    linkBlue: '#2858f4',
   },
 });

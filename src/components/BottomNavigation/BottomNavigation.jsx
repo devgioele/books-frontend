@@ -11,7 +11,10 @@ const useStyles = (width) => makeStyles({
 
 export default function SimpleBottomNavigation(props) {
   // eslint-disable-next-line react/prop-types
-  const { sections, widthBreakpoint } = props;
+  const {
+    sections,
+    widthBreakpoint,
+  } = props;
   const classes = useStyles(widthBreakpoint);
   const [value, setValue] = React.useState(0);
 
@@ -25,8 +28,11 @@ export default function SimpleBottomNavigation(props) {
       className={classes.root}
     >
       {/* eslint-disable-next-line react/prop-types */}
-      {sections.map((index, { label, icon }) => (
-        <BottomNavigationAction key={index} label={label} icon={icon}/>
+      {sections.map((index, {
+        label,
+        icon,
+      }) => (
+        <BottomNavigationAction key={index} label={label} icon={icon} />
       ))}
     </BottomNavigation>
   );
