@@ -1,23 +1,24 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   bookCover: {
+    [theme.breakpoints.up('xs')]: {
+      width: '50px',
+    },
     [theme.breakpoints.up('sm')]: {
       width: '70px',
     },
-    [theme.breakpoints.down('sm')]: {
-      width: '50px',
+    [theme.breakpoints.up('lg')]: {
+      width: '100px',
     },
     height: 'auto',
     objectFit: 'scale-down',
     borderRadius: 3,
     boxShadow: `1px 1px 5px 1px ${theme.colors.shadowGray}`,
     '&:hover': {
-      borderWidth: 3,
-      borderColor: theme.palette.primary.dark,
-      borderStyle: 'solid',
+      outline: `3px solid ${theme.palette.primary.dark}`,
     },
   },
 }));
@@ -52,9 +53,15 @@ export default function BookCard(props) {
               spacing={1}
             >
               <Grid item>
-                <Typography variant="body1">
+                <Link
+                  variant="body1"
+                  color="inherit"
+                  // Link disabled
+                  onClick={(event) => event.preventDefault()}
+                  href=""
+                >
                   <b>{book.title}</b>
-                </Typography>
+                </Link>
               </Grid>
               <Grid item>
                 <Typography variant="body2">{book.isbn}</Typography>

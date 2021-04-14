@@ -78,7 +78,7 @@ export default function SearchResults(props) {
           ))}
         <Link
           className={classes.link}
-          variant={'body1'}
+          variant="body1"
           // Link disabled
           onClick={(event) => event.preventDefault()}
           href=""
