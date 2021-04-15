@@ -84,6 +84,7 @@ export default function Signup() {
                     id="outlined-basic"
                     label="Email or username"
                     variant="outlined"
+                    color="secondary"
                   />
                 </Grid>
                 <Grid item>

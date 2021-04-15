@@ -30,7 +30,7 @@ export default createMuiTheme({
       main: '#eae1da',
     },
     secondary: {
-      main: '#ffd54f',
+      main: '#A39D98',
     },
   },
   typography: {
