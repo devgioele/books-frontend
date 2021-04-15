@@ -11,13 +11,15 @@ const useStyles = makeStyles((theme) => ({
   },
   loginCard: {
     // margin: 'auto',
-    borderRadius: 20,
+
     [theme.breakpoints.up('xs')]: {
+      borderRadius: 0,
       padding: '50px 5%',
       width: '100vw',
       height: '100vh',
     },
     [theme.breakpoints.up('smmd')]: {
+      borderRadius: 20,
       width: '800px',
       height: '600px',
     },
