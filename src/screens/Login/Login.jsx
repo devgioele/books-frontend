@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Paper } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import LoginHeader from 'components/LoginHeader';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from 'hooks/auth';
-import axios from 'axios';
-import RegexTextField from 'components/RegexTextField';
-import COMPILATION_PROGRESS from './compilationProgress';
+import AuthForm from 'components/AuthForm';
+import COMPILATION_PROGRESS from './authProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,8 +14,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   loginCard: {
-    // margin: 'auto',
-
     [theme.breakpoints.up('xs')]: {
       borderRadius: 0,
       padding: '50px 5%',
@@ -43,89 +40,16 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '280px',
     height: '100%',
   },
-  textField: {
-    width: '100%',
-  },
-  button: {
-    width: '100%',
-  },
 }));
-
-function checkIdentity(credits, setProgress) {
-  axios
-    .post('/v1/auth/check', {
-      usernameOrEmail: credits.username || credits.email,
-    })
-    .then((response) =>
-      // TODO: Update with real response format
-      setProgress(
-        response.data === 'yes'
-          ? COMPILATION_PROGRESS.LOGIN
-          : COMPILATION_PROGRESS.SIGNUP
-      )
-    )
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
-function login(credits, redirect) {
-  axios
-    // TODO: Update with real endpoint
-    .post('', {
-      usernameOrEmail: credits.username || credits.email,
-      password: credits.password,
-    })
-    .then((response) => {
-      // TODO: Update with real response format
-      if (response.data === 'yes') redirect();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
-function signup(credits, redirect) {
-  axios
-    // TODO: Update with real endpoint
-    .post('', {
-      username: credits.username,
-      email: credits.email,
-      password: credits.password,
-    })
-    .then((response) => {
-      // TODO: Update with real response format
-      if (response.data === 'yes') redirect();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
 
 export default function Login() {
   const classes = useStyles();
   const auth = useAuth();
   const location = useLocation();
   const history = useHistory();
-  const [progress, setProgress] = useState(COMPILATION_PROGRESS.IDENTIFICATION);
-  const [credits, setCredits] = useState({});
+  const [progress, setProgress] = useState(COMPILATION_PROGRESS.IDENTITY);
 
   const redirect = () => auth.login(() => history.replace(location.state.from));
-
-  const clickContinue = () => {
-    switch (progress) {
-      case COMPILATION_PROGRESS.IDENTIFICATION:
-        checkIdentity(credits, setProgress);
-        break;
-      case COMPILATION_PROGRESS.LOGIN:
-        login(credits, redirect);
-        break;
-      case COMPILATION_PROGRESS.SIGNUP:
-        signup(credits, redirect);
-        break;
-      default:
-    }
-  };
 
   return (
     <Grid
@@ -157,28 +81,12 @@ export default function Login() {
                 spacing={2}
               >
                 <Grid item>
-                  <RegexTextField
-                    className={classes.textField}
-                    size="small"
-                    label="Username or email"
-                    onChange={setCredits}
-                    regexes={{
-                      email: /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$/g,
-                      username: /^\w\w\w+$/g,
-                    }}
+                  <AuthForm
+                    className={classes.compilation}
+                    progress={progress}
+                    onProgress={setProgress}
+                    onSuccess={redirect}
                   />
-                </Grid>
-                <Grid item>
-                  <Button
-                    className={classes.button}
-                    variant="contained"
-                    color="primary"
-                    onClick={clickContinue}
-                    // If both are undefined
-                    disabled={(credits.username || credits.email) === undefined}
-                  >
-                    Continue
-                  </Button>
                 </Grid>
               </Grid>
             </Grid>

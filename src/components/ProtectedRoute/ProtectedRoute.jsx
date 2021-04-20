@@ -5,7 +5,6 @@ import { LOGIN_ROUTE } from 'routing/helpers';
 
 export default function ProtectedRoute({ render, ...rest }) {
   const auth = useAuth();
-  console.log(auth);
 
   return (
     <Route
