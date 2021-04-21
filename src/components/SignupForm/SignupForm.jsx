@@ -44,7 +44,7 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
       })
       // If successfully signed up, redirect using onSuccess
       .then((response) => {
-        if (response.status === 302) onSuccess();
+        if (response.status === 200) onSuccess();
         else throw new Error(`Unexpected response: ${response.status}!`);
       })
       // Report error

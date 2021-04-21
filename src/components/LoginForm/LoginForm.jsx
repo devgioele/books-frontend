@@ -21,7 +21,7 @@ export default function LoginForm({ onSuccess, usernameOrEmail }) {
       .post(`${BASE_URL}/auth/login`, { usernameOrEmail, password })
       // If correct, redirect using onSuccess
       .then((response) => {
-        if (response.status === 302) onSuccess();
+        if (response.status === 200) onSuccess();
         else throw new Error(`Unexpected response: ${response.status}!`);
       })
       // Report error

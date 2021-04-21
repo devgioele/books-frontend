@@ -24,7 +24,7 @@ export default function IdentityForm({
     axios
       .post(`${BASE_URL}/auth/check`, { usernameOrEmail })
       .then((response) => {
-        if (response.status === 302) {
+        if (response.status === 200) {
           onProgress(AuthProgress.LOGIN);
         } else throw new Error(`Unexpected response: ${response.status}!`);
       })
