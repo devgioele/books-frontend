@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import BookCard from 'components/BookCard';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
-import { BOOK_ROUTE, route, SIGNUP_ROUTE } from '../../routing/helpers';
+import { BOOK_ROUTE, route, SIGNUP_ROUTE } from 'routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   searchResults: {

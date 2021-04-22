@@ -1,11 +1,11 @@
-import Landing from '../screens/Landing';
-import Login from '../screens/Login';
-import Signup from '../screens/Signup';
-import Explore from '../screens/Explore';
-import Sell from '../screens/Sell';
-import Profile from '../screens/Profile';
-import Book from '../screens/Book';
-import Dashboard from '../screens/Dashboard';
+import Landing from 'screens/Landing';
+import Login from 'screens/Login';
+import Signup from 'screens/Signup';
+import Explore from 'screens/Explore';
+import Sell from 'screens/Sell';
+import Profile from 'screens/Profile';
+import Book from 'screens/Book';
+import Dashboard from 'screens/Dashboard';
 import {
   BOOK_ROUTE,
   DASHBOARD_ROUTE,

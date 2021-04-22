@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
-import SellBooksList from '../../components/SellBooksList';
+import SellBooksList from 'components/SellBooksList';
 
 const sampleBook = {
   isbn: '978-1-56619-909-4',

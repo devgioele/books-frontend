@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom';
 import React from 'react';
-import ProtectedRoute from '../components/ProtectedRoute';
+import ProtectedRoute from 'components/ProtectedRoute';
 
 export const LANDING_ROUTE = '/';
 export const SIGNUP_ROUTE = '/signup';

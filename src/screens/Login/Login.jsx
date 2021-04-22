@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useAuth } from '../../hooks/auth';
+import { useAuth } from 'hooks/auth';
 
 export default function Login() {
   const auth = useAuth();
