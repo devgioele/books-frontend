@@ -36,7 +36,6 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
   const updateNewUser = (fieldName) => (event) => {
     setInvalid(false);
     setNewUser({ ...newUser, [fieldName]: event.target.value });
-    // TODO: Delete this. setNewUser(Object.assign(newUser, { [fieldName]: event.target.value }));
   };
 
   const passwordNotConfirmed = newUser.password !== newUser.passwordConfirmed;
