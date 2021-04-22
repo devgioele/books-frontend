@@ -79,6 +79,7 @@ export default function SellBooksList({
   loadingSold,
   sellingBooks,
   soldBooks,
+  onEdit,
 }) {
   // eslint-disable-next-line no-unused-vars
   const classes = useStyles();
@@ -110,7 +111,7 @@ export default function SellBooksList({
             :
             sellingBooks.map((sellingBook) => (
               <Grid key={sellingBook} item xs={12}>
-                <Book isSold={false} book={sellingBook} />
+                <Book isSold={false} book={sellingBook} onEdit={onEdit} />
               </Grid>
             ))
           }
@@ -151,6 +152,7 @@ function Book({
   // eslint-disable-next-line no-unused-vars
   isSold,
   book,
+  onEdit,
 }) {
   const classes = useStyles();
 
@@ -215,12 +217,12 @@ function Book({
                         variant='contained'
                         disableElevation={true}
                         startIcon={<CreateIcon />}
+                        onClick={() => onEdit(book)}
                       >
                         Edit
                       </Button>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-
                       <Button
                         className={classes.removeButton}
                         variant='contained'

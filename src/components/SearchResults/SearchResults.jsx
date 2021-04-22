@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import BookCard from 'components/BookCard';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
-import { BOOK_ROUTE, route, SIGNUP_ROUTE } from 'routing/helpers';
+import { BOOK_ROUTE, SIGNUP_ROUTE, toRoute } from 'routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   searchResults: {
@@ -76,7 +76,7 @@ export default function SearchResults(props) {
             <Grid
               item
               key={book.isbn}
-              onClick={() => history.push(route(BOOK_ROUTE, book.isbn))}
+              onClick={() => history.push(toRoute(BOOK_ROUTE, book.isbn))}
             >
               <BookCard book={book} />
             </Grid>
@@ -108,7 +108,7 @@ function SeeMore() {
         <Button
           variant='contained'
           color='primary'
-          onClick={() => history.push(route(SIGNUP_ROUTE))}
+          onClick={() => history.push(toRoute(SIGNUP_ROUTE))}
         >
           Sign up for free
         </Button>

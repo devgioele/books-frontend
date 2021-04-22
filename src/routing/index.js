@@ -9,13 +9,16 @@ import Dashboard from 'screens/Dashboard';
 import {
   BOOK_ROUTE,
   DASHBOARD_ROUTE,
+  EDIT_SELL_ROUTE,
   EXPLORE_ROUTE,
   LANDING_ROUTE,
   LOGIN_ROUTE,
+  NEW_SELL_ROUTE,
   PROFILE_ROUTE,
   SELL_ROUTE,
   SIGNUP_ROUTE,
 } from './helpers';
+import SellBookDialog from '../components/SellBookDialog';
 
 const routes = [
   {
@@ -59,6 +62,20 @@ const routes = [
         isExact: false,
         isProtected: true,
         component: Sell,
+        routes: [
+          {
+            path: NEW_SELL_ROUTE,
+            isExact: false,
+            isProtected: true,
+            component: SellBookDialog,
+          },
+          {
+            path: EDIT_SELL_ROUTE,
+            isExact: false,
+            isProtected: true,
+            component: SellBookDialog,
+          },
+        ],
       },
       {
         path: PROFILE_ROUTE,

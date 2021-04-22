@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CloudImage from 'components/CloudImage';
 import { useHistory } from 'react-router-dom';
-import { EXPLORE_ROUTE, route, SIGNUP_ROUTE } from 'routing/helpers';
+import { EXPLORE_ROUTE, SIGNUP_ROUTE, toRoute } from 'routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +26,7 @@ export default function LandingHeader() {
   const history = useHistory();
 
   const changePage = (routeName) => {
-    history.push(route(routeName));
+    history.push(toRoute(routeName));
   };
 
   return (
