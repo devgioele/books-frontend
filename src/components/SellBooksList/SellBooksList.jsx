@@ -3,38 +3,74 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { Button, Grid, Link } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
-import CheckIcon from '@material-ui/icons/Check';
+import ShareIcon from '@material-ui/icons/Share';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { fade } from '@material-ui/core/styles/colorManipulator';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme) => ({
   sectionHeader: {
-    fontStyle: 'bold',
+    fontWeight: 'bold',
+    marginBottom: -theme.spacing(2),
+  },
+  skeleton: {
+    width: '100%',
+  },
+  bookContainer: {
+    [theme.breakpoints.up('md')]: {
+      backgroundColor: theme.palette.background.paper,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: theme.palette.divider,
+      borderStyle: 'solid',
+      padding: theme.spacing(2),
+    },
+  },
+  bookTitle: {
+    [theme.breakpoints.up('sm')]: {
+      width: '400px',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '500px',
+    },
   },
   bookCover: {
     [theme.breakpoints.up('xs')]: {
-      width: '50px',
+      width: '100px',
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: '120px',
     },
     height: 'auto',
     objectFit: 'scale-down',
-    borderRadius: 3,
+    borderRadius: 5,
   },
   sellButton: {
-    borderColor: theme.palette.success.main,
-    color: theme.palette.success.main,
+    backgroundColor: fade(theme.palette.success.main, 0.2),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.success.main, 0.5),
+    },
     width: '100%',
+    color: theme.palette.success.main,
   },
   editButton: {
-    borderColor: theme.palette.primary.dark,
+    backgroundColor: fade(theme.palette.primary.dark, 0.2),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.primary.dark, 0.5),
+    },
     color: theme.palette.primary.dark,
     width: '100%',
   },
   removeButton: {
-    borderColor: theme.palette.error.main,
+    backgroundColor: fade(theme.palette.error.main, 0.2),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.error.main, 0.5),
+    },
     color: theme.palette.error.main,
     width: '100%',
+  },
+  soldText: {
+    textDecoration: 'line-through',
   },
 }));
 
@@ -52,12 +88,14 @@ export default function SellBooksList({
       container
       direction='column'
       alignItems='center'
-      spacing={3}>
+      spacing={4}
+    >
       <Grid item xs={12}>
         <Grid
           container
           direction='column'
-          spacing={2}>
+          spacing={4}
+        >
           <Grid item xs={12}>
             <Typography
               className={classes.sectionHeader}
@@ -66,7 +104,10 @@ export default function SellBooksList({
             </Typography>
           </Grid>
           {loadingSelling ?
-            <p>Loading selling books</p> :
+            <Grid item xs={12}>
+              <Skeleton className={classes.skeleton} />
+            </Grid>
+            :
             sellingBooks.map((sellingBook) => (
               <Grid key={sellingBook} item xs={12}>
                 <Book isSold={false} book={sellingBook} />
@@ -79,7 +120,8 @@ export default function SellBooksList({
         <Grid
           container
           direction='column'
-          spacing={2}>
+          spacing={4}
+        >
           <Grid item xs={12}>
             <Typography
               className={classes.sectionHeader}
@@ -89,7 +131,10 @@ export default function SellBooksList({
             </Typography>
           </Grid>
           {loadingSold ?
-            <p>Loading sold books</p> :
+            <Grid item xs={12}>
+              <Skeleton className={classes.skeleton} />
+            </Grid>
+            :
             soldBooks.map((soldBook) => (
               <Grid key={soldBook} item xs={12}>
                 <Book isSold={true} book={soldBook} />
@@ -111,6 +156,7 @@ function Book({
 
   return (
     <Grid
+      className={classes.bookContainer}
       container
       justify='flex-start'
       alignItems='center'
@@ -131,20 +177,20 @@ function Book({
           alignItems='flex-start'
           spacing={1}
         >
-          <Grid item>
+          <Grid className={classes.bookTitle} item>
             <Link
-              variant='body1'
+              variant='h6'
               color='inherit'
               href=''
             >
               <b>{book.title}</b>
             </Link>
           </Grid>
-          <Grid item>
+          <Grid className={isSold ? classes.soldText : {}} item>
             <Typography
-              variant='body1'
+              variant='h6'
             >
-              {book.currency} {book.price}
+              {book.currency}{book.price}
             </Typography>
           </Grid>
           <Grid item>
@@ -163,30 +209,37 @@ function Book({
               >
                 <Grid item>
                   <Grid container spacing={1}>
-                    <Grid item xs={6}>
-                      <Button
-                        className={classes.sellButton}
-                        variant='outlined'
-                        startIcon={<CheckIcon />}>
-                        Sell
-                      </Button>
-                    </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={6}>
                       <Button
                         className={classes.editButton}
-                        variant='outlined'
-                        startIcon={<CreateIcon />}>
+                        variant='contained'
+                        disableElevation={true}
+                        startIcon={<CreateIcon />}
+                      >
                         Edit
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+
+                      <Button
+                        className={classes.removeButton}
+                        variant='contained'
+                        disableElevation={true}
+                        startIcon={<DeleteForeverIcon />}
+                      >
+                        Remove
                       </Button>
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item>
                   <Button
-                    className={classes.removeButton}
-                    variant='outlined'
-                    startIcon={<DeleteForeverIcon />}>
-                    Remove
+                    className={classes.sellButton}
+                    variant='contained'
+                    disableElevation={true}
+                    startIcon={<ShareIcon />}
+                  >
+                    Share Sell Link
                   </Button>
                 </Grid>
               </Grid>

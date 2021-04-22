@@ -50,7 +50,7 @@ export default createMuiTheme({
       fontFamily: 'Libre Baskerville',
     },
     h6: {
-      fontFamily: 'Libre Baskerville',
+      fontFamily: 'Roboto',
     },
     body1: {
       fontFamily: 'Roboto',

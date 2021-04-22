@@ -62,6 +62,7 @@ export default function LandingHeader() {
               className={classes.button}
               variant='contained'
               color='primary'
+              disableElevation={true}
               onClick={() => changePage(SIGNUP_ROUTE)}
             >
               Sign up for free
