@@ -22,11 +22,13 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
     usernameOrEmail,
     /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/g
   );
+  const initEmail = isEmail ? usernameOrEmail : '';
   const isUsername = !isEmail && exactMatch(usernameOrEmail, /\w\w\w+/g);
+  const initUsername = isUsername ? usernameOrEmail : '';
 
   const [newUser, setNewUser] = useState({
-    email: isEmail ? usernameOrEmail : '',
-    username: isUsername ? usernameOrEmail : '',
+    email: initEmail,
+    username: initUsername,
     password: '',
     passwordConfirmed: '',
   });
@@ -51,6 +53,7 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
         <TextField
           className={classes.textField}
           required
+          defaultValue={initEmail}
           id="outlined-basic"
           variant="outlined"
           color="secondary"
@@ -64,6 +67,7 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
         <TextField
           className={classes.textField}
           required
+          defaultValue={initUsername}
           id="outlined-basic"
           variant="outlined"
           color="secondary"
