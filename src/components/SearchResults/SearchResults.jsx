@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import BookCard from 'components/BookCard';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
-import { BOOK_ROUTE, route, SIGNUP_ROUTE } from '../../routing/helpers';
+import { BOOK_ROUTE, toRoute, LOGIN_ROUTE } from 'routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   searchResults: {
@@ -53,13 +53,13 @@ export default function SearchResults(props) {
   const { query } = props;
 
   return (
-    <Paper className={classes.searchResults} variant='outlined'>
+    <Paper className={classes.searchResults} variant="outlined">
       <Grid
         container
         spacing={3}
-        direction='column'
-        justify='flex-start'
-        alignItems='stretch'
+        direction="column"
+        justify="flex-start"
+        alignItems="stretch"
       >
         {books
           /*
@@ -69,14 +69,13 @@ export default function SearchResults(props) {
           until the backend replies.
            */
           .filter((book) =>
-            book.title.toLowerCase()
-              .includes(query.toLowerCase()),
+            book.title.toLowerCase().includes(query.toLowerCase())
           )
           .map((book) => (
             <Grid
               item
               key={book.isbn}
-              onClick={() => history.push(route(BOOK_ROUTE, book.isbn))}
+              onClick={() => history.push(toRoute(BOOK_ROUTE, book.isbn))}
             >
               <BookCard book={book} />
             </Grid>
@@ -96,19 +95,19 @@ function SeeMore() {
   return (
     <Grid
       container
-      direction='column'
-      justify='center'
-      alignItems='center'
+      direction="column"
+      justify="center"
+      alignItems="center"
       spacing={1}
     >
       <Grid item>
-        <Typography variant='h6'>Interested in these books?</Typography>
+        <Typography variant="h6">Interested in these books?</Typography>
       </Grid>
       <Grid item>
         <Button
-          variant='contained'
-          color='primary'
-          onClick={() => history.push(route(SIGNUP_ROUTE))}
+          variant="contained"
+          color="primary"
+          onClick={() => history.push(toRoute(LOGIN_ROUTE))}
         >
           Sign up for free
         </Button>

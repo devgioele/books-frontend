@@ -45,17 +45,17 @@ export default function LandingWelcome() {
           className={classes.welcomeMsg}
           container
           spacing={2}
-          direction='column'
-          justify='center'
-          alignItems='flex-start'
+          direction="column"
+          justify="center"
+          alignItems="flex-start"
         >
           <Grid item>
-            <Typography variant='h3'>
+            <Typography variant="h3">
               Welcome to <b>Books</b>
             </Typography>
           </Grid>
           <Grid item>
-            <Typography variant='h4'>
+            <Typography variant="h4">
               Discover and sell amazing books with ease.
             </Typography>
           </Grid>
@@ -64,8 +64,8 @@ export default function LandingWelcome() {
       <Grid item className={classes.illustrationContainer}>
         <CloudImage
           className={classes.illustration}
-          alt='student library'
-          url='https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/student_library_rymenl.'
+          alt="student library"
+          url="https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/student_library_rymenl."
         />
       </Grid>
     </Grid>

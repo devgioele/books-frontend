@@ -42,49 +42,49 @@ export default function PermanentDrawerLeft({
   content,
   selectedSection,
   sections,
-  changeSection,
+  changeSection
 }) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position='fixed' className={classes.appBar}>
+      <CssBaseline/>
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography variant='h6' noWrap>
+          <Typography variant="h6" noWrap>
             {title}
           </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
         className={classes.drawer}
-        variant='permanent'
+        variant="permanent"
         classes={{
           paper: classes.drawerPaper,
         }}
-        anchor='left'
+        anchor="left"
       >
-        <div className={classes.toolbar} />
-        <Divider />
+        <div className={classes.toolbar}/>
+        <Divider/>
         <List>
           {/* eslint-disable-next-line react/prop-types */}
           {sections.map((section) => (
-            <ListItem
-              button
-              key={section.label}
-              selected={section === selectedSection}
-              onClick={() => changeSection(section.route)}
-            >
-              <ListItemIcon>
-                {section.icon}
-              </ListItemIcon>
-              <ListItemText primary={section.label} />
-            </ListItem>
+              <ListItem
+                button
+                key={section.label}
+                selected={section === selectedSection}
+                onClick={() => changeSection(section.route)}
+              >
+                <ListItemIcon>
+                  {section.icon}
+                </ListItemIcon>
+                <ListItemText primary={section.label}/>
+              </ListItem>
           ))}
         </List>
       </Drawer>
       <main className={classes.content}>
-        <div className={classes.toolbar} />
+        <div className={classes.toolbar}/>
         {content}
       </main>
     </div>

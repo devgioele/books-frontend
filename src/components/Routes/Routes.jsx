@@ -1,10 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import {
-  EXPLORE_ROUTE,
-  NO_MATCH_ROUTE,
-  renderRoute,
-} from '../../routing/helpers';
+import { renderRoute, EXPLORE_ROUTE, NO_MATCH_ROUTE } from 'routing/helpers';
 
 export default function Routes({ routes }) {
   return (
