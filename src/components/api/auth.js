@@ -1,6 +1,20 @@
 import axios from 'axios';
-import { BASE_URL } from '../../routing/helpers';
-import AuthProgress from '../../screens/Login/authProgress';
+import AuthProgress from 'screens/Login/authProgress';
+import { BASE_URL, DEBUGGING } from 'constants.js';
+
+const errorStatuses = [301, 422, 500];
+
+axios.interceptors.response.use(
+  (response) => {
+    if (errorStatuses.includes(response.status))
+      return Promise.reject(response);
+    return response;
+  },
+  (error) => {
+    if (DEBUGGING) console.log(error);
+    return Promise.reject(error);
+  }
+);
 
 export const submitIdentity = (usernameOrEmail, onProgress) => {
   // Submit username or email and change auth progress according to whether
@@ -14,8 +28,9 @@ export const submitIdentity = (usernameOrEmail, onProgress) => {
     })
     .catch((error) => {
       if (error.response?.status === 500) {
+        console.log('got response with status 500');
         onProgress(AuthProgress.SIGNUP);
-      } else throw error;
+      }
     });
 };
 

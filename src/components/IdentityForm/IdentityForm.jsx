@@ -39,7 +39,7 @@ export default function IdentityForm({
           className={classes.btn}
           variant="contained"
           color="primary"
-          onClick={() => submitIdentity(onProgress, usernameOrEmail)}
+          onClick={() => submitIdentity(usernameOrEmail, onProgress)}
         >
           Continue
         </Button>

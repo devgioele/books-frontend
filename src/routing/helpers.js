@@ -2,9 +2,6 @@ import { Route } from 'react-router-dom';
 import React from 'react';
 import ProtectedRoute from 'components/ProtectedRoute';
 
-const debugging = true;
-export const BASE_URL = debugging ? 'http://localhost:7000/v1' : '';
-
 export const LANDING_ROUTE = '/';
 export const LOGIN_ROUTE = '/login';
 export const APP_ROUTE = '/app';

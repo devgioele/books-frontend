@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('smmd')]: {
       borderRadius: 20,
       width: '800px',
-      height: '600px',
+      height: '650px',
     },
     [theme.breakpoints.up('sm')]: {
       padding: '50px 25%',
@@ -37,8 +37,8 @@ const useStyles = makeStyles((theme) => ({
   contentContainer: {
     margin: 'auto',
     width: '100%',
-    minWidth: '280px',
     height: '100%',
+    minWidth: '280px',
   },
 }));
 
@@ -82,7 +82,6 @@ export default function Login() {
               >
                 <Grid item>
                   <AuthForm
-                    className={classes.compilation}
                     progress={progress}
                     onProgress={setProgress}
                     onSuccess={redirect}

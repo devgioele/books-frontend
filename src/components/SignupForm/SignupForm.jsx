@@ -33,8 +33,11 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
 
   const updateNewUser = (fieldName) => (event) => {
     setInvalid(false);
-    setNewUser(Object.assign(newUser, { [fieldName]: event.target.value }));
+    setNewUser({ ...newUser, [fieldName]: event.target.value });
+    // TODO: Delete this. setNewUser(Object.assign(newUser, { [fieldName]: event.target.value }));
   };
+
+  const passwordNotConfirmed = newUser.password !== newUser.passwordConfirmed;
 
   return (
     <Grid
@@ -79,6 +82,7 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
           color="secondary"
           size="small"
           label="Password"
+          value={newUser.password}
           error={invalid}
           onChange={updateNewUser('password')}
         />
@@ -92,7 +96,9 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
           color="secondary"
           size="small"
           label="Confirm password"
-          error={newUser.password !== newUser.passwordConfirmed}
+          value={newUser.passwordConfirmed}
+          error={passwordNotConfirmed}
+          helperText={passwordNotConfirmed ? 'Passwords do not match.' : ''}
           onChange={updateNewUser('passwordConfirmed')}
         />
       </Grid>
