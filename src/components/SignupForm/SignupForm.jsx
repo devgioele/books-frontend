@@ -1,9 +1,8 @@
 import { Button, TextField } from '@material-ui/core';
 import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import { BASE_URL } from '../../routing/helpers';
+import { submitSignup } from '../api/auth';
 
 const useStyles = makeStyles(() => ({
   textField: { width: '100%' },
@@ -31,28 +30,6 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
     password: '',
     passwordConfirmed: '',
   });
-
-  const submit = () => {
-    axios
-      // Submit new user data
-      .post(`${BASE_URL}/auth/signup`, {
-        username: newUser.username,
-        password: newUser.password,
-        contactInformation: {
-          email: newUser.email,
-        },
-      })
-      // If successfully signed up, redirect using onSuccess
-      .then((response) => {
-        if (response.status === 200) onSuccess();
-        else throw new Error(`Unexpected response: ${response.status}!`);
-      })
-      // Report error
-      .catch((error) => {
-        if (error.response?.status === 422) setInvalid(true);
-        else throw error;
-      });
-  };
 
   const updateNewUser = (fieldName) => (event) => {
     setInvalid(false);
@@ -124,7 +101,9 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
           className={classes.btn}
           variant="contained"
           color="primary"
-          onClick={submit}
+          onClick={() =>
+            submitSignup(newUser, onSuccess, () => setInvalid(true))
+          }
         >
           Continue
         </Button>

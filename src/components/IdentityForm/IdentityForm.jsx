@@ -1,10 +1,8 @@
 import React from 'react';
 import { Button, TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
-import { BASE_URL } from 'routing/helpers';
-import AuthProgress from 'screens/Login/authProgress';
 import { makeStyles } from '@material-ui/core/styles';
+import { submitIdentity } from '../api/auth';
 
 const useStyles = makeStyles(() => ({
   textField: { width: '100%' },
@@ -17,23 +15,6 @@ export default function IdentityForm({
   setUsernameOrEmail,
 }) {
   const classes = useStyles();
-
-  const submit = () => {
-    // Submit username or email and change auth progress according to whether
-    // it exists.
-    axios
-      .post(`${BASE_URL}/auth/check`, { usernameOrEmail })
-      .then((response) => {
-        if (response.status === 200) {
-          onProgress(AuthProgress.LOGIN);
-        } else throw new Error(`Unexpected response: ${response.status}!`);
-      })
-      .catch((error) => {
-        if (error.response?.status === 500) {
-          onProgress(AuthProgress.SIGNUP);
-        } else throw error;
-      });
-  };
 
   return (
     <Grid
@@ -58,7 +39,7 @@ export default function IdentityForm({
           className={classes.btn}
           variant="contained"
           color="primary"
-          onClick={submit}
+          onClick={() => submitIdentity(onProgress, usernameOrEmail)}
         >
           Continue
         </Button>
