@@ -56,7 +56,6 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
       <Grid item>
         <TextField
           className={classes.textField}
-          required
           autoFocus={true}
           defaultValue={initEmail}
           id="email"
@@ -71,7 +70,6 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
       <Grid item>
         <TextField
           className={classes.textField}
-          required
           defaultValue={initUsername}
           id="username"
           variant="outlined"
@@ -85,7 +83,6 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
       <Grid item>
         <PasswordField
           className={classes.textField}
-          required
           id="password"
           variant="outlined"
           color="secondary"
@@ -99,7 +96,6 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
       <Grid item>
         <PasswordField
           className={classes.textField}
-          required
           id="passwordConfirmed"
           variant="outlined"
           color="secondary"

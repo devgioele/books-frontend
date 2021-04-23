@@ -13,7 +13,6 @@ export default function PasswordField(props) {
     autoComplete,
     autoFocus = false,
     children,
-    // classes,
     className,
     color = 'primary',
     defaultValue,
