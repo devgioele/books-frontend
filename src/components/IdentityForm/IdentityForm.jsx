@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,6 +15,7 @@ export default function IdentityForm({
   setUsernameOrEmail,
 }) {
   const classes = useStyles();
+  const btnContinue = useRef(null);
 
   return (
     <Grid
@@ -23,10 +24,14 @@ export default function IdentityForm({
       justify="flex-start"
       alignItems="stretch"
       spacing={2}
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') btnContinue.current.click();
+      }}
     >
       <Grid item>
         <TextField
           className={classes.textField}
+          autoFocus={true}
           size="small"
           label="Username or email"
           variant="outlined"
@@ -39,6 +44,7 @@ export default function IdentityForm({
           className={classes.btn}
           variant="contained"
           color="primary"
+          ref={btnContinue}
           onClick={() => submitIdentity(usernameOrEmail, onProgress)}
         >
           Continue
