@@ -50,7 +50,7 @@ export const submitLogin = (
     })
     // Report error
     .catch((error) => {
-      if (error.response?.status === 422) onFailure();
+      if (error.response?.status === 401) onFailure();
       else throw error;
     });
 };
@@ -59,11 +59,9 @@ export const submitSignup = (newUser, onSuccess, onFailure) => {
   axios
     // Submit new user data
     .post(`${BASE_URL}/auth/signup`, {
+      email: newUser.email,
       username: newUser.username,
       password: newUser.password,
-      contactInformation: {
-        email: newUser.email,
-      },
     })
     // If successfully signed up, redirect using onSuccess
     .then((response) => {
@@ -72,7 +70,7 @@ export const submitSignup = (newUser, onSuccess, onFailure) => {
     })
     // Report error
     .catch((error) => {
-      if (error.response?.status === 422) onFailure();
+      if (error.response?.status === 401) onFailure();
       else throw error;
     });
 };

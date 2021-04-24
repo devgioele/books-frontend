@@ -49,7 +49,11 @@ export default function Login() {
   const history = useHistory();
   const [progress, setProgress] = useState(COMPILATION_PROGRESS.IDENTITY);
 
-  const redirect = () => auth.login(() => history.replace(location.state.from));
+  const redirect = () =>
+    auth.login(() => {
+      console.log(location);
+      history.replace(location.state.from);
+    });
 
   return (
     <Grid
