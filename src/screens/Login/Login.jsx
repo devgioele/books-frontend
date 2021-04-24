@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import LoginHeader from 'components/LoginHeader';
+import LoginHeader from 'components/login/LoginHeader';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from 'hooks/auth';
-import AuthForm from 'components/AuthForm';
+import AuthForm from 'components/login/AuthForm';
 import COMPILATION_PROGRESS from './authProgress';
 
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +51,6 @@ export default function Login() {
 
   const redirect = () =>
     auth.login(() => {
-      console.log(location);
       history.replace(location.state.from);
     });
 

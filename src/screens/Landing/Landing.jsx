@@ -2,15 +2,15 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Typography, useMediaQuery } from '@material-ui/core';
-import FeatureCard from 'components/FeatureCard';
-import LandingSearch from 'components/LandingSearch';
+import FeatureCard from 'components/landing/FeatureCard';
+import LandingSearch from 'components/landing/LandingSearch';
 import MoneyOffIcon from '@material-ui/icons/MoneyOff';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import LockIcon from '@material-ui/icons/Lock';
 import HeartIcon from '@material-ui/icons/Favorite';
-import LandingWelcome from 'components/LandingWelcome';
-import LandingHeader from 'components/LandingHeader';
-import LandingAbout from 'components/LandingAbout';
+import LandingWelcome from 'components/landing/LandingWelcome';
+import LandingHeader from 'components/landing/LandingHeader';
+import LandingAbout from 'components/landing/LandingAbout';
 
 const features = [
   {
@@ -25,7 +25,7 @@ const features = [
     icon: <MoneyOffIcon />,
     title: 'Free',
     description:
-      'No ads and no fees. Books doesn\'t force you into a specific payment ' +
+      "No ads and no fees. Books doesn't force you into a specific payment " +
       'or shipping method. Users have complete freedom of choice.',
   },
   {
@@ -87,7 +87,7 @@ export default function Landing() {
         <Grid
           className={classes.page}
           container
-          direction='column'
+          direction="column"
           spacing={downXSmall ? 4 : 8}
         >
           <Grid item>
@@ -95,7 +95,7 @@ export default function Landing() {
           </Grid>
 
           <Grid item>
-            <Typography className={classes.sectionTitle} variant='h4'>
+            <Typography className={classes.sectionTitle} variant="h4">
               Search an amazing book
             </Typography>
           </Grid>
@@ -104,7 +104,7 @@ export default function Landing() {
           </Grid>
 
           <Grid item>
-            <Typography className={classes.sectionTitle} variant='h4'>
+            <Typography className={classes.sectionTitle} variant="h4">
               Features
             </Typography>
           </Grid>
@@ -113,8 +113,8 @@ export default function Landing() {
               container
               spacing={downXSmall ? 4 : 8}
               direction={downXSmall ? 'column' : 'row'}
-              alignItems='flex-start'
-              justify='center'
+              alignItems="flex-start"
+              justify="center"
             >
               {features.map((feature, index) => (
                 <Grid
@@ -138,7 +138,7 @@ export default function Landing() {
           </Grid>
 
           <Grid item>
-            <Typography className={classes.sectionTitle} variant='h4'>
+            <Typography className={classes.sectionTitle} variant="h4">
               About Us
             </Typography>
           </Grid>

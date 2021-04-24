@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import { Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { submitLogin } from '../api/auth';
-import PasswordField from '../PasswordField';
+import { submitLogin } from '../../api/auth';
+import PasswordField from '../../PasswordField';
 
 const useStyles = makeStyles(() => ({
   textField: { width: '100%' },
@@ -32,7 +32,6 @@ export default function LoginForm({ onSuccess, usernameOrEmail }) {
           className={classes.textField}
           autoFocus={true}
           variant="outlined"
-          color="secondary"
           size="small"
           label="Password"
           onChange={(event) => {
@@ -49,8 +48,11 @@ export default function LoginForm({ onSuccess, usernameOrEmail }) {
           color="primary"
           ref={btnContinue}
           onClick={() =>
-            submitLogin(usernameOrEmail, password, onSuccess, () =>
-              setInvalid(true)
+            submitLogin(
+              onSuccess,
+              () => setInvalid(true),
+              usernameOrEmail,
+              password
             )
           }
         >

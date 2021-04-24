@@ -2,8 +2,8 @@ import { Button, TextField } from '@material-ui/core';
 import React, { useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { submitSignup } from '../api/auth';
-import PasswordField from '../PasswordField';
+import { submitSignup } from '../../api/auth';
+import PasswordField from '../../PasswordField';
 
 const useStyles = makeStyles(() => ({
   textField: { width: '100%' },
@@ -60,7 +60,6 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
           defaultValue={initEmail}
           id="email"
           variant="outlined"
-          color="secondary"
           size="small"
           label="Email"
           error={invalid}
@@ -73,7 +72,6 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
           defaultValue={initUsername}
           id="username"
           variant="outlined"
-          color="secondary"
           size="small"
           label="Username"
           error={invalid}
@@ -85,7 +83,6 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
           className={classes.textField}
           id="password"
           variant="outlined"
-          color="secondary"
           size="small"
           label="Password"
           value={newUser.password}
@@ -98,7 +95,6 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
           className={classes.textField}
           id="passwordConfirmed"
           variant="outlined"
-          color="secondary"
           size="small"
           label="Confirm password"
           value={newUser.passwordConfirmed}
@@ -115,7 +111,7 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
           ref={btnContinue}
           onClick={() => {
             if (passwordConfirmed)
-              submitSignup(newUser, onSuccess, () => setInvalid(true));
+              submitSignup(onSuccess, () => setInvalid(true), newUser);
           }}
         >
           Continue

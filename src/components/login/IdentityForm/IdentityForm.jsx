@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { submitIdentity } from '../api/auth';
+import { submitIdentity } from '../../api/auth';
 
 const useStyles = makeStyles(() => ({
   textField: { width: '100%' },
@@ -15,6 +15,7 @@ export default function IdentityForm({
   setUsernameOrEmail,
 }) {
   const classes = useStyles();
+  const [invalid, setInvalid] = useState(false);
   const btnContinue = useRef(null);
 
   return (
@@ -35,8 +36,11 @@ export default function IdentityForm({
           size="small"
           label="Username or email"
           variant="outlined"
-          color="secondary"
-          onChange={(event) => setUsernameOrEmail(event.target.value)}
+          onChange={(event) => {
+            setInvalid(false);
+            setUsernameOrEmail(event.target.value);
+          }}
+          error={invalid}
         />
       </Grid>
       <Grid item>
@@ -45,7 +49,9 @@ export default function IdentityForm({
           variant="contained"
           color="primary"
           ref={btnContinue}
-          onClick={() => submitIdentity(usernameOrEmail, onProgress)}
+          onClick={() =>
+            submitIdentity(onProgress, () => setInvalid(true), usernameOrEmail)
+          }
         >
           Continue
         </Button>
