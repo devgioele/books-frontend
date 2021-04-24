@@ -54,6 +54,8 @@ export default function PasswordField(props) {
     event.preventDefault();
   };
 
+  const inputLabelId = label && id ? `${id}-label` : undefined;
+
   return (
     <FormControl
       className={className}
@@ -65,8 +67,11 @@ export default function PasswordField(props) {
       onSelect={updateSelectionStart}
       {...other}
     >
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+      <InputLabel htmlFor={id} id={inputLabelId} {...InputLabelProps}>
+        {label}
+      </InputLabel>
       <OutlinedInput
+        label={label}
         autoComplete={autoComplete}
         autoFocus={autoFocus}
         defaultValue={defaultValue}
@@ -103,7 +108,6 @@ export default function PasswordField(props) {
             </IconButton>
           </InputAdornment>
         }
-        labelWidth={70}
       />
     </FormControl>
   );
