@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { submitLogin } from '../api/auth';
+import { submitIdentity } from '../../api/auth';
 
 const useStyles = makeStyles(() => ({
   textField: { width: '100%' },
   btn: { width: '100%' },
 }));
 
-export default function LoginForm({ onSuccess, usernameOrEmail }) {
+export default function IdentityForm({
+  onProgress,
+  usernameOrEmail,
+  setUsernameOrEmail,
+}) {
   const classes = useStyles();
-  const [password, setPassword] = useState();
   const [invalid, setInvalid] = useState(false);
+  const btnContinue = useRef(null);
 
   return (
     <Grid
@@ -21,17 +25,20 @@ export default function LoginForm({ onSuccess, usernameOrEmail }) {
       justify="flex-start"
       alignItems="stretch"
       spacing={2}
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') btnContinue.current.click();
+      }}
     >
       <Grid item>
         <TextField
           className={classes.textField}
-          variant="outlined"
-          color="secondary"
+          autoFocus={true}
           size="small"
-          label="Password"
+          label="Username or email"
+          variant="outlined"
           onChange={(event) => {
             setInvalid(false);
-            setPassword(event.target.value);
+            setUsernameOrEmail(event.target.value);
           }}
           error={invalid}
         />
@@ -41,10 +48,9 @@ export default function LoginForm({ onSuccess, usernameOrEmail }) {
           className={classes.btn}
           variant="contained"
           color="primary"
+          ref={btnContinue}
           onClick={() =>
-            submitLogin(usernameOrEmail, password, onSuccess, () =>
-              setInvalid(true)
-            )
+            submitIdentity(onProgress, () => setInvalid(true), usernameOrEmail)
           }
         >
           Continue

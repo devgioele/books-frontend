@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import AuthProgress from 'screens/Login/authProgress';
-import IdentityForm from 'components/IdentityForm';
-import SignupForm from 'components/SignupForm';
-import LoginForm from 'components/LoginForm';
+import IdentityForm from 'components/login/IdentityForm';
+import SignupForm from 'components/login/SignupForm';
+import LoginForm from 'components/login/LoginForm';
 
 export default function AuthForm({ progress, ...remProps }) {
-  const [usernameOrEmail, setUsernameOrEmail] = useState();
+  const [usernameOrEmail, setUsernameOrEmail] = useState('');
 
   switch (progress) {
     case AuthProgress.IDENTITY:

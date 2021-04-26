@@ -22,7 +22,6 @@ function match(text, regexes) {
 export default function RegexTextField({ regexes, onChange, ...remProps }) {
   return (
     <TextField
-      required
       id="outlined-basic"
       variant="outlined"
       color="secondary"

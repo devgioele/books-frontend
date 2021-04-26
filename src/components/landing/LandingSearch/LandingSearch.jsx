@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ClickAwayListener, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import SearchResults from 'components/SearchResults';
-import SearchBar from 'components/SearchBar';
+import SearchResults from 'components/landing/SearchResults';
+import SearchBar from 'components/landing/SearchBar';
 
 const useStyles = makeStyles((theme) => ({
   searchCard: {
@@ -29,7 +29,7 @@ export default function LandingSearch() {
 
   return (
     <ClickAwayListener onClickAway={() => handleSearch('')}>
-      <Paper className={classes.searchCard} variant='outlined'>
+      <Paper className={classes.searchCard} variant="outlined">
         <SearchBar onSearching={handleSearch} />
         {searching && <SearchResults query={searchedText} />}
       </Paper>

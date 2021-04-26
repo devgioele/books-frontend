@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import BookCard from 'components/BookCard';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
-import { BOOK_ROUTE, toRoute, LOGIN_ROUTE } from 'routing/helpers';
+import { BOOK_ROUTE, toRoute, EXPLORE_ROUTE } from 'routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   searchResults: {
@@ -107,7 +107,7 @@ function SeeMore() {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => history.push(toRoute(LOGIN_ROUTE))}
+          onClick={() => history.push(toRoute(EXPLORE_ROUTE))}
         >
           Sign up for free
         </Button>
