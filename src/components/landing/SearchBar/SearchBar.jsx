@@ -72,7 +72,6 @@ export default function SearchBar({
         }}
         inputProps={{ 'aria-label': 'search' }}
         onChange={(event) => onSearching(event.target.value)}
-        onFocus={(event) => onSearching(event.target.value)}
       />
     </div>
   );

@@ -6,23 +6,24 @@ export const useAxios = (axiosBlock) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  let source = null;
+  const [source, setSource] = useState(null);
 
   const fetch = (...args) => {
-    source = axios.CancelToken.source();
+    // We use this variable in order to pass the value to the axiosBlock and
+    // also to the state as the state propagation is asynchronous.
+    const localSource = axios.CancelToken.source();
+    setSource(localSource);
     setIsLoading(true);
     axiosBlock(
       (body) => {
-        source = null;
         setData(body);
         setIsLoading(false);
       },
       (err) => {
-        source = null;
         setError(err);
         setIsLoading(false);
       },
-      source.token,
+      localSource.token,
       ...args,
     );
   };

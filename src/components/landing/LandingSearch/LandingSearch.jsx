@@ -6,6 +6,7 @@ import SearchBar from 'components/landing/SearchBar';
 import { landingSearchBy } from '../../../api/landing';
 import { useAxios } from '../../../hooks/axios';
 import { debounce } from '../../../utils/functions';
+import { useStatefulSnackbar } from '../../../hooks/snackbar';
 
 const useStyles = makeStyles((theme) => ({
   searchCard: {
@@ -24,11 +25,12 @@ export default function LandingSearch() {
   const classes = useStyles();
   // eslint-disable-next-line no-unused-vars
   const [fetch, cancelPrevious, data, error, isLoading] = useAxios(landingSearchBy);
+  useStatefulSnackbar(error, 'An error occurred while searching', 'error');
 
   const handleSearch = debounce((query) => {
     cancelPrevious();
     fetch(query);
-  }, 250);
+  }, 200);
 
   const showSearchResults = data && data.length > 0;
 

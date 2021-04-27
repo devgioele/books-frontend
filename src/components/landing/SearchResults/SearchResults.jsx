@@ -65,12 +65,13 @@ function SeeMore() {
       spacing={1}
     >
       <Grid item>
-        <Typography variant='h6'>Interested in these books?</Typography>
+        <Typography variant='body1'>Interested in these books?</Typography>
       </Grid>
       <Grid item>
         <Button
           variant='contained'
           color='primary'
+          disableElevation={true}
           onClick={() => history.push(toRoute(EXPLORE_ROUTE))}
         >
           Sign up for free

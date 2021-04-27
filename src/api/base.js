@@ -21,7 +21,7 @@ export const failureWith = (onFailure, ...failureStatusCodes) => (error) => {
   // TODO: implement proper failure handling.
   if (error.response) {
     if (failureStatusCodes.includes(error.response.status)) {
-      onFailure(error);
+      onFailure(error.response.data.detail);
     } else {
       throw new Error(`Unexpected response: ${error.response.status}!`);
     }
