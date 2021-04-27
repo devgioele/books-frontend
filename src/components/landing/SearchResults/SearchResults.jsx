@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Divider, Paper } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import BookCard from 'components/BookCard';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
-import { BOOK_ROUTE, toRoute, EXPLORE_ROUTE } from 'routing/helpers';
+import { BOOK_ROUTE, EXPLORE_ROUTE, toRoute } from 'routing/helpers';
+import BookCard from '../../BookCard';
 
 const useStyles = makeStyles((theme) => ({
   searchResults: {
@@ -22,64 +22,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const books = [
-  {
-    title: 'Alice in Wonderland',
-    isbn: '978-2-12345-680-3',
-    price: '$ 20',
-    condition: 'good',
-    cover:
-      'https://i.etsystatic.com/6908127/r/il/8fa6d0/1519409460/il_570xN.1519409460_3v5o.jpg',
-  },
-  {
-    title: 'Alice in Wonderland 2',
-    isbn: '978-2-12345-680-5',
-    price: 'ETH 0.009',
-    condition: 'perfect',
-    cover: 'https://blackwells.co.uk/jacket/l/9781447279990.jpg',
-  },
-  {
-    title: 'The Intelligent Investor',
-    isbn: '978-2-12345-681-2',
-    price: '€ 22.70',
-    condition: 'ok',
-    cover: 'https://blackwells.co.uk//jacket/l/9780060555665.jpg',
-  },
-];
-
-export default function SearchResults(props) {
-  const history = useHistory();
+export default function SearchResults({ books }) {
   const classes = useStyles();
-  const { query } = props;
+  const history = useHistory();
 
   return (
-    <Paper className={classes.searchResults} variant="outlined">
+    <Paper className={classes.searchResults} variant='outlined'>
       <Grid
         container
         spacing={3}
-        direction="column"
-        justify="flex-start"
-        alignItems="stretch"
+        direction='column'
+        justify='flex-start'
+        alignItems='stretch'
       >
-        {books
-          /*
-          This is just an example of how the query can be used.
-          Later on the query will be sent to the backend.
-          A new state 'loading' should be created to show some component
-          until the backend replies.
-           */
-          .filter((book) =>
-            book.title.toLowerCase().includes(query.toLowerCase())
-          )
-          .map((book) => (
-            <Grid
-              item
-              key={book.isbn}
-              onClick={() => history.push(toRoute(BOOK_ROUTE, book.isbn))}
-            >
-              <BookCard book={book} />
-            </Grid>
-          ))}
+        {books.map((book, index) => (
+          <Grid
+            item
+            key={index}
+            onClick={() => history.push(toRoute(BOOK_ROUTE, book._id))}
+          >
+            <BookCard book={book} />
+          </Grid>
+        ))}
         <Divider light />
         <Grid item>
           <SeeMore />
@@ -95,18 +59,18 @@ function SeeMore() {
   return (
     <Grid
       container
-      direction="column"
-      justify="center"
-      alignItems="center"
+      direction='column'
+      justify='center'
+      alignItems='center'
       spacing={1}
     >
       <Grid item>
-        <Typography variant="h6">Interested in these books?</Typography>
+        <Typography variant='h6'>Interested in these books?</Typography>
       </Grid>
       <Grid item>
         <Button
-          variant="contained"
-          color="primary"
+          variant='contained'
+          color='primary'
           onClick={() => history.push(toRoute(EXPLORE_ROUTE))}
         >
           Sign up for free

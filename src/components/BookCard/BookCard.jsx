@@ -37,7 +37,7 @@ export default function BookCard(props) {
           <Grid item>
             <img
               className={classes.bookCover}
-              src={book.cover}
+              src={book.pictures[0]}
               alt='book cover'
             />
           </Grid>

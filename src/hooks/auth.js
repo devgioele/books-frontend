@@ -1,4 +1,4 @@
-import { useContext, createContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 // TODO: replace authentication strategy
 const fakeAuth = {

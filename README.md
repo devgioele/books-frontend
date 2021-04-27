@@ -2,8 +2,7 @@
 
 The frontend of the Books platform developed in React.
 
-_Note: This document is still in WIP, thus some information might be missing 
-or outdated._
+_Note: This document is still in WIP, thus some information might be missing or outdated._
 
 ## Table of contents
 
@@ -14,15 +13,16 @@ or outdated._
 ### Installation
 
 1. Make sure to have Node 10.16.0 or later installed.
-   
-2. Clone the repo and checkout the branch of your choice (`devel` is this 
-   example).
+
+2. Clone the repo and checkout the branch of your choice (`devel` is this example).
+
 ```shell
 git clone https://gitlab.inf.unibz.it/Riccardo.Busetti/books-frontend.git
 git checkout devel
 ```
 
 3. Install required packages.
+
 ```shell
 npm install
 ```
@@ -30,10 +30,12 @@ npm install
 ### How to run
 
 In order to start a local web server for development, execute:
+
 ```shell
 npm start
 ```
 
 ### Authors
+
 * @Gioele.DeVitti
 * @Riccardo.Busetti

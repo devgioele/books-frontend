@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ClickAwayListener, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchResults from 'components/landing/SearchResults';
 import SearchBar from 'components/landing/SearchBar';
+import { landingSearchBy } from '../../../api/landing';
+import { useAxios } from '../../../hooks/axios';
+import { debounce } from '../../../utils/functions';
 
 const useStyles = makeStyles((theme) => ({
   searchCard: {
@@ -19,19 +22,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LandingSearch() {
   const classes = useStyles();
-  const [searchedText, setSearchedText] = useState('');
-  const [searching, setSearching] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [fetch, cancelPrevious, data, error, isLoading] = useAxios(landingSearchBy);
 
-  const handleSearch = (text) => {
-    setSearchedText(text);
-    setSearching(text.length > 0);
-  };
+  const handleSearch = debounce((query) => {
+    cancelPrevious();
+    fetch(query);
+  }, 250);
+
+  const showSearchResults = data && data.length > 0;
 
   return (
-    <ClickAwayListener onClickAway={() => handleSearch('')}>
-      <Paper className={classes.searchCard} variant="outlined">
-        <SearchBar onSearching={handleSearch} />
-        {searching && <SearchResults query={searchedText} />}
+    <ClickAwayListener onClickAway={() => {
+    }}>
+      <Paper className={classes.searchCard} variant='outlined'>
+        <SearchBar onSearching={handleSearch} isLoading={isLoading} />
+        {showSearchResults && <SearchResults books={data} />}
       </Paper>
     </ClickAwayListener>
   );

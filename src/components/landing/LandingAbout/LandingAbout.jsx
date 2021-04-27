@@ -49,9 +49,9 @@ export default function LandingAbout() {
     <Grid
       container
       spacing={downXSmall ? 4 : 8}
-      direction="column"
-      justify="flex-start"
-      alignItems="stretch"
+      direction='column'
+      justify='flex-start'
+      alignItems='stretch'
     >
       {people.map((person, key) => (
         <Grid item key={key}>
@@ -66,28 +66,28 @@ function Person({ person }) {
   const classes = useStyles();
 
   return (
-    <Grid container justify="flex-start" alignItems="center" spacing={2}>
+    <Grid container justify='flex-start' alignItems='center' spacing={2}>
       <Grid item>
-        <CloudImage className={classes.image} alt="person" url={person.img} />
+        <CloudImage className={classes.image} alt='person' url={person.img} />
       </Grid>
       <Grid item>
         <Grid
           container
-          direction="column"
-          justify="center"
-          alignItems="flex-start"
+          direction='column'
+          justify='center'
+          alignItems='flex-start'
           spacing={1}
         >
           <Grid item>
-            <Typography variant="h4">{person.name}</Typography>
+            <Typography variant='h4'>{person.name}</Typography>
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1" color="textSecondary">
+            <Typography variant='subtitle1' color='textSecondary'>
               {person.role}
             </Typography>
           </Grid>
           <Grid item>
-            <Typography variant="body1">{person.description}</Typography>
+            <Typography variant='body1'>{person.description}</Typography>
           </Grid>
         </Grid>
       </Grid>

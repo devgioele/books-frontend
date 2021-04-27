@@ -2,7 +2,7 @@ import { Button, TextField } from '@material-ui/core';
 import React, { useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { submitSignup } from '../../api/auth';
+import { submitSignup } from '../../../api/auth';
 import PasswordField from '../../PasswordField';
 
 const useStyles = makeStyles(() => ({
@@ -15,14 +15,17 @@ function exactMatch(text, regex) {
   return matches?.length === 1;
 }
 
-export default function SignupForm({ onSuccess, usernameOrEmail }) {
+export default function SignupForm({
+  onSuccess,
+  usernameOrEmail,
+}) {
   const classes = useStyles();
   const [invalid, setInvalid] = useState(false);
   const btnContinue = useRef(null);
 
   const isEmail = exactMatch(
     usernameOrEmail,
-    /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/g
+    /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/g,
   );
   const initEmail = isEmail ? usernameOrEmail : '';
   const isUsername = !isEmail && exactMatch(usernameOrEmail, /\w\w\w+/g);
@@ -37,7 +40,10 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
 
   const updateNewUser = (fieldName) => (event) => {
     setInvalid(false);
-    setNewUser({ ...newUser, [fieldName]: event.target.value });
+    setNewUser({
+      ...newUser,
+      [fieldName]: event.target.value,
+    });
   };
 
   const passwordConfirmed = newUser.password === newUser.passwordConfirmed;
@@ -45,9 +51,9 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
   return (
     <Grid
       container
-      direction="column"
-      justify="flex-start"
-      alignItems="stretch"
+      direction='column'
+      justify='flex-start'
+      alignItems='stretch'
       spacing={2}
       onKeyPress={(e) => {
         if (e.key === 'Enter') btnContinue.current.click();
@@ -58,10 +64,10 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
           className={classes.textField}
           autoFocus={true}
           defaultValue={initEmail}
-          id="email"
-          variant="outlined"
-          size="small"
-          label="Email"
+          id='email'
+          variant='outlined'
+          size='small'
+          label='Email'
           error={invalid}
           onChange={updateNewUser('email')}
         />
@@ -70,10 +76,10 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
         <TextField
           className={classes.textField}
           defaultValue={initUsername}
-          id="username"
-          variant="outlined"
-          size="small"
-          label="Username"
+          id='username'
+          variant='outlined'
+          size='small'
+          label='Username'
           error={invalid}
           onChange={updateNewUser('username')}
         />
@@ -81,10 +87,10 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
       <Grid item>
         <PasswordField
           className={classes.textField}
-          id="password"
-          variant="outlined"
-          size="small"
-          label="Password"
+          id='password'
+          variant='outlined'
+          size='small'
+          label='Password'
           value={newUser.password}
           error={invalid}
           onChange={updateNewUser('password')}
@@ -93,10 +99,10 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
       <Grid item>
         <PasswordField
           className={classes.textField}
-          id="passwordConfirmed"
-          variant="outlined"
-          size="small"
-          label="Confirm password"
+          id='passwordConfirmed'
+          variant='outlined'
+          size='small'
+          label='Confirm password'
           value={newUser.passwordConfirmed}
           error={!passwordConfirmed}
           helperText={passwordConfirmed ? '' : 'Passwords do not match.'}
@@ -106,12 +112,13 @@ export default function SignupForm({ onSuccess, usernameOrEmail }) {
       <Grid item>
         <Button
           className={classes.btn}
-          variant="contained"
-          color="primary"
+          variant='contained'
+          color='primary'
           ref={btnContinue}
           onClick={() => {
-            if (passwordConfirmed)
+            if (passwordConfirmed) {
               submitSignup(onSuccess, () => setInvalid(true), newUser);
+            }
           }}
         >
           Continue
