@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ClickAwayListener, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchResults from 'components/landing/SearchResults';
@@ -23,21 +23,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LandingSearch() {
   const classes = useStyles();
-  // eslint-disable-next-line no-unused-vars
+  const [hideSearch, setHideSearch] = useState(true);
   const [fetch, cancelPrevious, data, error, isLoading] = useAxios(landingSearchBy);
   useStatefulSnackbar(error, 'An error occurred while searching', 'error');
 
   const handleSearch = debounce((query) => {
     cancelPrevious();
     fetch(query);
-  }, 200);
+  }, 250);
 
-  const showSearchResults = data && data.length > 0;
+  const showSearchResults = !hideSearch && data && data.length > 0;
 
   return (
-    <ClickAwayListener onClickAway={() => {
-    }}>
-      <Paper className={classes.searchCard} variant='outlined'>
+    <ClickAwayListener onClickAway={() => setHideSearch(true)}>
+      <Paper
+        className={classes.searchCard}
+        variant='outlined'
+        onClick={() => setHideSearch(false)}
+      >
         <SearchBar onSearching={handleSearch} isLoading={isLoading} />
         {showSearchResults && <SearchResults books={data} />}
       </Paper>

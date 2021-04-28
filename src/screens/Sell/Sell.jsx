@@ -11,6 +11,9 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import { useAxios } from '../../hooks/axios';
+import { getSellingBooks, getSoldBooks } from '../../api/books';
+import { useStatefulSnackbar } from '../../hooks/snackbar';
 
 const useStyles = makeStyles(theme => ({
   fab: {
@@ -20,43 +23,28 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// TODO: remove once real apis are implemented.
-const sampleBook = {
-  isbn: '978-1-56619-909-4',
-  title: 'Alice in Wonderland',
-  description:
-    'Alice in Wonderland has been known for its curious story.',
-  currency: '$',
-  price: 20,
-  condition: 'ok',
-  pictures: ['https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/63fc5679081483.5cb7f1e0aa619.png'],
-  publicationDate: '3rd May 2020',
-  seller: 'riccardo',
-  locationName: 'Trento',
-  locationLatitude: 46.0747793,
-  locationLongitude: 11.3547582,
-  saleDate: new Date(),
-  buyer: 'marco',
-};
-
-// TODO: replace with real api call.
-function fetchSellingBooks(done) {
-  const sellingBooks = [sampleBook, sampleBook];
-  setTimeout(() => done(sellingBooks), 100);
-}
-
-// TODO: replace with real api call.
-function fetchSoldBooks(done) {
-  const soldBooks = [sampleBook];
-  setTimeout(() => done(soldBooks), 100);
-}
-
 export default function Sell({ routes }) {
-  const [isLoadingSelling, setLoadingSelling] = useState(false);
-  const [isLoadingSold, setLoadingSold] = useState(false);
-  const [sellingBooks, setSellingBooks] = useState([]);
-  const [soldBooks, setSoldBooks] = useState([]);
   const [bookToEdit, setBookToEdit] = useState(undefined);
+
+  const [
+    fetchSellingBooks,
+    // eslint-disable-next-line no-unused-vars
+    cancelSelling,
+    sellingBooks,
+    errorSelling,
+    isLoadingSelling,
+  ] = useAxios(getSellingBooks, []);
+  useStatefulSnackbar(errorSelling, 'Error while fetching selling books', 'error');
+
+  const [
+    fetchSoldBooks,
+    // eslint-disable-next-line no-unused-vars
+    cancelSold,
+    soldBooks,
+    errorSold,
+    isLoadingSold,
+  ] = useAxios(getSoldBooks, []);
+  useStatefulSnackbar(errorSold, 'Error while fetching sold books', 'error');
 
   const history = useHistory();
 
@@ -65,21 +53,10 @@ export default function Sell({ routes }) {
   const newSellRoute = routes[0];
   const editSellRoute = routes[1];
 
-  useEffect(() => {
-    setLoadingSelling(true);
-    fetchSellingBooks((books) => {
-      setSellingBooks(books);
-      setLoadingSelling(false);
-    });
-  }, [setLoadingSelling, setSellingBooks]);
-
-  useEffect(() => {
-    setLoadingSold(true);
-    fetchSoldBooks((books) => {
-      setSoldBooks(books);
-      setLoadingSold(false);
-    });
-  }, [setLoadingSold, setSoldBooks]);
+  // We pass an empty dependency array so that we perform the fetch only once,
+  // otherwise we will have infinite re-renders.
+  useEffect(() => fetchSellingBooks(), []);
+  useEffect(() => fetchSoldBooks(), []);
 
   return (
     <>

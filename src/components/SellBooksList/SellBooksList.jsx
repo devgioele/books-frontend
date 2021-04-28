@@ -1,19 +1,17 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Button, CircularProgress, Grid, Link } from '@material-ui/core';
+import { Button, Grid, Link } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import ShareIcon from '@material-ui/icons/Share';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import { Skeleton } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
   sectionHeader: {
     fontWeight: 'bold',
-    marginBottom: -theme.spacing(2),
-  },
-  skeleton: {
-    width: '100%',
+    marginBottom: -theme.spacing(1),
   },
   bookContainer: {
     [theme.breakpoints.up('md')]: {
@@ -68,20 +66,64 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main,
     width: '100%',
   },
+  sellingText: {},
   soldText: {
     textDecoration: 'line-through',
+  },
+  skeletonCover: {
+    [theme.breakpoints.up('xs')]: {
+      width: '100px',
+      height: '160px',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '120px',
+      height: '180px',
+    },
+  },
+  skeletonTitle: {
+    [theme.breakpoints.up('sm')]: {
+      width: '400px',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '500px',
+    },
+  },
+  skeletonSubtitle: {
+    [theme.breakpoints.up('sm')]: {
+      width: '200px',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '300px',
+    },
   },
 }));
 
 export default function SellBooksList({
   loadingSelling,
+  // eslint-disable-next-line no-unused-vars
   loadingSold,
   sellingBooks,
+  // eslint-disable-next-line no-unused-vars
   soldBooks,
   onEdit,
 }) {
   // eslint-disable-next-line no-unused-vars
   const classes = useStyles();
+
+  const sections = [
+    {
+      title: 'Selling',
+      data: sellingBooks,
+      isLoading: loadingSelling,
+      isSold: false,
+    },
+    {
+      title: 'Sold',
+      data: soldBooks,
+      isLoading: loadingSold,
+      isSold: true,
+    },
+  ];
 
   return (
     <Grid
@@ -90,71 +132,34 @@ export default function SellBooksList({
       alignItems='center'
       spacing={4}
     >
-      <Grid item xs={12}>
-        <Grid
-          container
-          direction='column'
-          spacing={4}
-        >
-          <Grid item xs={12}>
-            <Typography
-              className={classes.sectionHeader}
-              variant='h4'>
-              Selling
-            </Typography>
-          </Grid>
-          {loadingSelling ?
-            <Grid item xs={12}>
-              <CircularProgress
-                variant='indeterminate'
-                disableShrink
-                color='secondary'
-                size={20}
-                thickness={4}
-              />
+      {sections.map((section, sectionIndex) => (
+        <Grid key={sectionIndex} item>
+          <Grid
+            container
+            direction='column'
+            spacing={4}
+          >
+            <Grid item>
+              <Typography
+                className={classes.sectionHeader}
+                variant='h4'>
+                {section.title}
+              </Typography>
             </Grid>
-            :
-            sellingBooks.map((sellingBook) => (
-              <Grid key={sellingBook} item xs={12}>
-                <Book isSold={false} book={sellingBook} onEdit={onEdit} />
+            {loadingSelling ?
+              <Grid item>
+                <SkeletonBook isSold={section.isSold} />
               </Grid>
-            ))
-          }
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid
-          container
-          direction='column'
-          spacing={4}
-        >
-          <Grid item xs={12}>
-            <Typography
-              className={classes.sectionHeader}
-              variant='h4'
-            >
-              Sold
-            </Typography>
+              :
+              section.data.map((book, bookIndex) => (
+                <Grid key={bookIndex} item>
+                  <Book isSold={section.isSold} book={book} onEdit={onEdit} />
+                </Grid>
+              ))
+            }
           </Grid>
-          {loadingSold ?
-            <Grid item xs={12}>
-              <CircularProgress
-                variant='indeterminate'
-                disableShrink
-                color='secondary'
-                size={20}
-                thickness={4}
-              />
-            </Grid>
-            :
-            soldBooks.map((soldBook) => (
-              <Grid key={soldBook} item xs={12}>
-                <Book isSold={true} book={soldBook} />
-              </Grid>
-            ))
-          }
         </Grid>
-      </Grid>
+      ))}
     </Grid>
   );
 }
@@ -199,7 +204,8 @@ function Book({
               <b>{book.title}</b>
             </Link>
           </Grid>
-          <Grid className={isSold ? classes.soldText : {}} item>
+          <Grid className={isSold ? classes.soldText : classes.sellingText}
+                item>
             <Typography
               variant='h6'
             >
@@ -245,7 +251,7 @@ function Book({
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item>
+                <Grid item xs={12}>
                   <Button
                     className={classes.sellButton}
                     variant='contained'
@@ -263,3 +269,73 @@ function Book({
     </Grid>
   );
 }
+
+function SkeletonBook({ isSold }) {
+  const classes = useStyles();
+
+  return (
+    <Grid
+      className={classes.bookContainer}
+      container
+      justify='flex-start'
+      alignItems='center'
+      spacing={2}
+    >
+      <Grid item>
+        <Skeleton className={classes.skeletonCover} variant='rect' />
+      </Grid>
+      <Grid item>
+        <Grid
+          container
+          direction='column'
+          justify='center'
+          alignItems='flex-start'
+          spacing={1}
+        >
+          <Grid className={classes.skeletonTitle} item>
+            <Typography
+              variant='h6'>
+              <Skeleton />
+            </Typography>
+          </Grid>
+          <Grid className={classes.skeletonSubtitle} item>
+            <Typography
+              variant='h6'>
+              <Skeleton />
+            </Typography>
+          </Grid>
+          <Grid className={classes.skeletonSubtitle} item>
+            <Typography
+              variant='body1'>
+              <Skeleton />
+            </Typography>
+          </Grid>
+          {!isSold && (
+            <Grid style={{ width: '100%' }} item>
+              <Grid
+                container
+                direction='column'
+                spacing={1}
+              >
+                <Grid item>
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} sm={6}>
+                      <Skeleton variant='rect' />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Skeleton variant='rect' />
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Skeleton variant='rect' />
+                </Grid>
+              </Grid>
+            </Grid>
+          )}
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+}
+
