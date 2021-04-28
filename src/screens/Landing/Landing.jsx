@@ -25,7 +25,7 @@ const features = [
     icon: <MoneyOffIcon />,
     title: 'Free',
     description:
-      "No ads and no fees. Books doesn't force you into a specific payment " +
+      'No ads and no fees. Books doesn\'t force you into a specific payment ' +
       'or shipping method. Users have complete freedom of choice.',
   },
   {
@@ -87,7 +87,7 @@ export default function Landing() {
         <Grid
           className={classes.page}
           container
-          direction="column"
+          direction='column'
           spacing={downXSmall ? 4 : 8}
         >
           <Grid item>
@@ -95,7 +95,7 @@ export default function Landing() {
           </Grid>
 
           <Grid item>
-            <Typography className={classes.sectionTitle} variant="h4">
+            <Typography className={classes.sectionTitle} variant='h4'>
               Search an amazing book
             </Typography>
           </Grid>
@@ -104,7 +104,7 @@ export default function Landing() {
           </Grid>
 
           <Grid item>
-            <Typography className={classes.sectionTitle} variant="h4">
+            <Typography className={classes.sectionTitle} variant='h4'>
               Features
             </Typography>
           </Grid>
@@ -113,8 +113,8 @@ export default function Landing() {
               container
               spacing={downXSmall ? 4 : 8}
               direction={downXSmall ? 'column' : 'row'}
-              alignItems="flex-start"
-              justify="center"
+              alignItems='flex-start'
+              justify='center'
             >
               {features.map((feature, index) => (
                 <Grid
@@ -138,7 +138,7 @@ export default function Landing() {
           </Grid>
 
           <Grid item>
-            <Typography className={classes.sectionTitle} variant="h4">
+            <Typography className={classes.sectionTitle} variant='h4'>
               About Us
             </Typography>
           </Grid>

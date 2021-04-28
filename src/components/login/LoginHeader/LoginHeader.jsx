@@ -33,20 +33,20 @@ export default function LoginHeader({ progress }) {
   return (
     <Grid
       container
-      direction="column"
-      justify="flex-start"
-      alignItems="stretch"
+      direction='column'
+      justify='flex-start'
+      alignItems='stretch'
       spacing={2}
     >
       <Grid item>
         <CloudImage
           className={classes.logo}
-          alt="logo extended"
-          url="https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/logo_extended_tzumtl."
+          alt='logo extended'
+          url='https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/logo_extended_tzumtl.'
         />
       </Grid>
       <Grid item>
-        <Typography variant="body2">{renderText(progress)}</Typography>
+        <Typography variant='body2'>{renderText(progress)}</Typography>
       </Grid>
     </Grid>
   );

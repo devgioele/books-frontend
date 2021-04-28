@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AuthProgress from 'screens/Login/authProgress';
-import { BASE_URL } from 'constants.js';
+import { BASE_URL } from './base';
 
 const errorStatuses = [301, 422, 500];
 
@@ -17,7 +17,9 @@ export const submitIdentity = (onProgress, onFailure, usernameOrEmail) => {
     .then((response) => {
       if (response.status === 200) {
         onProgress(AuthProgress.LOGIN);
-      } else throw new Error(`Unexpected response: ${response.status}!`);
+      } else {
+        throw new Error(`Unexpected response: ${response.status}!`);
+      }
     })
     .catch((error) => {
       switch (error.response?.status) {
@@ -37,20 +39,29 @@ export const submitLogin = (
   onSuccess,
   onFailure,
   usernameOrEmail,
-  password
+  password,
 ) => {
   axios
     // Submit username and password
-    .post(`${BASE_URL}/auth/login`, { usernameOrEmail, password })
+    .post(`${BASE_URL}/auth/login`, {
+      usernameOrEmail,
+      password,
+    })
     // If correct, redirect using onSuccess
     .then((response) => {
-      if (response.status === 200) onSuccess();
-      else throw new Error(`Unexpected response: ${response.status}!`);
+      if (response.status === 200) {
+        onSuccess();
+      } else {
+        throw new Error(`Unexpected response: ${response.status}!`);
+      }
     })
     // Report error
     .catch((error) => {
-      if (error.response?.status === 401) onFailure();
-      else throw error;
+      if (error.response?.status === 401) {
+        onFailure();
+      } else {
+        throw error;
+      }
     });
 };
 
@@ -64,12 +75,18 @@ export const submitSignup = (onSuccess, onFailure, newUser) => {
     })
     // If successfully signed up, redirect using onSuccess
     .then((response) => {
-      if (response.status === 200) onSuccess();
-      else throw new Error(`Unexpected response: ${response.status}!`);
+      if (response.status === 200) {
+        onSuccess();
+      } else {
+        throw new Error(`Unexpected response: ${response.status}!`);
+      }
     })
     // Report error
     .catch((error) => {
-      if (error.response?.status === 401) onFailure();
-      else throw error;
+      if (error.response?.status === 401) {
+        onFailure();
+      } else {
+        throw error;
+      }
     });
 };

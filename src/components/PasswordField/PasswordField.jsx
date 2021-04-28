@@ -92,9 +92,9 @@ export default function PasswordField(props) {
         placeholder={placeholder}
         inputProps={inputProps}
         endAdornment={
-          <InputAdornment position="end">
+          <InputAdornment position='end'>
             <IconButton
-              aria-label="toggle password visibility"
+              aria-label='toggle password visibility'
               onClick={() => {
                 setShowPassword(!showPassword);
                 setTimeout(() => {
@@ -102,7 +102,7 @@ export default function PasswordField(props) {
                 }, 0);
               }}
               onMouseDown={handleMouseDownPassword}
-              edge="end"
+              edge='end'
             >
               {showPassword ? <Visibility /> : <VisibilityOff />}
             </IconButton>

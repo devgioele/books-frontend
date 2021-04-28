@@ -1,7 +1,10 @@
 import React from 'react';
 
 export default function CloudImage(props) {
-  const { url, ...remProps } = props;
+  const {
+    url,
+    ...remProps
+  } = props;
 
   // noinspection HtmlRequiredAltAttribute
   return (
@@ -13,9 +16,9 @@ export default function CloudImage(props) {
       {/* avif disabled, because due to avif's long encoding times,
        cloudinary's support is currently limited */}
       {/* <source srcSet={`${url}avif`} type="image/avif" /> */}
-      <source srcSet={`${url}webp`} type="image/webp" />
-      <source srcSet={`${url}jp2`} type="image/jp2" />
-      <source srcSet={`${url}jxr`} type="image/vnd.ms-photo" />
+      <source srcSet={`${url}webp`} type='image/webp' />
+      <source srcSet={`${url}jp2`} type='image/jp2' />
+      <source srcSet={`${url}jxr`} type='image/vnd.ms-photo' />
       {/* Pass remaining props to img element */}
       <img {...remProps} />
     </picture>

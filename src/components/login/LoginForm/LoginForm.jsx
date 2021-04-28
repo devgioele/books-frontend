@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { submitLogin } from '../../api/auth';
+import { submitLogin } from '../../../api/auth';
 import PasswordField from '../../PasswordField';
 
 const useStyles = makeStyles(() => ({
@@ -10,7 +10,10 @@ const useStyles = makeStyles(() => ({
   btn: { width: '100%' },
 }));
 
-export default function LoginForm({ onSuccess, usernameOrEmail }) {
+export default function LoginForm({
+  onSuccess,
+  usernameOrEmail,
+}) {
   const classes = useStyles();
   const [password, setPassword] = useState();
   const [invalid, setInvalid] = useState(false);
@@ -19,9 +22,9 @@ export default function LoginForm({ onSuccess, usernameOrEmail }) {
   return (
     <Grid
       container
-      direction="column"
-      justify="flex-start"
-      alignItems="stretch"
+      direction='column'
+      justify='flex-start'
+      alignItems='stretch'
       spacing={2}
       onKeyPress={(e) => {
         if (e.key === 'Enter') btnContinue.current.click();
@@ -31,9 +34,9 @@ export default function LoginForm({ onSuccess, usernameOrEmail }) {
         <PasswordField
           className={classes.textField}
           autoFocus={true}
-          variant="outlined"
-          size="small"
-          label="Password"
+          variant='outlined'
+          size='small'
+          label='Password'
           onChange={(event) => {
             setInvalid(false);
             setPassword(event.target.value);
@@ -44,15 +47,15 @@ export default function LoginForm({ onSuccess, usernameOrEmail }) {
       <Grid item>
         <Button
           className={classes.btn}
-          variant="contained"
-          color="primary"
+          variant='contained'
+          color='primary'
           ref={btnContinue}
           onClick={() =>
             submitLogin(
               onSuccess,
               () => setInvalid(true),
               usernameOrEmail,
-              password
+              password,
             )
           }
         >

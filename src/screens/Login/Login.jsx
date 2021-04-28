@@ -58,18 +58,18 @@ export default function Login() {
     <Grid
       container
       className={classes.root}
-      direction="column"
-      justify="center"
-      alignItems="center"
+      direction='column'
+      justify='center'
+      alignItems='center'
     >
       <Grid item>
-        <Paper className={classes.loginCard} variant="outlined">
+        <Paper className={classes.loginCard} variant='outlined'>
           <Grid
             container
             className={classes.contentContainer}
-            direction="column"
-            justify="center"
-            alignItems="stretch"
+            direction='column'
+            justify='center'
+            alignItems='stretch'
             spacing={8}
           >
             <Grid item>
@@ -78,9 +78,9 @@ export default function Login() {
             <Grid item>
               <Grid
                 container
-                direction="column"
-                justify="flex-start"
-                alignItems="stretch"
+                direction='column'
+                justify='flex-start'
+                alignItems='stretch'
                 spacing={2}
               >
                 <Grid item>
