@@ -1,12 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Button, Grid, Link } from '@material-ui/core';
+import { Button, CircularProgress, Grid, Link } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import ShareIcon from '@material-ui/icons/Share';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme) => ({
   sectionHeader: {
@@ -106,7 +105,13 @@ export default function SellBooksList({
           </Grid>
           {loadingSelling ?
             <Grid item xs={12}>
-              <Skeleton className={classes.skeleton} />
+              <CircularProgress
+                variant='indeterminate'
+                disableShrink
+                color='secondary'
+                size={20}
+                thickness={4}
+              />
             </Grid>
             :
             sellingBooks.map((sellingBook) => (
@@ -133,7 +138,13 @@ export default function SellBooksList({
           </Grid>
           {loadingSold ?
             <Grid item xs={12}>
-              <Skeleton className={classes.skeleton} />
+              <CircularProgress
+                variant='indeterminate'
+                disableShrink
+                color='secondary'
+                size={20}
+                thickness={4}
+              />
             </Grid>
             :
             soldBooks.map((soldBook) => (

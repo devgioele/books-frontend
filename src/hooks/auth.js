@@ -9,7 +9,7 @@ const fakeAuth = {
   },
   logout(cb) {
     fakeAuth.isAuthenticated = false;
-    setTimeout(cb, 100);
+    setTimeout(cb, 100); // fake async
   },
 };
 
@@ -22,18 +22,21 @@ export function useAuth() {
 export function useProvideAuth() {
   const [user, setUser] = useState(null);
 
-  const login = cb => fakeAuth.login(() => {
-    setUser('user');
-    cb();
-  });
+  const login = (cb) =>
+    fakeAuth.login(() => {
+      setUser('user');
+      cb();
+    });
 
-  const logout = cb => fakeAuth.logout(() => {
-    setUser(null);
-    cb();
-  });
+  const logout = (cb) =>
+    fakeAuth.logout(() => {
+      setUser(null);
+      cb();
+    });
 
   // TODO: update with real logic.
-  const isLoggedIn = () => true;
+  // Always false means the user is never logged in.
+  const isLoggedIn = () => false;
 
   return {
     user,

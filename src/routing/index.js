@@ -1,6 +1,5 @@
 import Landing from 'screens/Landing';
 import Login from 'screens/Login';
-import Signup from 'screens/Signup';
 import Explore from 'screens/Explore';
 import Sell from 'screens/Sell';
 import Profile from 'screens/Profile';
@@ -16,7 +15,6 @@ import {
   NEW_SELL_ROUTE,
   PROFILE_ROUTE,
   SELL_ROUTE,
-  SIGNUP_ROUTE,
 } from './helpers';
 import SellBookDialog from '../components/SellBookDialog';
 
@@ -26,12 +24,6 @@ const routes = [
     isExact: true,
     isProtected: false,
     component: Landing,
-  },
-  {
-    path: SIGNUP_ROUTE,
-    isExact: true,
-    isProtected: false,
-    component: Signup,
   },
   {
     path: LOGIN_ROUTE,
