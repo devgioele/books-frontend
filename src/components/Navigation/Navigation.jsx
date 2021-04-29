@@ -3,11 +3,7 @@ import PermanentDrawerLeft from 'components/PermanentDrawerLeft';
 import ExploreIcon from '@material-ui/icons/Explore';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
-import {
-  EXPLORE_ROUTE,
-  PROFILE_ROUTE,
-  SELL_ROUTE,
-} from '../../routing/helpers';
+import { EXPLORE_ROUTE, PROFILE_ROUTE, SELL_ROUTE } from 'routing/helpers';
 
 const sections = [
   {

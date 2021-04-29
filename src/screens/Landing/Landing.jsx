@@ -81,9 +81,9 @@ export default function Landing() {
   const downXSmall = useMediaQuery((theme) => theme.breakpoints.down('xs'));
 
   return (
-    <div className={classes.root}>
+    <div>
       <Grid className={classes.pageFrame}>
-        <LandingHeader className={classes.header} />
+        <LandingHeader />
         <Grid
           className={classes.page}
           container

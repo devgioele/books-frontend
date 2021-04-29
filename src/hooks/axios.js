@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const useAxios = (axiosBlock) => {
-  const [data, setData] = useState(null);
+const useAxios = (axiosBlock, initialData = null) => {
+  const [data, setData] = useState(initialData);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [source, setSource] = useState(null);
@@ -23,15 +23,23 @@ const useAxios = (axiosBlock) => {
         setIsLoading(false);
       },
       localSource.token,
-      ...args
+      ...args,
     );
   };
 
   const cancelPrevious = () => {
-    if (source != null) source.cancel();
+    if (source != null) {
+      source.cancel();
+    }
   };
 
-  return [fetch, cancelPrevious, data, error, isLoading];
-};
+  return [
+    fetch,
+    cancelPrevious,
+    data,
+    error,
+    isLoading
+  ]
+}
 
 export default useAxios;

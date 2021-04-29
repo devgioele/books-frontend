@@ -28,3 +28,5 @@ rules:
     - 'off'
   no-underscore-dangle:
     - 'off'
+  react-hooks/exhaustive-deps:
+    - 'off'

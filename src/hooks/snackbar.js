@@ -7,7 +7,7 @@ const useStatefulSnackbar = (value, message, variant, ...toIgnore) => {
   useEffect(() => {
     if (value && message && !toIgnore.includes(value))
       enqueueSnackbar(message.toString(), { variant });
-  }, [enqueueSnackbar, value, message, variant]);
+  }, [value]);
 };
 
 export default useStatefulSnackbar;

@@ -64,7 +64,6 @@ export default function SearchBar({
           <SearchIcon className={classes.searchIcon} />}
       </div>
       <InputBase
-        autoFocus
         placeholder='Search by isbn, title, description'
         classes={{
           root: classes.inputRoot,
