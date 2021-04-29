@@ -9,6 +9,9 @@ const localStorageAuth = {
     localStorage.removeItem('token');
     onSuccess();
   },
+  getToken() {
+    return localStorage.getItem('token');
+  },
 };
 
 export const authContext = createContext({});
@@ -33,7 +36,7 @@ export function useProvideAuth() {
   const isLoggedIn = () => token;
 
   return {
-    user,
+    token,
     isLoggedIn,
     login,
     logout,
