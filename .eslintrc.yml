@@ -28,5 +28,7 @@ rules:
     - 'off'
   no-underscore-dangle:
     - 'off'
+  no-unused-vars:
+    - 'warn'
   react-hooks/exhaustive-deps:
     - 'off'
