@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
-const unwrap = (block) => (event) => {
+const unwrapValue = (block) => (event) => {
   block(event.target.value);
 };
 
@@ -42,8 +42,8 @@ export default function SellBookDialog({ book }) {
                 required
                 variant='outlined'
                 fullWidth={true}
-                label='Title'
-                onChange={unwrap(updateNewBook('title'))}
+                label='ISBN'
+                onChange={unwrapValue(updateNewBook('isbn'))}
               />
             </Grid>
             <Grid item xs={12}>
@@ -51,8 +51,17 @@ export default function SellBookDialog({ book }) {
                 required
                 variant='outlined'
                 fullWidth={true}
-                label='ISBN'
-                onChange={unwrap(updateNewBook('isbn'))}
+                label='Title'
+                onChange={unwrapValue(updateNewBook('title'))}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                variant='outlined'
+                fullWidth={true}
+                label='Description'
+                onChange={unwrapValue(updateNewBook('description'))}
               />
             </Grid>
           </Grid>
