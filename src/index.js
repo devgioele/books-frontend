@@ -6,7 +6,7 @@ import '@fontsource/roboto/700.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CssBaseline } from '@material-ui/core';
-import Main from './Main.jsx';
+import Main from 'Main.jsx';
 
 ReactDOM.render(
   // Enable strict mode for debugging

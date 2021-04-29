@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CloudImage from 'components/CloudImage';
 import { useHistory } from 'react-router-dom';
-import { EXPLORE_ROUTE, route, SIGNUP_ROUTE } from '../../routing/helpers';
+import { EXPLORE_ROUTE } from 'routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,8 +12,6 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
   },
   logo: {
-    minWidth: '125px',
-    width: 'auto',
     height: '60px',
   },
   button: {
@@ -25,8 +23,8 @@ export default function LandingHeader() {
   const classes = useStyles();
   const history = useHistory();
 
-  const changePage = (routeName) => {
-    history.push(route(routeName));
+  const changePage = (route) => {
+    history.push(route);
   };
 
   return (
@@ -62,7 +60,7 @@ export default function LandingHeader() {
               className={classes.button}
               variant='contained'
               color='primary'
-              onClick={() => changePage(SIGNUP_ROUTE)}
+              onClick={() => changePage(EXPLORE_ROUTE)}
             >
               Sign up for free
             </Button>

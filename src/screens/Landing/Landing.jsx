@@ -2,15 +2,15 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Typography, useMediaQuery } from '@material-ui/core';
-import FeatureCard from 'components/FeatureCard';
-import LandingSearch from 'components/LandingSearch';
+import FeatureCard from 'components/landing/FeatureCard';
+import LandingSearch from 'components/landing/LandingSearch';
 import MoneyOffIcon from '@material-ui/icons/MoneyOff';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import LockIcon from '@material-ui/icons/Lock';
 import HeartIcon from '@material-ui/icons/Favorite';
-import LandingWelcome from 'components/LandingWelcome';
-import LandingHeader from 'components/LandingHeader';
-import LandingAbout from 'components/LandingAbout';
+import LandingWelcome from 'components/landing/LandingWelcome';
+import LandingHeader from 'components/landing/LandingHeader';
+import LandingAbout from 'components/landing/LandingAbout';
 
 const features = [
   {

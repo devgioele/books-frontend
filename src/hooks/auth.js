@@ -1,15 +1,16 @@
 import { createContext, useContext, useState } from 'react';
 
-// TODO: replace authentication strategy
-const fakeAuth = {
-  isAuthenticated: false,
-  login(cb) {
-    fakeAuth.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
+const localStorageAuth = {
+  login(onSuccess, token) {
+    localStorage.setItem('token', token);
+    onSuccess(token);
   },
-  logout(cb) {
-    fakeAuth.isAuthenticated = false;
-    setTimeout(cb, 100);
+  logout(onSuccess) {
+    localStorage.removeItem('token');
+    onSuccess();
+  },
+  getToken() {
+    return localStorage.getItem('token');
   },
 };
 
@@ -20,23 +21,22 @@ export function useAuth() {
 }
 
 export function useProvideAuth() {
-  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorageAuth.getToken());
 
-  const login = cb => fakeAuth.login(() => {
-    setUser('user');
-    cb();
-  });
+  const login = (serverToken) =>
+    localStorageAuth.login((savedToken) => {
+      setToken(savedToken);
+    }, serverToken);
 
-  const logout = cb => fakeAuth.logout(() => {
-    setUser(null);
-    cb();
-  });
+  const logout = () =>
+    localStorageAuth.logout(() => {
+      setToken(null);
+    });
 
-  // TODO: update with real logic.
-  const isLoggedIn = () => true;
+  const isLoggedIn = () => token;
 
   return {
-    user,
+    token,
     isLoggedIn,
     login,
     logout,

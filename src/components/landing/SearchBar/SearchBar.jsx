@@ -1,5 +1,5 @@
 import SearchIcon from '@material-ui/icons/Search';
-import { InputBase } from '@material-ui/core';
+import { CircularProgress, InputBase } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -30,19 +30,38 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  loadingIndicatorContainer: {
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   searchIcon: {
     color: fade(theme.colors.black, 0.4),
   },
 }));
 
-export default function SearchBar(props) {
+export default function SearchBar({
+  onSearching,
+  isLoading,
+}) {
   const classes = useStyles();
-  const { onSearching } = props;
 
   return (
     <div className={classes.search}>
       <div className={classes.searchIconContainer}>
-        <SearchIcon className={classes.searchIcon} />
+        {isLoading ?
+          <CircularProgress
+            variant='indeterminate'
+            disableShrink
+            color='secondary'
+            size={20}
+            thickness={4}
+          />
+          :
+          <SearchIcon className={classes.searchIcon} />}
       </div>
       <InputBase
         autoFocus
@@ -53,7 +72,6 @@ export default function SearchBar(props) {
         }}
         inputProps={{ 'aria-label': 'search' }}
         onChange={(event) => onSearching(event.target.value)}
-        onFocus={(event) => onSearching(event.target.value)}
       />
     </div>
   );

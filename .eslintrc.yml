@@ -26,3 +26,5 @@ rules:
     - 'off'
   react/prop-types:
     - 'off'
+  no-underscore-dangle:
+    - 'off'
