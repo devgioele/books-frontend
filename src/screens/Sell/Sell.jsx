@@ -11,14 +11,14 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import useAxios from '../../hooks/axios';
-import { getSellingBooks, getSoldBooks } from '../../api/books';
-import useStatefulSnackbar from '../../hooks/snackbar';
+import useAxios from 'hooks/axios';
+import { getSellingBooks, getSoldBooks } from 'api/books';
+import useStatefulSnackbar from 'hooks/snackbar';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   fab: {
-    position: 'fixed',
-    bottom: theme.spacing(2),
+    position: 'absolute',
+    bottom: theme.spacing(8),
     right: theme.spacing(2),
   },
 }));
@@ -28,17 +28,19 @@ export default function Sell({ routes }) {
 
   const [
     fetchSellingBooks,
-    // eslint-disable-next-line no-unused-vars
     cancelSelling,
     sellingBooks,
     errorSelling,
     isLoadingSelling,
   ] = useAxios(getSellingBooks, []);
-  useStatefulSnackbar(errorSelling, 'Error while fetching selling books', 'error');
+  useStatefulSnackbar(
+    errorSelling,
+    'Error while fetching selling books',
+    'error'
+  );
 
   const [
     fetchSoldBooks,
-    // eslint-disable-next-line no-unused-vars
     cancelSold,
     soldBooks,
     errorSold,
@@ -61,11 +63,7 @@ export default function Sell({ routes }) {
   return (
     <>
       {newSellRoute && renderRoute(newSellRoute)}
-      {editSellRoute && renderRoute(
-        editSellRoute,
-        null,
-        { book: bookToEdit })
-      }
+      {editSellRoute && renderRoute(editSellRoute, null, { book: bookToEdit })}
       <Grid container>
         <Grid item xs={12}>
           <SellBooksList
@@ -82,8 +80,8 @@ export default function Sell({ routes }) {
       </Grid>
       <Fab
         className={classes.fab}
-        color='primary'
-        aria-label='sell-book'
+        color="primary"
+        aria-label="sell-book"
         onClick={() => history.push(toRoute(NEW_SELL_ROUTE))}
       >
         <AddIcon />

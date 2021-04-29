@@ -7,7 +7,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Skeleton } from '@material-ui/lab';
-import formatStringDate from '../../utils/dates';
+import formatStringDate from 'utils/dates';
 
 const useStyles = makeStyles((theme) => ({
   sectionHeader: {
@@ -129,39 +129,28 @@ export default function SellBooksList({
   ];
 
   return (
-    <Grid
-      container
-      direction='column'
-      alignItems='center'
-      spacing={4}
-    >
+    <Grid container direction="column" alignItems="center" spacing={4}>
       {sections
         .filter((section) => section.showSection)
         .map((section, sectionIndex) => (
           <Grid key={sectionIndex} item>
-            <Grid
-              container
-              direction='column'
-              spacing={4}
-            >
+            <Grid container direction="column" spacing={4}>
               <Grid item>
-                <Typography
-                  className={classes.sectionHeader}
-                  variant='h4'>
+                <Typography className={classes.sectionHeader} variant="h4">
                   {section.title}
                 </Typography>
               </Grid>
-              {loadingSelling ?
+              {loadingSelling ? (
                 <Grid item>
                   <SkeletonBook isSold={section.isSold} />
                 </Grid>
-                :
+              ) : (
                 section.data.map((book, bookIndex) => (
                   <Grid key={bookIndex} item>
                     <Book isSold={section.isSold} book={book} onEdit={onEdit} />
                   </Grid>
                 ))
-              }
+              )}
             </Grid>
           </Grid>
         ))}
@@ -181,65 +170,55 @@ function Book({
     <Grid
       className={classes.bookContainer}
       container
-      justify='flex-start'
-      alignItems='center'
+      justify="flex-start"
+      alignItems="center"
       spacing={2}
     >
       <Grid item>
         <img
           className={classes.bookCover}
           src={book.pictures[0]}
-          alt='book cover'
+          alt="book cover"
         />
       </Grid>
       <Grid item>
         <Grid
           container
-          direction='column'
-          justify='center'
-          alignItems='flex-start'
+          direction="column"
+          justify="center"
+          alignItems="flex-start"
           spacing={1}
         >
           <Grid className={classes.bookTitle} item>
-            <Link
-              variant='h6'
-              color='inherit'
-            >
+            <Link variant="h6" color="inherit">
               <b>{book.title}</b>
             </Link>
           </Grid>
-          <Grid className={isSold ? classes.soldText : classes.sellingText}
-                item>
-            <Typography
-              variant='h6'
-            >
-              {book.currency}{book.price}
+          <Grid
+            className={isSold ? classes.soldText : classes.sellingText}
+            item
+          >
+            <Typography variant="h6">
+              {book.currency}
+              {book.price}
             </Typography>
           </Grid>
           <Grid item>
-            <Typography
-              variant='body1'
-            >
-              {isSold ?
-                `Sold to ${book.buyer} on ${formatStringDate(book.saleDate)}`
-                :
-                `Publication date: ${formatStringDate(book.publicationDate)}`
-              }
+            <Typography variant="body1">
+              {isSold
+                ? `Sold to ${book.buyer} on ${formatStringDate(book.saleDate)}`
+                : `Publication date: ${formatStringDate(book.publicationDate)}`}
             </Typography>
           </Grid>
           {!isSold && (
             <Grid style={{ width: '100%' }} item>
-              <Grid
-                container
-                direction='column'
-                spacing={1}
-              >
+              <Grid container direction="column" spacing={1}>
                 <Grid item>
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                       <Button
                         className={classes.editButton}
-                        variant='contained'
+                        variant="contained"
                         disableElevation={true}
                         startIcon={<CreateIcon />}
                         onClick={() => onEdit(book)}
@@ -250,7 +229,7 @@ function Book({
                     <Grid item xs={12} sm={6}>
                       <Button
                         className={classes.removeButton}
-                        variant='contained'
+                        variant="contained"
                         disableElevation={true}
                         startIcon={<DeleteForeverIcon />}
                       >
@@ -262,7 +241,7 @@ function Book({
                 <Grid item xs={12}>
                   <Button
                     className={classes.sellButton}
-                    variant='contained'
+                    variant="contained"
                     disableElevation={true}
                     startIcon={<ShareIcon />}
                   >
@@ -285,58 +264,51 @@ function SkeletonBook({ isSold }) {
     <Grid
       className={classes.bookContainer}
       container
-      justify='flex-start'
-      alignItems='center'
+      justify="flex-start"
+      alignItems="center"
       spacing={2}
     >
       <Grid item>
-        <Skeleton className={classes.skeletonCover} variant='rect' />
+        <Skeleton className={classes.skeletonCover} variant="rect" />
       </Grid>
       <Grid item>
         <Grid
           container
-          direction='column'
-          justify='center'
-          alignItems='flex-start'
+          direction="column"
+          justify="center"
+          alignItems="flex-start"
           spacing={1}
         >
           <Grid className={classes.skeletonTitle} item>
-            <Typography
-              variant='h6'>
+            <Typography variant="h6">
               <Skeleton />
             </Typography>
           </Grid>
           <Grid className={classes.skeletonSubtitle} item>
-            <Typography
-              variant='h6'>
+            <Typography variant="h6">
               <Skeleton />
             </Typography>
           </Grid>
           <Grid className={classes.skeletonSubtitle} item>
-            <Typography
-              variant='body1'>
+            <Typography variant="body1">
               <Skeleton />
             </Typography>
           </Grid>
           {!isSold && (
             <Grid style={{ width: '100%' }} item>
-              <Grid
-                container
-                direction='column'
-                spacing={1}
-              >
+              <Grid container direction="column" spacing={1}>
                 <Grid item>
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
-                      <Skeleton variant='rect' />
+                      <Skeleton variant="rect" />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <Skeleton variant='rect' />
+                      <Skeleton variant="rect" />
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                  <Skeleton variant='rect' />
+                  <Skeleton variant="rect" />
                 </Grid>
               </Grid>
             </Grid>
@@ -346,4 +318,3 @@ function SkeletonBook({ isSold }) {
     </Grid>
   );
 }
-

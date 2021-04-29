@@ -20,7 +20,7 @@ settings:
       moduleDirectory:
         - node_modules
         - src
-# Custom rules
+# Rule adjustments (off|warn|error)
 rules:
   no-undef:
     - 'off'
