@@ -2,23 +2,22 @@ import axios from 'axios';
 import AuthProgress from 'screens/Login/authProgress';
 import { BASE_URL, failureWith, successWith } from './base';
 
-// Submit username or email and change auth progress according to whether
-// it exists.
 export const submitIdentity = (
   onProgress,
   onFailure,
   cancelToken,
   usernameOrEmail
 ) => {
-  const onSuccess = () => onProgress(AuthProgress.LOGIN);
-  const onApparentFailure = (error) => {
-    if (error.response?.status === 500) onProgress(AuthProgress.SIGNUP);
-    else onFailure(error);
+  // Submit username or email and change auth progress according to whether
+  // it exists.
+  const onSuccess = (body) => {
+    if (body.username) onProgress(AuthProgress.LOGIN);
+    else onProgress(AuthProgress.SIGNUP);
   };
   axios
     .post(`${BASE_URL}/auth/check`, { usernameOrEmail })
     .then(successWith(onSuccess, 200))
-    .catch(failureWith(onApparentFailure, 422, 500));
+    .catch(failureWith(onFailure, 422, 500));
 };
 
 export const submitSignup = (onSuccess, onFailure, cancelToken, newUser) => {
