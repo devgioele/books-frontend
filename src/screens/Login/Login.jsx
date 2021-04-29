@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import LoginHeader from 'components/login/LoginHeader';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useAuth } from 'hooks/auth';
 import AuthForm from 'components/login/AuthForm';
 import COMPILATION_PROGRESS from './authProgress';
+import { EXPLORE_ROUTE } from '../../routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,32 +44,31 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
-  const auth = useAuth();
   const location = useLocation();
   const history = useHistory();
   const [progress, setProgress] = useState(COMPILATION_PROGRESS.IDENTITY);
 
-  const redirect = () =>
-    auth.login(() => {
-      history.replace(location.state.from);
-    });
+  const redirect = () => {
+    if (location.state.from) history.replace(location.state.from);
+    else history.push(EXPLORE_ROUTE);
+  };
 
   return (
     <Grid
       container
       className={classes.root}
-      direction='column'
-      justify='center'
-      alignItems='center'
+      direction="column"
+      justify="center"
+      alignItems="center"
     >
       <Grid item>
-        <Paper className={classes.loginCard} variant='outlined'>
+        <Paper className={classes.loginCard} variant="outlined">
           <Grid
             container
             className={classes.contentContainer}
-            direction='column'
-            justify='center'
-            alignItems='stretch'
+            direction="column"
+            justify="center"
+            alignItems="stretch"
             spacing={8}
           >
             <Grid item>
@@ -78,16 +77,16 @@ export default function Login() {
             <Grid item>
               <Grid
                 container
-                direction='column'
-                justify='flex-start'
-                alignItems='stretch'
+                direction="column"
+                justify="flex-start"
+                alignItems="stretch"
                 spacing={2}
               >
                 <Grid item>
                   <AuthForm
                     progress={progress}
                     onProgress={setProgress}
-                    onSuccess={redirect}
+                    redirect={redirect}
                   />
                 </Grid>
               </Grid>

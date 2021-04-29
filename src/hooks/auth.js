@@ -1,15 +1,17 @@
 import { createContext, useContext, useState } from 'react';
+import { LOCAL_STORAGE_TOKEN_KEY } from '../utils/environment';
 
-// TODO: replace authentication strategy
-const fakeAuth = {
-  isAuthenticated: false,
-  login(cb) {
-    fakeAuth.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
+const localStorageAuth = {
+  login(onSuccess, token) {
+    localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
+    onSuccess(token);
   },
-  logout(cb) {
-    fakeAuth.isAuthenticated = false;
-    setTimeout(cb, 100); // fake async
+  logout(onSuccess) {
+    localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+    onSuccess();
+  },
+  getToken() {
+    return localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
   },
 };
 
@@ -20,26 +22,22 @@ export function useAuth() {
 }
 
 export function useProvideAuth() {
-  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorageAuth.getToken());
 
-  const login = (cb) =>
-    fakeAuth.login(() => {
-      setUser('user');
-      cb();
+  const login = (serverToken) =>
+    localStorageAuth.login((savedToken) => {
+      setToken(savedToken);
+    }, serverToken);
+
+  const logout = () =>
+    localStorageAuth.logout(() => {
+      setToken(null);
     });
 
-  const logout = (cb) =>
-    fakeAuth.logout(() => {
-      setUser(null);
-      cb();
-    });
-
-  // TODO: update with real logic.
-  // Always false means the user is never logged in.
-  const isLoggedIn = () => false;
+  const isLoggedIn = () => token;
 
   return {
-    user,
+    token,
     isLoggedIn,
     login,
     logout,

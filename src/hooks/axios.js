@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-// eslint-disable-next-line import/prefer-default-export
-export const useAxios = (axiosBlock, initialData = null) => {
+const useAxios = (axiosBlock, initialData = null) => {
   const [data, setData] = useState(initialData);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,3 +41,5 @@ export const useAxios = (axiosBlock, initialData = null) => {
     isLoading
   ]
 }
+
+export default useAxios;

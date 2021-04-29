@@ -4,7 +4,6 @@ import { Typography } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import COMPILATION_PROGRESS from 'screens/Login/authProgress';
-import STD_MESSAGES from 'messages/standard';
 
 const useStyles = makeStyles(() => ({
   logo: {
@@ -16,14 +15,12 @@ const useStyles = makeStyles(() => ({
 
 function renderText(progress) {
   switch (progress) {
-    case COMPILATION_PROGRESS.IDENTITY:
-      return `We will log you in or create an account if you don't have one already.`;
     case COMPILATION_PROGRESS.LOGIN:
       return `Nice to see you again!`;
     case COMPILATION_PROGRESS.SIGNUP:
       return `This is going to be great!`;
     default:
-      return STD_MESSAGES.UNEXPECTED;
+      return `We will log you in or create an account if you don't have one already.`;
   }
 }
 
@@ -33,20 +30,20 @@ export default function LoginHeader({ progress }) {
   return (
     <Grid
       container
-      direction='column'
-      justify='flex-start'
-      alignItems='stretch'
+      direction="column"
+      justify="flex-start"
+      alignItems="stretch"
       spacing={2}
     >
       <Grid item>
         <CloudImage
           className={classes.logo}
-          alt='logo extended'
-          url='https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/logo_extended_tzumtl.'
+          alt="logo extended"
+          url="https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/logo_extended_tzumtl."
         />
       </Grid>
       <Grid item>
-        <Typography variant='body2'>{renderText(progress)}</Typography>
+        <Typography variant="body2">{renderText(progress)}</Typography>
       </Grid>
     </Grid>
   );

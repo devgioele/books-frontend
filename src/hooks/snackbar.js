@@ -1,13 +1,13 @@
-import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
+import { useSnackbar } from 'notistack';
 
-// eslint-disable-next-line import/prefer-default-export
-export const useStatefulSnackbar = (value, message, variant) => {
+const useStatefulSnackbar = (value, message, variant, ...toIgnore) => {
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (value && message) {
+    if (value && message && !toIgnore.includes(value))
       enqueueSnackbar(message.toString(), { variant });
-    }
-  }, [value, enqueueSnackbar, message, variant]);
-}
+  }, [value]);
+};
+
+export default useStatefulSnackbar;

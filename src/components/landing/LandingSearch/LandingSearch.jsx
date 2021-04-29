@@ -3,10 +3,10 @@ import { ClickAwayListener, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchResults from 'components/landing/SearchResults';
 import SearchBar from 'components/landing/SearchBar';
-import { landingSearchBy } from '../../../api/landing';
-import { useAxios } from '../../../hooks/axios';
-import { debounce } from '../../../utils/functions';
-import { useStatefulSnackbar } from '../../../hooks/snackbar';
+import landingSearchBy from '../../../api/landing';
+import useAxios from '../../../hooks/axios';
+import debounce from '../../../utils/functions';
+import useStatefulSnackbar from '../../../hooks/snackbar';
 
 const useStyles = makeStyles((theme) => ({
   searchCard: {
