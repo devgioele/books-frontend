@@ -7,6 +7,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Skeleton } from '@material-ui/lab';
+import formatStringDate from '../../utils/dates';
 
 const useStyles = makeStyles((theme) => ({
   sectionHeader: {
@@ -116,12 +117,14 @@ export default function SellBooksList({
       data: sellingBooks,
       isLoading: loadingSelling,
       isSold: false,
+      showSection: sellingBooks.length > 0,
     },
     {
       title: 'Sold',
       data: soldBooks,
       isLoading: loadingSold,
       isSold: true,
+      showSection: soldBooks.length > 0,
     },
   ];
 
@@ -132,34 +135,36 @@ export default function SellBooksList({
       alignItems='center'
       spacing={4}
     >
-      {sections.map((section, sectionIndex) => (
-        <Grid key={sectionIndex} item>
-          <Grid
-            container
-            direction='column'
-            spacing={4}
-          >
-            <Grid item>
-              <Typography
-                className={classes.sectionHeader}
-                variant='h4'>
-                {section.title}
-              </Typography>
-            </Grid>
-            {loadingSelling ?
+      {sections
+        .filter((section) => section.showSection)
+        .map((section, sectionIndex) => (
+          <Grid key={sectionIndex} item>
+            <Grid
+              container
+              direction='column'
+              spacing={4}
+            >
               <Grid item>
-                <SkeletonBook isSold={section.isSold} />
+                <Typography
+                  className={classes.sectionHeader}
+                  variant='h4'>
+                  {section.title}
+                </Typography>
               </Grid>
-              :
-              section.data.map((book, bookIndex) => (
-                <Grid key={bookIndex} item>
-                  <Book isSold={section.isSold} book={book} onEdit={onEdit} />
+              {loadingSelling ?
+                <Grid item>
+                  <SkeletonBook isSold={section.isSold} />
                 </Grid>
-              ))
-            }
+                :
+                section.data.map((book, bookIndex) => (
+                  <Grid key={bookIndex} item>
+                    <Book isSold={section.isSold} book={book} onEdit={onEdit} />
+                  </Grid>
+                ))
+              }
+            </Grid>
           </Grid>
-        </Grid>
-      ))}
+        ))}
     </Grid>
   );
 }
@@ -199,7 +204,6 @@ function Book({
             <Link
               variant='h6'
               color='inherit'
-              href=''
             >
               <b>{book.title}</b>
             </Link>
@@ -216,7 +220,11 @@ function Book({
             <Typography
               variant='body1'
             >
-              Publication date: {book.publicationDate.toString()}
+              {isSold ?
+                `Sold to ${book.buyer} on ${formatStringDate(book.saleDate)}`
+                :
+                `Publication date: ${formatStringDate(book.publicationDate)}`
+              }
             </Typography>
           </Grid>
           {!isSold && (
