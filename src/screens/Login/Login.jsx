@@ -49,7 +49,7 @@ export default function Login() {
   const [progress, setProgress] = useState(COMPILATION_PROGRESS.IDENTITY);
 
   const redirect = () => {
-    if (location.state.from) history.replace(location.state.from);
+    if (location.state && location.state.from) history.replace(location.state.from);
     else history.push(EXPLORE_ROUTE);
   };
 
