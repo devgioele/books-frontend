@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { BASE_URL, failureWith, successWith } from './base';
 
-// eslint-disable-next-line import/prefer-default-export
-export const landingSearchBy = (onSuccess, onFailure, cancelToken, searchQuery) => {
+const landingSearchBy = (onSuccess, onFailure, cancelToken, searchQuery) => {
   axios
     .get(`${BASE_URL}/landing/search`, {
       params: { searchQuery },
@@ -11,3 +10,5 @@ export const landingSearchBy = (onSuccess, onFailure, cancelToken, searchQuery) 
     .then(successWith(onSuccess, 200))
     .catch(failureWith(onFailure, 500, 422));
 };
+
+export default landingSearchBy;
