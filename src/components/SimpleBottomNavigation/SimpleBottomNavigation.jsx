@@ -9,34 +9,33 @@ import AppBar from '@material-ui/core/AppBar';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    // height: '100vh',
   },
   appBar: {
     width: '100%',
   },
-  contentContainer: {
-    // position: 'relative',
-    // height: '100%',
-    // alignSelf: 'start',
-    // flexGrow: 1,
-    // flexShrink: 1,
+  contentNavigation: {
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   // Necessary for content to be below app bar
   toolbarPlaceholder: theme.mixins.toolbar,
   content: {
+    position: 'relative',
     width: '100%',
     height: '100%',
     padding: theme.spacing(3),
+    flexGrow: 1,
+    flexShrink: 1,
+    alignSelf: 'flex-start',
   },
   navigator: {
-    position: 'fixed',
-    left: '50%',
-    marginLeft: '-40%',
-    width: '80%',
-    bottom: 0,
     background: theme.palette.background.default,
-    // flexGrow: 0,
-    // flexShrink: 1,
+    flexGrow: 0,
+    flexShrink: 1,
   },
 }));
 
@@ -58,26 +57,26 @@ export default function SimpleBottomNavigation({
           </Typography>
         </Toolbar>
       </AppBar>
-      <div className={classes.contentContainer}>
+      <div className={classes.contentNavigation}>
         <div className={classes.toolbarPlaceholder} />
         <main className={classes.content}>{content}</main>
+        <BottomNavigation
+          className={classes.navigator}
+          value={selectedIndex}
+          onChange={(event, newIndex) => {
+            changeSection(sections[newIndex].route);
+          }}
+          showLabels
+        >
+          {sections.map((section) => (
+            <BottomNavigationAction
+              key={section.label}
+              label={section.label}
+              icon={section.icon}
+            />
+          ))}
+        </BottomNavigation>
       </div>
-      <BottomNavigation
-        className={classes.navigator}
-        value={selectedIndex}
-        onChange={(event, newIndex) => {
-          changeSection(sections[newIndex].route);
-        }}
-        showLabels
-      >
-        {sections.map((section) => (
-          <BottomNavigationAction
-            key={section.label}
-            label={section.label}
-            icon={section.icon}
-          />
-        ))}
-      </BottomNavigation>
     </div>
   );
 }
