@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.default,
     flexGrow: 0,
     flexShrink: 1,
+    width: '100%',
   },
 }));
 
