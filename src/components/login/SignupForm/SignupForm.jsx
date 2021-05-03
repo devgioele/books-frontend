@@ -1,12 +1,10 @@
 import { Button, TextField } from '@material-ui/core';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { submitSignup } from 'api/auth';
+import { signup } from 'api/auth';
 import PasswordField from 'components/PasswordField';
 import useAxios from 'hooks/axios';
-import STD_MESSAGES from 'messages/standard';
-import useStatefulSnackbar from 'hooks/snackbar';
 
 const useStyles = makeStyles(() => ({
   textField: { width: '100%' },
@@ -45,19 +43,13 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
   };
   const passwordConfirmed = newUser.password === newUser.passwordConfirmed;
 
-  const [fetch, cancelPrevious, data, error] = useAxios(submitSignup);
-  useStatefulSnackbar(
-    error?.response?.status || error,
-    STD_MESSAGES.UNEXPECTED,
-    'error',
-    422
+  const [fetch, cancelPrevious, data, error] = useAxios(
+    signup,
+    'signing up',
+    () => redirect,
+    [422],
+    () => setInvalid(true)
   );
-  useEffect(() => {
-    if (error?.response?.status === 422) setInvalid(true);
-  }, [setInvalid, error]);
-  useEffect(() => {
-    if (data !== null) redirect();
-  }, [redirect, data]);
 
   const handleSubmit = () => {
     if (passwordConfirmed) {

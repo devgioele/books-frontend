@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 
-const useStatefulSnackbar = (value, message, variant, ...toIgnore) => {
+const useStatefulSnackbar = (value, message, variant) => {
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (value && message && !toIgnore.includes(value))
-      enqueueSnackbar(message.toString(), { variant });
+    if (value && message) enqueueSnackbar(message.toString(), { variant });
   }, [value]);
 };
 

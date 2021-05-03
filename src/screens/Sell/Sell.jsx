@@ -13,7 +13,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import useAxios from 'hooks/axios';
 import { getSellingBooks, getSoldBooks } from 'api/books';
-import useStatefulSnackbar from 'hooks/snackbar';
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -29,24 +28,18 @@ export default function Sell({ routes }) {
   const [
     fetchSellingBooks,
     cancelSelling,
-    sellingBooks,
+    sellingBooks = [],
     errorSelling,
     isLoadingSelling,
-  ] = useAxios(getSellingBooks, []);
-  useStatefulSnackbar(
-    errorSelling,
-    'Error while fetching selling books',
-    'error'
-  );
+  ] = useAxios(getSellingBooks, 'fetching selling books');
 
   const [
     fetchSoldBooks,
     cancelSold,
-    soldBooks,
+    soldBooks = [],
     errorSold,
     isLoadingSold,
-  ] = useAxios(getSoldBooks, []);
-  useStatefulSnackbar(errorSold, 'Error while fetching sold books', 'error');
+  ] = useAxios(getSoldBooks, 'fetching sold books');
 
   const history = useHistory();
 
@@ -57,13 +50,27 @@ export default function Sell({ routes }) {
 
   // We pass an empty dependency array so that we perform the fetch only once,
   // otherwise we will have infinite re-renders.
-  useEffect(() => fetchSellingBooks(), []);
-  useEffect(() => fetchSoldBooks(), []);
+  useEffect(() => {
+    fetchSellingBooks();
+    return () => {
+      console.log('cleaning up selling');
+      cancelSelling();
+    };
+  }, []);
+  useEffect(() => {
+    fetchSoldBooks();
+    return () => {
+      console.log('cleaning up sold');
+      cancelSold();
+    };
+  }, []);
 
   return (
     <>
       {newSellRoute && renderRoute(newSellRoute)}
-      {editSellRoute && renderRoute(editSellRoute, null, { book: bookToEdit })}
+      {editSellRoute &&
+        bookToEdit &&
+        renderRoute(editSellRoute, null, { book: bookToEdit })}
       <Grid container>
         <Grid item xs={12}>
           <SellBooksList

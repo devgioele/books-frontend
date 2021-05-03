@@ -10,24 +10,22 @@ import {
 const HOST = DEBUG ? BASE_URL_DEV : BASE_URL_PROD;
 export const BASE_URL = `${HOST}/${API_VERSION}`;
 
-export const successWith = (onSuccess, ...successStatusCodes) => (response) => {
-  if (successStatusCodes.includes(response.status)) {
+export const successWith = (onSuccess, onFailure, ...successStatusCodes) => (
+  response
+) => {
+  console.log('successWith');
+  if (successStatusCodes.includes(response.status))
     onSuccess(response.data.body);
-  } else {
-    throw new Error(`Unexpected response: ${response.status}!`);
-  }
+  else onFailure(response, false);
 };
 
-export const failureWith = (onFailure, ...failureStatusCodes) => (error) => {
-  // TODO: handle 401 unauthorized.
-  if (error.response) {
-    if (failureStatusCodes.includes(error.response.status)) {
-      onFailure(error);
-    } else {
-      throw new Error(`Unexpected response: ${error.response.status}!`);
-    }
-  } else if (!axios.isCancel(error)) {
-    onFailure(error);
+export const failureWith = (onFailure, ...expectedStatusCodes) => (error) => {
+  console.log('failureWith');
+  if (!axios.isCancel(error)) {
+    console.log('not cancelled');
+    const expected =
+      error.response && expectedStatusCodes.includes(error.response.status);
+    onFailure(error, expected);
   }
 };
 

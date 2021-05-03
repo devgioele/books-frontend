@@ -3,7 +3,6 @@ import React from 'react';
 import ProtectedRoute from 'components/ProtectedRoute';
 
 export const LANDING_ROUTE = '/';
-export const SIGNUP_ROUTE = '/signup';
 export const LOGIN_ROUTE = '/login';
 export const APP_ROUTE = '/app';
 export const BOOK_ROUTE = `${APP_ROUTE}/book/:id`;
@@ -24,22 +23,29 @@ export const toRoute = (routeName, ...params) => {
   }
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const renderRoute = (route, key = undefined, extraProps = {}) =>
   route.isProtected ? (
     <ProtectedRoute
       key={key}
       exact={route.isExact}
       path={route.path}
-      render={(props) => <route.component {...{ ...props, ...extraProps }}
-                                          routes={route.routes} />}
+      render={(props) => (
+        <route.component
+          {...{ ...props, ...extraProps }}
+          routes={route.routes}
+        />
+      )}
     />
   ) : (
     <Route
       key={key}
       exact={route.isExact}
       path={route.path}
-      render={(props) => <route.component {...{ ...props, ...extraProps }}
-                                          routes={route.routes} />}
+      render={(props) => (
+        <route.component
+          {...{ ...props, ...extraProps }}
+          routes={route.routes}
+        />
+      )}
     />
   );

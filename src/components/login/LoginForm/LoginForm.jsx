@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { submitLogin } from 'api/auth';
+import { login } from 'api/auth';
 import PasswordField from 'components/PasswordField';
 import useAxios from 'hooks/axios';
-import useStatefulSnackbar from 'hooks/snackbar';
-import STD_MESSAGES from 'messages/standard';
 import { useAuth } from 'hooks/auth';
 
 const useStyles = makeStyles(() => ({
@@ -18,41 +16,25 @@ export default function LoginForm({ redirect, usernameOrEmail }) {
   const classes = useStyles();
   const [password, setPassword] = useState('');
   const [invalid, setInvalid] = useState(false);
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const auth = useAuth();
   const btnContinue = useRef(null);
 
-  // eslint-disable-next-line no-unused-vars
-  const [fetch, cancelPrevious, data, error] = useAxios(submitLogin);
-  useStatefulSnackbar(
-    error?.response?.status || error,
-    STD_MESSAGES.UNEXPECTED,
-    'error',
-    401
-  );
-  useEffect(() => {
-    if (error?.response?.status === 401) {
-      setInvalid(true);
-      setIsLoggingIn(false);
-    }
-  }, [error, setInvalid]);
-  useEffect(() => {
-    if (data !== null) {
-      auth.login(data.token);
+  const [fetch, cancelPrevious, data, error, isLoading] = useAxios(
+    login,
+    'logging in',
+    (fetchedData) => {
+      auth.login(fetchedData.token);
       redirect();
-    }
-  }, [data, auth, redirect]);
+    },
+    () => setInvalid(true)
+  );
 
   const updatePassword = (event) => {
     setInvalid(false);
     setPassword(event.target.value);
   };
 
-  const handleSubmit = () => {
-    setIsLoggingIn(true);
-    fetch(usernameOrEmail, password);
-  };
-
+  const handleSubmit = () => fetch(usernameOrEmail, password);
   return (
     <Grid
       container
@@ -82,7 +64,7 @@ export default function LoginForm({ redirect, usernameOrEmail }) {
           color="primary"
           ref={btnContinue}
           onClick={handleSubmit}
-          disabled={isLoggingIn}
+          disabled={isLoading}
         >
           Continue
         </Button>
