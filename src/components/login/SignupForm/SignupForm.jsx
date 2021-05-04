@@ -6,18 +6,12 @@ import { signup } from 'api/auth';
 import PasswordField from 'components/PasswordField';
 import useAxios from 'hooks/axios';
 
-const useStyles = makeStyles(() => ({
-  textField: { width: '100%' },
-  btn: { width: '100%' },
-}));
-
 function exactMatch(text, regex) {
   const matches = text.match(regex);
   return matches && matches.length ? matches[0].length === text.length : false;
 }
 
 export default function SignupForm({ redirect, usernameOrEmail }) {
-  const classes = useStyles();
   const [invalid, setInvalid] = useState(false);
   const btnContinue = useRef(null);
 
@@ -71,7 +65,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
     >
       <Grid item>
         <TextField
-          className={classes.textField}
+          fullWidth
           autoFocus={true}
           defaultValue={initEmail}
           id="email"
@@ -84,7 +78,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
       </Grid>
       <Grid item>
         <TextField
-          className={classes.textField}
+          fullWidth
           defaultValue={initUsername}
           id="username"
           variant="outlined"
@@ -97,7 +91,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
       </Grid>
       <Grid item>
         <PasswordField
-          className={classes.textField}
+          fullWidth
           id="password"
           variant="outlined"
           size="small"
@@ -110,7 +104,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
       </Grid>
       <Grid item>
         <PasswordField
-          className={classes.textField}
+          fullWidth
           id="passwordConfirmed"
           variant="outlined"
           size="small"
@@ -123,7 +117,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
       </Grid>
       <Grid item>
         <Button
-          className={classes.btn}
+          fullWidth
           variant="contained"
           color="primary"
           ref={btnContinue}

@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('smmd')]: {
       borderRadius: 20,
       width: '800px',
-      height: '650px',
+      height: '670px',
     },
     [theme.breakpoints.up('sm')]: {
       padding: '50px 25%',
@@ -49,7 +49,8 @@ export default function Login() {
   const [progress, setProgress] = useState(COMPILATION_PROGRESS.IDENTITY);
 
   const redirect = () => {
-    if (location.state && location.state.from) history.replace(location.state.from);
+    if (location.state && location.state.from)
+      history.replace(location.state.from);
     else history.push(EXPLORE_ROUTE);
   };
 

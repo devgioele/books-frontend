@@ -29,13 +29,16 @@ export default function SellBookDialog({ book }) {
   const history = useHistory();
   const backToParent = () => history.push(SELL_ROUTE);
 
-  const [fetch, cancelPrevious, data, error, isLoading] = useAxios(
+  const [fetch, cancelSubmission, data, error, isLoading] = useAxios(
     sellBook,
     'selling book',
     () => backToParent(),
     () => setInvalid(true)
   );
-  const handleSubmit = () => fetch(newBook);
+  const handleSubmit = () => {
+    fetch(newBook);
+    return cancelSubmission;
+  };
 
   return (
     <Dialog fullScreen={false} fullWidth={true} open={true}>
@@ -45,28 +48,32 @@ export default function SellBookDialog({ book }) {
       <DialogContent>
         <DialogContentText>
           <Grid container spacing={4}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                variant="outlined"
-                fullWidth
-                error={invalid}
-                label="ISBN"
-                defaultValue={book?.isbn}
-                onChange={unwrapValue(updateNewBook('isbn'))}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                variant="outlined"
-                fullWidth
-                error={invalid}
-                label="Title"
-                defaultValue={book?.title}
-                onChange={unwrapValue(updateNewBook('title'))}
-              />
-            </Grid>
+            {!book && (
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  variant="outlined"
+                  fullWidth
+                  error={invalid}
+                  label="ISBN"
+                  defaultValue={book?.isbn}
+                  onChange={unwrapValue(updateNewBook('isbn'))}
+                />
+              </Grid>
+            )}
+            {!book && (
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  variant="outlined"
+                  fullWidth
+                  error={invalid}
+                  label="Title"
+                  defaultValue={book?.title}
+                  onChange={unwrapValue(updateNewBook('title'))}
+                />
+              </Grid>
+            )}
             <Grid item xs={12}>
               <TextField
                 required
