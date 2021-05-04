@@ -90,9 +90,9 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
           variant="outlined"
           size="small"
           label="Username"
+          helperText="At least 3 characters"
           error={invalid}
           onChange={updateNewUser('username')}
-          helperText="At least 3 characters"
         />
       </Grid>
       <Grid item>
@@ -102,6 +102,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
           variant="outlined"
           size="small"
           label="Password"
+          helperText="At least 7 characters"
           value={newUser.password}
           error={invalid}
           onChange={updateNewUser('password')}

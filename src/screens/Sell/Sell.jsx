@@ -52,17 +52,11 @@ export default function Sell({ routes }) {
   // otherwise we will have infinite re-renders.
   useEffect(() => {
     fetchSellingBooks();
-    return () => {
-      console.log('cleaning up selling');
-      cancelSelling();
-    };
+    return () => cancelSelling();
   }, []);
   useEffect(() => {
     fetchSoldBooks();
-    return () => {
-      console.log('cleaning up sold');
-      cancelSold();
-    };
+    return () => cancelSold();
   }, []);
 
   return (
