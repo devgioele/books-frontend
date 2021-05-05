@@ -13,12 +13,16 @@ const useAxios = (
   const [failure, setFailure] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [source, setSource] = useState(null);
+  const [cancelled, setCancelled] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     if (failure) {
       if (failure.expected) onExpectedError(failure.error);
-      else enqueueSnackbar(STD_MESSAGES.UNEXPECTED(operationName), 'error');
+      else
+        enqueueSnackbar(STD_MESSAGES.UNEXPECTED(operationName), {
+          variant: 'error',
+        });
     }
   }, [failure]);
   useEffect(() => {
@@ -26,6 +30,7 @@ const useAxios = (
   }, [data]);
 
   const fetch = (...args) => {
+    setCancelled(false);
     // We use this variable in order to pass the value to the axiosBlock and
     // also to the state as the state propagation is asynchronous.
     const localSource = axios.CancelToken.source();
@@ -33,15 +38,19 @@ const useAxios = (
     setIsLoading(true);
     axiosBlock(
       (body) => {
-        setData(body);
-        setIsLoading(false);
+        if (!cancelled) {
+          setData(body);
+          setIsLoading(false);
+        }
       },
       (err, expected) => {
-        setFailure({
-          error: err,
-          expected,
-        });
-        setIsLoading(false);
+        if (!cancelled) {
+          setFailure({
+            error: err,
+            expected,
+          });
+          setIsLoading(false);
+        }
       },
       localSource.token,
       ...args
@@ -49,6 +58,7 @@ const useAxios = (
   };
 
   const cancelPrevious = () => {
+    setCancelled(true);
     if (source != null) source.cancel();
   };
 

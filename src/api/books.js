@@ -21,3 +21,20 @@ export const sellBook = (onSuccess, onFailure, cancelToken, newBook) => {
     .then(successWith(onSuccess, onFailure, 200))
     .catch(failureWith(onFailure, 422));
 };
+
+export const editBook = (
+  onSuccess,
+  onFailure,
+  cancelToken,
+  bookId,
+  newBook
+) => {
+  axios
+    .post(
+      `${BASE_URL}/books/edit/${bookId}`,
+      newBook,
+      withAuth({ cancelToken })
+    )
+    .then(successWith(onSuccess, onFailure, 200))
+    .catch(failureWith(onFailure, 422));
+};

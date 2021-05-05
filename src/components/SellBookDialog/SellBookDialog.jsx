@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,16 +9,28 @@ import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import useAxios from 'hooks/axios';
-import { sellBook } from 'api/books';
+import { editBook, sellBook } from 'api/books';
 import { CircularProgress } from '@material-ui/core';
 import { SELL_ROUTE } from 'routing/helpers';
+import { Autocomplete } from '@material-ui/lab';
+import conditions from 'utils/condition';
 
 const unwrapValue = (block) => (event) => {
   block(event.target.value);
 };
 
 export default function SellBookDialog({ book }) {
-  const [newBook, setNewBook] = useState({});
+  const defaultCondition = book?.condition || conditions[0];
+  const [newBook, setNewBook] = useState({
+    isbn: book?.isbn,
+    title: book?.title,
+    description: book?.description,
+    currency: book?.currency,
+    price: book?.price,
+    condition: defaultCondition,
+    pictures: [],
+    locationName: book?.locationName,
+  });
   const updateNewBook = (fieldName) => (value) => {
     setNewBook({
       ...newBook,
@@ -29,21 +41,32 @@ export default function SellBookDialog({ book }) {
   const history = useHistory();
   const backToParent = () => history.push(SELL_ROUTE);
 
-  const [fetch, cancelSubmission, data, error, isLoading] = useAxios(
+  const [sell, cancelSell, dataSell, errorSell, isLoadingSell] = useAxios(
     sellBook,
     'selling book',
     () => backToParent(),
     () => setInvalid(true)
   );
+  const [edit, cancelEdit, dataEdit, errorEdit, isLoadingEdit] = useAxios(
+    editBook,
+    'editing book',
+    () => backToParent(),
+    () => setInvalid(true)
+  );
+  const isLoading = isLoadingSell || isLoadingEdit;
   const handleSubmit = () => {
-    fetch(newBook);
-    return cancelSubmission;
+    if (book) {
+      edit(book.bookId, newBook);
+      return cancelEdit;
+    }
+    sell(newBook);
+    return cancelSell;
   };
 
   return (
     <Dialog fullScreen={false} fullWidth={true} open={true}>
       <DialogTitle>
-        {book ? 'Modify an existing book' : 'Sell a new book'}
+        {book ? `Modify '${book.title}'` : 'Sell a new book'}
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -85,6 +108,59 @@ export default function SellBookDialog({ book }) {
                 onChange={unwrapValue(updateNewBook('description'))}
               />
             </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                variant="outlined"
+                fullWidth
+                error={invalid}
+                label="Currency"
+                defaultValue={book?.currency}
+                onChange={unwrapValue(updateNewBook('currency'))}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                variant="outlined"
+                fullWidth
+                error={invalid}
+                label="Price"
+                type="number"
+                inputProps={{ min: 0 }}
+                defaultValue={book?.price}
+                onChange={(event) =>
+                  updateNewBook('price')(parseFloat(event.target.value, 10))
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Autocomplete
+                fullWidth
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    required
+                    label="Condition"
+                    variant="outlined"
+                  />
+                )}
+                options={conditions}
+                defaultValue={defaultCondition}
+                onChange={(event, value) => updateNewBook('condition')(value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                variant="outlined"
+                fullWidth
+                error={invalid}
+                label="Location"
+                defaultValue={book?.locationName}
+                onChange={unwrapValue(updateNewBook('locationName'))}
+              />
+            </Grid>
           </Grid>
         </DialogContentText>
       </DialogContent>
@@ -101,7 +177,7 @@ export default function SellBookDialog({ book }) {
               Cancel
             </Button>
             <Button onClick={handleSubmit} disabled={isLoading}>
-              Sell
+              {book ? 'Modify' : 'Sell'}
             </Button>
           </Grid>
           {isLoading && (
