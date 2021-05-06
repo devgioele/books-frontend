@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+export default function Authorization() {
   const classes = useStyles();
   const location = useLocation();
   const history = useHistory();

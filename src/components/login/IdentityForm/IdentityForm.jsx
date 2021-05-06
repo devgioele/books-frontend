@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { checkIdentity } from 'api/auth';
 import useAxios from 'hooks/axios';
+import AuthProgress from 'screens/Authorization/authProgress';
 
 const useStyles = makeStyles(() => ({
   textField: { width: '100%' },
@@ -18,15 +19,19 @@ export default function IdentityForm({
   const classes = useStyles();
   const [invalid, setInvalid] = useState(false);
   const btnContinue = useRef(null);
-  const [fetch, cancelPrevious, data, error] = useAxios(
+  const [doCheckIdentity, cancelCheckIdentity, data, error] = useAxios(
     checkIdentity,
     'verifying existence of user',
-    (fetchedData) => onProgress(fetchedData)
+    (fetchedData) => {
+      if (fetchedData.username) onProgress(AuthProgress.LOGIN);
+      else onProgress(AuthProgress.SIGNUP);
+    },
+    () => setInvalid(true)
   );
 
   const handleSubmit = () => {
-    cancelPrevious();
-    fetch(usernameOrEmail);
+    cancelCheckIdentity();
+    doCheckIdentity(usernameOrEmail);
   };
 
   return (

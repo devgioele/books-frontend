@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -15,63 +15,64 @@ import { SELL_ROUTE } from 'routing/helpers';
 import { Autocomplete } from '@material-ui/lab';
 import conditions from 'utils/condition';
 
-const unwrapValue = (block) => (event) => {
+const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
 };
 
-export default function SellBookDialog({ book }) {
-  const defaultCondition = book?.condition || conditions[0];
+export default function SellBookDialog({ refreshBooksList, bookToEdit }) {
+  const defaultCondition = bookToEdit?.condition || conditions[0];
   const [newBook, setNewBook] = useState({
-    isbn: book?.isbn,
-    title: book?.title,
-    description: book?.description,
-    currency: book?.currency,
-    price: book?.price,
+    description: bookToEdit?.description,
+    currency: bookToEdit?.currency,
+    price: bookToEdit?.price,
     condition: defaultCondition,
     pictures: [],
-    locationName: book?.locationName,
   });
+  const [invalid, setInvalid] = useState(false);
   const updateNewBook = (fieldName) => (value) => {
-    setNewBook({
+    setInvalid(false);
+    const bookGen = {
       ...newBook,
       [fieldName]: value,
-    });
+    };
+    setNewBook(bookGen);
   };
-  const [invalid, setInvalid] = useState(false);
   const history = useHistory();
   const backToParent = () => history.push(SELL_ROUTE);
 
   const [sell, cancelSell, dataSell, errorSell, isLoadingSell] = useAxios(
     sellBook,
     'selling book',
-    () => backToParent(),
+    () => {
+      backToParent();
+      refreshBooksList();
+    },
     () => setInvalid(true)
   );
   const [edit, cancelEdit, dataEdit, errorEdit, isLoadingEdit] = useAxios(
     editBook,
     'editing book',
-    () => backToParent(),
+    () => {
+      backToParent();
+      refreshBooksList();
+    },
     () => setInvalid(true)
   );
   const isLoading = isLoadingSell || isLoadingEdit;
   const handleSubmit = () => {
-    if (book) {
-      edit(book.bookId, newBook);
-      return cancelEdit;
-    }
+    if (bookToEdit) edit(bookToEdit.bookId, newBook);
     sell(newBook);
-    return cancelSell;
   };
 
   return (
     <Dialog fullScreen={false} fullWidth={true} open={true}>
       <DialogTitle>
-        {book ? `Modify '${book.title}'` : 'Sell a new book'}
+        {bookToEdit ? `Modify '${bookToEdit.title}'` : 'Sell a new book'}
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
           <Grid container spacing={4}>
-            {!book && (
+            {!bookToEdit && (
               <Grid item xs={12}>
                 <TextField
                   required
@@ -79,12 +80,12 @@ export default function SellBookDialog({ book }) {
                   fullWidth
                   error={invalid}
                   label="ISBN"
-                  defaultValue={book?.isbn}
-                  onChange={unwrapValue(updateNewBook('isbn'))}
+                  defaultValue={bookToEdit?.isbn}
+                  onChange={unwrapEventValue(updateNewBook('isbn'))}
                 />
               </Grid>
             )}
-            {!book && (
+            {!bookToEdit && (
               <Grid item xs={12}>
                 <TextField
                   required
@@ -92,8 +93,8 @@ export default function SellBookDialog({ book }) {
                   fullWidth
                   error={invalid}
                   label="Title"
-                  defaultValue={book?.title}
-                  onChange={unwrapValue(updateNewBook('title'))}
+                  defaultValue={bookToEdit?.title}
+                  onChange={unwrapEventValue(updateNewBook('title'))}
                 />
               </Grid>
             )}
@@ -104,8 +105,8 @@ export default function SellBookDialog({ book }) {
                 fullWidth
                 error={invalid}
                 label="Description"
-                defaultValue={book?.description}
-                onChange={unwrapValue(updateNewBook('description'))}
+                defaultValue={bookToEdit?.description}
+                onChange={unwrapEventValue(updateNewBook('description'))}
               />
             </Grid>
             <Grid item xs={12}>
@@ -115,8 +116,8 @@ export default function SellBookDialog({ book }) {
                 fullWidth
                 error={invalid}
                 label="Currency"
-                defaultValue={book?.currency}
-                onChange={unwrapValue(updateNewBook('currency'))}
+                defaultValue={bookToEdit?.currency}
+                onChange={unwrapEventValue(updateNewBook('currency'))}
               />
             </Grid>
             <Grid item xs={12}>
@@ -128,7 +129,7 @@ export default function SellBookDialog({ book }) {
                 label="Price"
                 type="number"
                 inputProps={{ min: 0 }}
-                defaultValue={book?.price}
+                defaultValue={bookToEdit?.price}
                 onChange={(event) =>
                   updateNewBook('price')(parseFloat(event.target.value, 10))
                 }
@@ -150,17 +151,19 @@ export default function SellBookDialog({ book }) {
                 onChange={(event, value) => updateNewBook('condition')(value)}
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                variant="outlined"
-                fullWidth
-                error={invalid}
-                label="Location"
-                defaultValue={book?.locationName}
-                onChange={unwrapValue(updateNewBook('locationName'))}
-              />
-            </Grid>
+            {!bookToEdit && (
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  variant="outlined"
+                  fullWidth
+                  error={invalid}
+                  label="Location"
+                  defaultValue={bookToEdit?.locationName}
+                  onChange={unwrapEventValue(updateNewBook('locationName'))}
+                />
+              </Grid>
+            )}
           </Grid>
         </DialogContentText>
       </DialogContent>
@@ -177,7 +180,7 @@ export default function SellBookDialog({ book }) {
               Cancel
             </Button>
             <Button onClick={handleSubmit} disabled={isLoading}>
-              {book ? 'Modify' : 'Sell'}
+              {bookToEdit ? 'Modify' : 'Sell'}
             </Button>
           </Grid>
           {isLoading && (

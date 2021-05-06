@@ -101,14 +101,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SellBooksList({
   loadingSelling,
-  // eslint-disable-next-line no-unused-vars
   loadingSold,
   sellingBooks,
-  // eslint-disable-next-line no-unused-vars
   soldBooks,
   onEdit,
+  onRemove,
 }) {
-  // eslint-disable-next-line no-unused-vars
   const classes = useStyles();
 
   const sections = [
@@ -147,7 +145,12 @@ export default function SellBooksList({
               ) : (
                 section.data.map((book, bookIndex) => (
                   <Grid key={bookIndex} item>
-                    <Book isSold={section.isSold} book={book} onEdit={onEdit} />
+                    <Book
+                      isSold={section.isSold}
+                      book={book}
+                      onEdit={onEdit}
+                      onRemove={onRemove}
+                    />
                   </Grid>
                 ))
               )}
@@ -158,12 +161,7 @@ export default function SellBooksList({
   );
 }
 
-function Book({
-  // eslint-disable-next-line no-unused-vars
-  isSold,
-  book,
-  onEdit,
-}) {
+function Book({ isSold, book, onEdit, onRemove }) {
   const classes = useStyles();
 
   return (
@@ -199,8 +197,7 @@ function Book({
             item
           >
             <Typography variant="h6">
-              {book.currency}
-              {book.price}
+              {`${book.currency} ${book.price}`}
             </Typography>
           </Grid>
           <Grid item>
@@ -232,6 +229,7 @@ function Book({
                         variant="contained"
                         disableElevation={true}
                         startIcon={<DeleteForeverIcon />}
+                        onClick={() => onRemove(book)}
                       >
                         Remove
                       </Button>

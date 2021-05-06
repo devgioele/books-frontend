@@ -37,18 +37,17 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
   };
   const passwordConfirmed = newUser.password === newUser.passwordConfirmed;
 
-  const [fetch, cancelPrevious, data, error] = useAxios(
+  const [doSignup, cancelSignup, data, error] = useAxios(
     signup,
     'signing up',
-    () => redirect,
-    [422],
+    () => redirect(),
     () => setInvalid(true)
   );
 
   const handleSubmit = () => {
     if (passwordConfirmed) {
-      cancelPrevious();
-      fetch(newUser);
+      cancelSignup();
+      doSignup(newUser);
     }
   };
 
@@ -84,7 +83,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
           variant="outlined"
           size="small"
           label="Username"
-          helperText="At least 3 characters"
+          helperText="At least 3 characters long"
           error={invalid}
           onChange={updateNewUser('username')}
         />
@@ -96,7 +95,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
           variant="outlined"
           size="small"
           label="Password"
-          helperText="At least 7 characters"
+          helperText="At least 7 characters long"
           value={newUser.password}
           error={invalid}
           onChange={updateNewUser('password')}

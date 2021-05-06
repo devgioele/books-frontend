@@ -3,7 +3,7 @@ import React from 'react';
 import ProtectedRoute from 'components/ProtectedRoute';
 
 export const LANDING_ROUTE = '/';
-export const LOGIN_ROUTE = '/login';
+export const AUTH_ROUTE = '/login';
 export const APP_ROUTE = '/app';
 export const BOOK_ROUTE = `${APP_ROUTE}/book/:id`;
 export const DASHBOARD_ROUTE = `${APP_ROUTE}/dashboard`;
@@ -23,10 +23,10 @@ export const toRoute = (routeName, ...params) => {
   }
 };
 
-export const renderRoute = (route, key = undefined, extraProps = {}) =>
+export const renderRoute = (route, extraProps = {}) =>
   route.isProtected ? (
     <ProtectedRoute
-      key={key}
+      key={route.path}
       exact={route.isExact}
       path={route.path}
       render={(props) => (
@@ -38,7 +38,7 @@ export const renderRoute = (route, key = undefined, extraProps = {}) =>
     />
   ) : (
     <Route
-      key={key}
+      key={route.path}
       exact={route.isExact}
       path={route.path}
       render={(props) => (

@@ -30,11 +30,14 @@ export const editBook = (
   newBook
 ) => {
   axios
-    .post(
-      `${BASE_URL}/books/edit/${bookId}`,
-      newBook,
-      withAuth({ cancelToken })
-    )
+    .put(`${BASE_URL}/books/edit/${bookId}`, newBook, withAuth({ cancelToken }))
     .then(successWith(onSuccess, onFailure, 200))
     .catch(failureWith(onFailure, 422));
+};
+
+export const removeBook = (onSuccess, onFailure, cancelToken, bookId) => {
+  axios
+    .delete(`${BASE_URL}/books/remove/${bookId}`, withAuth({ cancelToken }))
+    .then(successWith(onSuccess, onFailure, 200))
+    .catch(failureWith(onFailure));
 };

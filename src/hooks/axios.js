@@ -6,31 +6,30 @@ import { useSnackbar } from 'notistack';
 const useAxios = (
   axiosBlock,
   operationName = '',
-  onFetched = () => {},
+  onSuccess = () => {},
   onExpectedError = () => {}
 ) => {
   const [data, setData] = useState(undefined);
   const [failure, setFailure] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [source, setSource] = useState(null);
-  const [cancelled, setCancelled] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     if (failure) {
       if (failure.expected) onExpectedError(failure.error);
       else
-        enqueueSnackbar(STD_MESSAGES.UNEXPECTED(operationName), {
-          variant: 'error',
-        });
+        enqueueSnackbar(
+          `${STD_MESSAGES.UNEXPECTED(operationName)}\nCause: ${failure.error}`,
+          {
+            variant: 'error',
+          }
+        );
     }
   }, [failure]);
-  useEffect(() => {
-    if (data) onFetched(data);
-  }, [data]);
 
   const fetch = (...args) => {
-    setCancelled(false);
+    console.log('-- fetching');
     // We use this variable in order to pass the value to the axiosBlock and
     // also to the state as the state propagation is asynchronous.
     const localSource = axios.CancelToken.source();
@@ -38,19 +37,18 @@ const useAxios = (
     setIsLoading(true);
     axiosBlock(
       (body) => {
-        if (!cancelled) {
-          setData(body);
-          setIsLoading(false);
-        }
+        console.log(`-- success`);
+        setIsLoading(false);
+        setData(body);
+        onSuccess(body);
       },
       (err, expected) => {
-        if (!cancelled) {
-          setFailure({
-            error: err,
-            expected,
-          });
-          setIsLoading(false);
-        }
+        console.log(`-- failure`);
+        setIsLoading(false);
+        setFailure({
+          error: err,
+          expected,
+        });
       },
       localSource.token,
       ...args
@@ -58,8 +56,9 @@ const useAxios = (
   };
 
   const cancelPrevious = () => {
-    setCancelled(true);
+    console.log('-- cancelling');
     if (source != null) source.cancel();
+    setIsLoading(false);
   };
 
   return [fetch, cancelPrevious, data, failure?.error, isLoading];
