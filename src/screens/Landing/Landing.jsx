@@ -25,7 +25,7 @@ const features = [
     icon: <MoneyOffIcon />,
     title: 'Free',
     description:
-      'No ads and no fees. Books doesn\'t force you into a specific payment ' +
+      "No ads and no fees. Books doesn't force you into a specific payment " +
       'or shipping method. Users have complete freedom of choice.',
   },
   {
@@ -81,72 +81,70 @@ export default function Landing() {
   const downXSmall = useMediaQuery((theme) => theme.breakpoints.down('xs'));
 
   return (
-    <div className={classes.root}>
-      <Grid className={classes.pageFrame}>
-        <LandingHeader className={classes.header} />
-        <Grid
-          className={classes.page}
-          container
-          direction='column'
-          spacing={downXSmall ? 4 : 8}
-        >
-          <Grid item>
-            <LandingWelcome className={classes.section} />
-          </Grid>
+    <Grid className={classes.pageFrame}>
+      <LandingHeader />
+      <Grid
+        className={classes.page}
+        container
+        direction="column"
+        spacing={downXSmall ? 4 : 8}
+      >
+        <Grid item>
+          <LandingWelcome />
+        </Grid>
 
-          <Grid item>
-            <Typography className={classes.sectionTitle} variant='h4'>
-              Search an amazing book
-            </Typography>
-          </Grid>
-          <Grid item className={classes.searchBar}>
-            <LandingSearch />
-          </Grid>
+        <Grid item>
+          <Typography className={classes.sectionTitle} variant="h4">
+            Search an amazing book
+          </Typography>
+        </Grid>
+        <Grid item className={classes.searchBar}>
+          <LandingSearch />
+        </Grid>
 
-          <Grid item>
-            <Typography className={classes.sectionTitle} variant='h4'>
-              Features
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Grid
-              container
-              spacing={downXSmall ? 4 : 8}
-              direction={downXSmall ? 'column' : 'row'}
-              alignItems='flex-start'
-              justify='center'
-            >
-              {features.map((feature, index) => (
-                <Grid
-                  item
-                  key={index}
-                  // Show 1 feature per row
-                  xs={12}
-                  // Show 2-3 features per row
-                  sm={features.length % 3 === 0 ? 4 : 6}
-                  // Show 3-4 features per row
-                  lg={features.length % 4 === 0 ? 3 : 4}
-                >
-                  <FeatureCard
-                    icon={feature.icon}
-                    title={feature.title}
-                    description={feature.description}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          </Grid>
-
-          <Grid item>
-            <Typography className={classes.sectionTitle} variant='h4'>
-              About Us
-            </Typography>
-          </Grid>
-          <Grid item>
-            <LandingAbout />
+        <Grid item>
+          <Typography className={classes.sectionTitle} variant="h4">
+            Features
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Grid
+            container
+            spacing={downXSmall ? 4 : 8}
+            direction={downXSmall ? 'column' : 'row'}
+            alignItems="flex-start"
+            justify="center"
+          >
+            {features.map((feature, index) => (
+              <Grid
+                item
+                key={index}
+                // Show 1 feature per row
+                xs={12}
+                // Show 2-3 features per row
+                sm={features.length % 3 === 0 ? 4 : 6}
+                // Show 3-4 features per row
+                lg={features.length % 4 === 0 ? 3 : 4}
+              >
+                <FeatureCard
+                  icon={feature.icon}
+                  title={feature.title}
+                  description={feature.description}
+                />
+              </Grid>
+            ))}
           </Grid>
         </Grid>
+
+        <Grid item>
+          <Typography className={classes.sectionTitle} variant="h4">
+            About Us
+          </Typography>
+        </Grid>
+        <Grid item>
+          <LandingAbout />
+        </Grid>
       </Grid>
-    </div>
+    </Grid>
   );
 }

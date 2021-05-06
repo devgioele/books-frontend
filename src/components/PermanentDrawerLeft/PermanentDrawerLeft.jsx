@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -28,11 +27,13 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-  // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
-  content: {
+  // Necessary for content to be below app bar
+  toolbarPlaceholder: theme.mixins.toolbar,
+  contentContainer: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
+  },
+  content: {
     padding: theme.spacing(3),
   },
 }));
@@ -48,26 +49,24 @@ export default function PermanentDrawerLeft({
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position='fixed' className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography variant='h6' noWrap>
+          <Typography variant="h6" noWrap>
             {title}
           </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
         className={classes.drawer}
-        variant='permanent'
+        variant="permanent"
         classes={{
           paper: classes.drawerPaper,
         }}
-        anchor='left'
+        anchor="left"
       >
-        <div className={classes.toolbar} />
+        <div className={classes.toolbarPlaceholder} />
         <Divider />
         <List>
-          {/* eslint-disable-next-line react/prop-types */}
           {sections.map((section) => (
             <ListItem
               button
@@ -75,18 +74,16 @@ export default function PermanentDrawerLeft({
               selected={section === selectedSection}
               onClick={() => changeSection(section.route)}
             >
-              <ListItemIcon>
-                {section.icon}
-              </ListItemIcon>
+              <ListItemIcon>{section.icon}</ListItemIcon>
               <ListItemText primary={section.label} />
             </ListItem>
           ))}
         </List>
       </Drawer>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {content}
-      </main>
+      <div className={classes.contentContainer}>
+        <div className={classes.toolbarPlaceholder} />
+        <main className={classes.content}>{content}</main>
+      </div>
     </div>
   );
 }

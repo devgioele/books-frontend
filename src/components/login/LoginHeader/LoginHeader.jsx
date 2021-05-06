@@ -3,7 +3,7 @@ import CloudImage from 'components/CloudImage';
 import { Typography } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import COMPILATION_PROGRESS from 'screens/Login/authProgress';
+import AuthProgress from 'screens/Authorization/authProgress';
 
 const useStyles = makeStyles(() => ({
   logo: {
@@ -15,9 +15,9 @@ const useStyles = makeStyles(() => ({
 
 function renderText(progress) {
   switch (progress) {
-    case COMPILATION_PROGRESS.LOGIN:
+    case AuthProgress.LOGIN:
       return `Nice to see you again!`;
-    case COMPILATION_PROGRESS.SIGNUP:
+    case AuthProgress.SIGNUP:
       return `This is going to be great!`;
     default:
       return `We will log you in or create an account if you don't have one already.`;

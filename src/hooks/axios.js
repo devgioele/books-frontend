@@ -1,11 +1,20 @@
 import { useState } from 'react';
 import axios from 'axios';
+import STD_MESSAGES from 'messages/standard';
+import { useSnackbar } from 'notistack';
 
-const useAxios = (axiosBlock) => {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+const useAxios = (
+  axiosBlock,
+  operationName = '',
+  onSuccess = () => {},
+  onExpectedError = () => {}
+) => {
+  const [data, setData] = useState(undefined);
+  const [error, setError] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [source, setSource] = useState(null);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const fetch = (...args) => {
     // We use this variable in order to pass the value to the axiosBlock and
@@ -15,14 +24,21 @@ const useAxios = (axiosBlock) => {
     setIsLoading(true);
     axiosBlock(
       (body) => {
+        setIsLoading(false);
         setData(body);
-        setError(null);
-        setIsLoading(false);
+        onSuccess(body);
       },
-      (err) => {
-        setError(err);
-        setData(null);
+      (err, expected) => {
         setIsLoading(false);
+        if (expected) onExpectedError(err);
+        else
+          enqueueSnackbar(
+            `${STD_MESSAGES.UNEXPECTED(operationName)}\nCause: ${err}`,
+            {
+              variant: 'error',
+            }
+          );
+        setError(err);
       },
       localSource.token,
       ...args
@@ -31,6 +47,7 @@ const useAxios = (axiosBlock) => {
 
   const cancelPrevious = () => {
     if (source != null) source.cancel();
+    setIsLoading(false);
   };
 
   return [fetch, cancelPrevious, data, error, isLoading];

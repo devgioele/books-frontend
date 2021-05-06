@@ -1,16 +1,17 @@
 import { createContext, useContext, useState } from 'react';
+import { LOCAL_STORAGE_TOKEN_KEY } from '../utils/environment';
 
 const localStorageAuth = {
   login(onSuccess, token) {
-    localStorage.setItem('token', token);
+    localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
     onSuccess(token);
   },
   logout(onSuccess) {
-    localStorage.removeItem('token');
+    localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
     onSuccess();
   },
   getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
   },
 };
 

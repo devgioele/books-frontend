@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { submitIdentity } from 'api/auth';
-import useStatefulSnackbar from 'hooks/snackbar';
+import { checkIdentity } from 'api/auth';
 import useAxios from 'hooks/axios';
-import STD_MESSAGES from 'messages/standard';
+import AuthProgress from 'screens/Authorization/authProgress';
 
 const useStyles = makeStyles(() => ({
   textField: { width: '100%' },
@@ -20,15 +19,19 @@ export default function IdentityForm({
   const classes = useStyles();
   const [invalid, setInvalid] = useState(false);
   const btnContinue = useRef(null);
-  const [fetch, cancelPrevious, data, error] = useAxios(submitIdentity);
-  useStatefulSnackbar(error, STD_MESSAGES.UNEXPECTED, 'error');
-  useEffect(() => {
-    if (data !== null) onProgress(data);
-  }, [onProgress, data]);
+  const [doCheckIdentity, cancelCheckIdentity, data, error] = useAxios(
+    checkIdentity,
+    'verifying existence of user',
+    (fetchedData) => {
+      if (fetchedData.username) onProgress(AuthProgress.LOGIN);
+      else onProgress(AuthProgress.SIGNUP);
+    },
+    () => setInvalid(true)
+  );
 
   const handleSubmit = () => {
-    cancelPrevious();
-    fetch(usernameOrEmail);
+    cancelCheckIdentity();
+    doCheckIdentity(usernameOrEmail);
   };
 
   return (

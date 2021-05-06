@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import {
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -54,6 +55,7 @@ export default function PasswordField(props) {
     event.preventDefault();
   };
 
+  const helperTextId = helperText && id ? `${id}-helper-text` : undefined;
   const inputLabelId = label && id ? `${id}-label` : undefined;
 
   return (
@@ -72,6 +74,7 @@ export default function PasswordField(props) {
       </InputLabel>
       <OutlinedInput
         label={label}
+        aria-describedby={helperTextId}
         autoComplete={autoComplete}
         autoFocus={autoFocus}
         defaultValue={defaultValue}
@@ -92,9 +95,9 @@ export default function PasswordField(props) {
         placeholder={placeholder}
         inputProps={inputProps}
         endAdornment={
-          <InputAdornment position='end'>
+          <InputAdornment position="end">
             <IconButton
-              aria-label='toggle password visibility'
+              aria-label="toggle password visibility"
               onClick={() => {
                 setShowPassword(!showPassword);
                 setTimeout(() => {
@@ -102,13 +105,18 @@ export default function PasswordField(props) {
                 }, 0);
               }}
               onMouseDown={handleMouseDownPassword}
-              edge='end'
+              edge="end"
             >
               {showPassword ? <Visibility /> : <VisibilityOff />}
             </IconButton>
           </InputAdornment>
         }
       />
+      {helperText && (
+        <FormHelperText id={helperTextId} {...FormHelperTextProps}>
+          {helperText}
+        </FormHelperText>
+      )}
     </FormControl>
   );
 }
