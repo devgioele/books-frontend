@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
 /**
  <color name="primaryColor">#eae1da</color>
@@ -14,7 +14,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 /**
  * More info: [https://material-ui.com/customization/default-theme/]
  */
-export default createMuiTheme({
+export default responsiveFontSizes(createMuiTheme({
   breakpoints: {
     values: {
       xs: 0,
@@ -50,7 +50,7 @@ export default createMuiTheme({
       fontFamily: 'Libre Baskerville',
     },
     h6: {
-      fontFamily: 'Libre Baskerville',
+      fontFamily: 'Roboto',
     },
     body1: {
       fontFamily: 'Roboto',
@@ -61,10 +61,13 @@ export default createMuiTheme({
     subtitle1: {
       fontFamily: 'Roboto',
     },
+    subtitle2: {
+      fontFamily: 'Roboto',
+    },
   },
   colors: {
     black: '#000000',
     shadowGray: '#dadada',
     linkBlue: '#2858f4',
   },
-});
+}));

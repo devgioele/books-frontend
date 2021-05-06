@@ -1,17 +1,9 @@
 import { Button, TextField } from '@material-ui/core';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import { submitSignup } from 'api/auth';
+import { signup } from 'api/auth';
 import PasswordField from 'components/PasswordField';
 import useAxios from 'hooks/axios';
-import STD_MESSAGES from 'messages/standard';
-import useStatefulSnackbar from 'hooks/snackbar';
-
-const useStyles = makeStyles(() => ({
-  textField: { width: '100%' },
-  btn: { width: '100%' },
-}));
 
 function exactMatch(text, regex) {
   const matches = text.match(regex);
@@ -19,7 +11,6 @@ function exactMatch(text, regex) {
 }
 
 export default function SignupForm({ redirect, usernameOrEmail }) {
-  const classes = useStyles();
   const [invalid, setInvalid] = useState(false);
   const btnContinue = useRef(null);
 
@@ -45,24 +36,17 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
   };
   const passwordConfirmed = newUser.password === newUser.passwordConfirmed;
 
-  const [fetch, cancelPrevious, data, error] = useAxios(submitSignup);
-  useStatefulSnackbar(
-    error?.response?.status || error,
-    STD_MESSAGES.UNEXPECTED,
-    'error',
-    422
+  const [doSignup, cancelSignup, ,] = useAxios(
+    signup,
+    'signing up',
+    () => redirect(),
+    () => setInvalid(true)
   );
-  useEffect(() => {
-    if (error?.response?.status === 422) setInvalid(true);
-  }, [setInvalid, error]);
-  useEffect(() => {
-    if (data !== null) redirect();
-  }, [redirect, data]);
 
   const handleSubmit = () => {
     if (passwordConfirmed) {
-      cancelPrevious();
-      fetch(newUser);
+      cancelSignup();
+      doSignup(newUser);
     }
   };
 
@@ -79,7 +63,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
     >
       <Grid item>
         <TextField
-          className={classes.textField}
+          fullWidth
           autoFocus={true}
           defaultValue={initEmail}
           id="email"
@@ -92,24 +76,25 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
       </Grid>
       <Grid item>
         <TextField
-          className={classes.textField}
+          fullWidth
           defaultValue={initUsername}
           id="username"
           variant="outlined"
           size="small"
           label="Username"
+          helperText="At least 3 characters long"
           error={invalid}
           onChange={updateNewUser('username')}
-          helperText="At least 3 characters"
         />
       </Grid>
       <Grid item>
         <PasswordField
-          className={classes.textField}
+          fullWidth
           id="password"
           variant="outlined"
           size="small"
           label="Password"
+          helperText="At least 7 characters long"
           value={newUser.password}
           error={invalid}
           onChange={updateNewUser('password')}
@@ -117,7 +102,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
       </Grid>
       <Grid item>
         <PasswordField
-          className={classes.textField}
+          fullWidth
           id="passwordConfirmed"
           variant="outlined"
           size="small"
@@ -130,7 +115,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
       </Grid>
       <Grid item>
         <Button
-          className={classes.btn}
+          fullWidth
           variant="contained"
           color="primary"
           ref={btnContinue}

@@ -3,11 +3,9 @@ import PermanentDrawerLeft from 'components/PermanentDrawerLeft';
 import ExploreIcon from '@material-ui/icons/Explore';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
-import {
-  EXPLORE_ROUTE,
-  PROFILE_ROUTE,
-  SELL_ROUTE,
-} from '../../routing/helpers';
+import { EXPLORE_ROUTE, PROFILE_ROUTE, SELL_ROUTE } from 'routing/helpers';
+import { useMediaQuery } from '@material-ui/core';
+import SimpleBottomNavigation from '../SimpleBottomNavigation';
 
 const sections = [
   {
@@ -27,23 +25,38 @@ const sections = [
   },
 ];
 
-export default function Navigation({
-  children,
-  selectedRoute,
-  changeSection,
-}) {
-  // eslint-disable-next-line no-unused-vars
-  const selectedSection = useMemo(() =>
-      sections.filter((section) => section.route === selectedRoute)[0],
-    [selectedRoute]);
+export default function Navigation({ children, selectedRoute, changeSection }) {
+  const [selectedSection, selectedIndex] = useMemo(() => {
+    const index = sections.findIndex(
+      (section) => section.route === selectedRoute
+    );
+    return [sections[index], index];
+  }, [selectedRoute]);
+  const downXSmall = useMediaQuery((theme) =>
+    theme.breakpoints.down(theme.breakpoints.values.smmd)
+  );
 
   return (
-    <PermanentDrawerLeft
-      title='Books'
-      content={children}
-      selectedSection={selectedSection}
-      sections={sections}
-      changeSection={changeSection}
-    />
+    <>
+      {downXSmall ? (
+        <SimpleBottomNavigation
+          title="Books"
+          content={children}
+          selectedSection={selectedSection}
+          selectedIndex={selectedIndex}
+          sections={sections}
+          changeSection={changeSection}
+        />
+      ) : (
+        <PermanentDrawerLeft
+          title="Books"
+          content={children}
+          selectedSection={selectedSection}
+          selectedIndex={selectedIndex}
+          sections={sections}
+          changeSection={changeSection}
+        />
+      )}
+    </>
   );
 }

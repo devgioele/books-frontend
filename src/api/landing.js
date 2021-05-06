@@ -7,7 +7,7 @@ const landingSearchBy = (onSuccess, onFailure, cancelToken, searchQuery) => {
       params: { searchQuery },
       cancelToken,
     })
-    .then(successWith(onSuccess, 200))
+    .then(successWith(onSuccess, onFailure, 200))
     .catch(failureWith(onFailure, 500, 422));
 };
 
