@@ -25,5 +25,8 @@ export const failureWith = (onFailure, ...failureStatusCodes) => (error) => {
 
 export const auth = (config) => {
   const token = localStorage.getItem('token');
-  return { ...config, Authorization: `Bearer ${token}` };
+  return {
+    ...config,
+    headers: { Authorization: `Bearer ${token}` },
+  };
 };

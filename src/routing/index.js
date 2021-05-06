@@ -7,6 +7,7 @@ import Book from 'screens/Book';
 import Dashboard from 'screens/Dashboard';
 import {
   BOOK_ROUTE,
+  CONFIRM_ROUTE,
   DASHBOARD_ROUTE,
   EXPLORE_ROUTE,
   LANDING_ROUTE,
@@ -14,6 +15,7 @@ import {
   PROFILE_ROUTE,
   SELL_ROUTE,
 } from './helpers';
+import Confirm from '../screens/Confirm';
 
 const routes = [
   {
@@ -23,6 +25,12 @@ const routes = [
     component: Landing,
   },
   {
+    path: CONFIRM_ROUTE,
+    isExact: true,
+    isProtected: true,
+    component: Confirm,
+  },
+  {
     path: LOGIN_ROUTE,
     isExact: true,
     isProtected: false,
@@ -30,7 +38,7 @@ const routes = [
   },
   {
     path: BOOK_ROUTE,
-    isExact: false,
+    isExact: true,
     isProtected: true,
     component: Book,
   },

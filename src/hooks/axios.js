@@ -16,10 +16,12 @@ const useAxios = (axiosBlock) => {
     axiosBlock(
       (body) => {
         setData(body);
+        setError(null);
         setIsLoading(false);
       },
       (err) => {
         setError(err);
+        setData(null);
         setIsLoading(false);
       },
       localSource.token,

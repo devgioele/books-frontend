@@ -3,6 +3,7 @@ import React from 'react';
 import ProtectedRoute from 'components/ProtectedRoute';
 
 export const LANDING_ROUTE = '/';
+export const CONFIRM_ROUTE = '/confirm/:transactionId';
 export const LOGIN_ROUTE = '/login';
 export const APP_ROUTE = '/app';
 export const BOOK_ROUTE = `${APP_ROUTE}/book/:id`;
