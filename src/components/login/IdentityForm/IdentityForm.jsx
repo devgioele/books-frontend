@@ -19,7 +19,7 @@ export default function IdentityForm({
   const classes = useStyles();
   const [invalid, setInvalid] = useState(false);
   const btnContinue = useRef(null);
-  const [doCheckIdentity, cancelCheckIdentity, data, error] = useAxios(
+  const [doCheckIdentity, cancelCheckIdentity, ,] = useAxios(
     checkIdentity,
     'verifying existence of user',
     (fetchedData) => {

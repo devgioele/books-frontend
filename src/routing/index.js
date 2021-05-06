@@ -7,6 +7,7 @@ import Dashboard from 'screens/Dashboard';
 import Authorization from 'screens/Authorization';
 import SellBookDialog from 'components/SellBookDialog';
 import { SellRemoveDialog } from 'screens/Sell/Sell.jsx';
+import Confirm from 'screens/Confirm';
 import {
   BOOK_ROUTE,
   CONFIRM_ROUTE,
@@ -20,7 +21,6 @@ import {
   SELL_ROUTE,
   REMOVE_SELL_ROUTE,
 } from './helpers';
-import Confirm from '../screens/Confirm';
 
 const routes = [
   {

@@ -1,7 +1,6 @@
 import { Button, TextField } from '@material-ui/core';
 import React, { useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import { signup } from 'api/auth';
 import PasswordField from 'components/PasswordField';
 import useAxios from 'hooks/axios';
@@ -37,7 +36,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
   };
   const passwordConfirmed = newUser.password === newUser.passwordConfirmed;
 
-  const [doSignup, cancelSignup, data, error] = useAxios(
+  const [doSignup, cancelSignup, ,] = useAxios(
     signup,
     'signing up',
     () => redirect(),

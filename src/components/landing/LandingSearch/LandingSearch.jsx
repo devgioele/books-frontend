@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 export default function LandingSearch() {
   const classes = useStyles();
   const [hideSearch, setHideSearch] = useState(true);
-  const [fetch, cancelPrevious, data, error, isLoading] = useAxios(
+  const [fetch, cancelPrevious, data, , isLoading] = useAxios(
     landingSearchBy,
     'searching'
   );

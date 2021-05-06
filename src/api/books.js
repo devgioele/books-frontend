@@ -42,19 +42,37 @@ export const removeBook = (onSuccess, onFailure, cancelToken, bookId) => {
     .catch(failureWith(onFailure));
 };
 
-export const confirmSell = (onSuccess, onFailure, cancelToken, transactionId) => {
+export const confirmSell = (
+  onSuccess,
+  onFailure,
+  cancelToken,
+  transactionId
+) => {
   axios
-    .post(`${BASE_URL}/books/sell/confirm/${transactionId}`, {}, auth({
-      cancelToken,
-    }))
+    .post(
+      `${BASE_URL}/books/sell/confirm/${transactionId}`,
+      {},
+      withAuth({
+        cancelToken,
+      })
+    )
     .then(successWith(onSuccess, 200))
     .catch(failureWith(onFailure, 500, 422));
 };
 
-export const getBookByTransaction = (onSuccess, onFailure, cancelToken, transactionId) => {
+export const getBookByTransaction = (
+  onSuccess,
+  onFailure,
+  cancelToken,
+  transactionId
+) => {
   axios
-    .get(`${BASE_URL}/books/by-transaction/${transactionId}`, auth({
-      cancelToken,
-    }))
+    .get(
+      `${BASE_URL}/books/by-transaction/${transactionId}`,
+      withAuth({
+        cancelToken,
+      })
+    )
     .then(successWith(onSuccess, 200))
     .catch(failureWith(onFailure, 500, 422));
+};

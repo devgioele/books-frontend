@@ -19,7 +19,7 @@ export default function LoginForm({ redirect, usernameOrEmail }) {
   const auth = useAuth();
   const btnContinue = useRef(null);
 
-  const [fetch, cancelPrevious, data, error, isLoading] = useAxios(
+  const [fetch, , , , isLoading] = useAxios(
     login,
     'logging in',
     (fetchedData) => {
