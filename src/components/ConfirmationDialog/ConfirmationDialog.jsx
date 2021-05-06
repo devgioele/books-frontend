@@ -37,7 +37,7 @@ export default function ConfirmationDialog({
           <Grid item>
             <Button
               onClick={unwrapEventValue(onCancel)}
-              disabled={loadingCancellable && isLoading}
+              disabled={!loadingCancellable && isLoading}
             >
               Cancel
             </Button>

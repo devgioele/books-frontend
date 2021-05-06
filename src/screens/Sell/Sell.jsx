@@ -30,22 +30,20 @@ export default function Sell({ routes }) {
   const [bookToEdit, setBookToEdit] = useState(undefined);
   const [bookToRemove, setBookToRemove] = useState(undefined);
   const history = useHistory();
-  const newSellRoute = routes[0];
-  const editSellRoute = routes[1];
-  const removeSellRoute = routes[2];
+  const [newSellRoute, editSellRoute, removeSellRoute] = routes;
 
   const [
     fetchSellingBooks,
     cancelSelling,
     sellingBooks = [],
-    errorSelling,
+    ,
     isLoadingSelling,
   ] = useAxios(getSellingBooks, 'fetching selling books');
   const [
     fetchSoldBooks,
     cancelSold,
     soldBooks = [],
-    errorSold,
+    ,
     isLoadingSold,
   ] = useAxios(getSoldBooks, 'fetching sold books');
 
@@ -116,13 +114,11 @@ export default function Sell({ routes }) {
 }
 
 export function SellRemoveDialog({ backToParent, bookToRemove }) {
-  const [
-    remove,
-    cancelRemoval,
-    responseRemoval,
-    errorRemoval,
-    isLoadingRemoval,
-  ] = useAxios(removeBook, 'removing book', backToParent(true));
+  const [remove, cancelRemoval, , , isLoadingRemoval] = useAxios(
+    removeBook,
+    'removing book',
+    backToParent(true)
+  );
 
   const handleConfirm = () => remove(bookToRemove.bookId);
   const handleCancel = () => {

@@ -36,34 +36,24 @@ export default function SellBookDialog({ backToParent, bookToEdit }) {
     setNewBook(bookGen);
   };
 
-  const [
-    sell,
-    cancelSell,
-    dataSell,
-    errorSell,
-    isLoadingSell,
-  ] = useAxios(sellBook, 'selling book', backToParent(true), () =>
-    setInvalid(true)
+  const [sell, , , , isLoadingSell] = useAxios(
+    sellBook,
+    'selling book',
+    backToParent(true),
+    () => setInvalid(true)
   );
-  const [
-    edit,
-    cancelEdit,
-    dataEdit,
-    errorEdit,
-    isLoadingEdit,
-  ] = useAxios(editBook, 'editing book', backToParent(true), () =>
-    setInvalid(true)
+  const [edit, , , , isLoadingEdit] = useAxios(
+    editBook,
+    'editing book',
+    backToParent(true),
+    () => setInvalid(true)
   );
   const isLoading = isLoadingSell || isLoadingEdit;
   const handleConfirm = () => {
     if (bookToEdit) edit(bookToEdit.bookId, newBook);
     else sell(newBook);
   };
-  const handleCancel = () => {
-    if (bookToEdit) cancelEdit();
-    else cancelSell();
-    backToParent(false)();
-  };
+  const handleCancel = () => backToParent(false)();
 
   return (
     <Dialog fullScreen={false} fullWidth={true} open={true}>
@@ -177,7 +167,9 @@ export default function SellBookDialog({ backToParent, bookToEdit }) {
           spacing={2}
         >
           <Grid item>
-            <Button onClick={handleCancel}>Cancel</Button>
+            <Button onClick={handleCancel} disabled={isLoading}>
+              Cancel
+            </Button>
             <Button onClick={handleConfirm} disabled={isLoading}>
               {bookToEdit ? 'Modify' : 'Sell'}
             </Button>
