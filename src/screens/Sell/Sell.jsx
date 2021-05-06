@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
 import SellBooksList from 'components/SellBooksList';
 import {
-  EDIT_SELL_ROUTE,
-  NEW_SELL_ROUTE,
-  renderRoute,
   SELL_ROUTE,
+  NEW_SELL_ROUTE,
+  EDIT_SELL_ROUTE,
+  REMOVE_SELL_ROUTE,
+  renderRoute,
   toRoute,
 } from 'routing/helpers';
 import Fab from '@material-ui/core/Fab';
@@ -15,7 +16,6 @@ import { useHistory } from 'react-router-dom';
 import useAxios from 'hooks/axios';
 import { getSellingBooks, getSoldBooks, removeBook } from 'api/books';
 import ConfirmationDialog from 'components/ConfirmationDialog';
-import { resetFirstInputPolyfill } from 'web-vitals/dist/modules/lib/polyfills/firstInputPolyfill';
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -32,6 +32,7 @@ export default function Sell({ routes }) {
   const history = useHistory();
   const newSellRoute = routes[0];
   const editSellRoute = routes[1];
+  const removeSellRoute = routes[2];
 
   const [
     fetchSellingBooks,
@@ -39,26 +40,14 @@ export default function Sell({ routes }) {
     sellingBooks = [],
     errorSelling,
     isLoadingSelling,
-  ] = useAxios(getSellingBooks, 'fetching selling books', () => {
-    // console.log('received selling books');
-  });
+  ] = useAxios(getSellingBooks, 'fetching selling books');
   const [
     fetchSoldBooks,
     cancelSold,
     soldBooks = [],
     errorSold,
     isLoadingSold,
-  ] = useAxios(getSoldBooks, 'fetching sold books', () => {
-    // console.log('received sold books');
-  });
-
-  const [
-    remove,
-    cancelRemoval,
-    responseRemoval,
-    errorRemoval,
-    isLoadingRemoval,
-  ] = useAxios(removeBook, 'removing book', () => setBookToRemove(undefined));
+  ] = useAxios(getSoldBooks, 'fetching sold books');
 
   // These two effects are applied only on mounting.
   // They are only clean up on unmounting.
@@ -72,33 +61,30 @@ export default function Sell({ routes }) {
     return () => cancelSold();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const refreshBooksList = () => {
-    cancelSelling();
-    fetchSellingBooks();
-    cancelSold();
-    fetchSoldBooks();
+
+  const backToParent = (doRefresh) => () => {
+    history.push(SELL_ROUTE);
+    if (doRefresh) {
+      fetchSellingBooks();
+      fetchSoldBooks();
+    }
   };
 
   return (
     <>
-      {newSellRoute && renderRoute(newSellRoute, { refreshBooksList })}
+      {newSellRoute && renderRoute(newSellRoute, { backToParent })}
       {editSellRoute &&
         bookToEdit &&
         renderRoute(editSellRoute, {
-          refreshBooksList,
+          backToParent,
           bookToEdit,
         })}
-      {bookToRemove && (
-        <ConfirmationDialog
-          title={`Are you sure you want to remove '${bookToRemove.title}'?`}
-          onCancel={() => {
-            // cancelRemoval(); if here then also in edit and new
-            setBookToRemove(undefined);
-          }}
-          onConfirm={() => remove(bookToRemove.bookId)}
-          isLoading={isLoadingRemoval}
-        />
-      )}
+      {removeSellRoute &&
+        bookToRemove &&
+        renderRoute(removeSellRoute, {
+          backToParent,
+          bookToRemove,
+        })}
       <Grid container>
         <Grid item xs={12}>
           <SellBooksList
@@ -110,7 +96,10 @@ export default function Sell({ routes }) {
               setBookToEdit(book);
               history.push(toRoute(EDIT_SELL_ROUTE));
             }}
-            onRemove={(book) => setBookToRemove(book)}
+            onRemove={(book) => {
+              setBookToRemove(book);
+              history.push(toRoute(REMOVE_SELL_ROUTE));
+            }}
           />
         </Grid>
       </Grid>
@@ -123,5 +112,30 @@ export default function Sell({ routes }) {
         <AddIcon />
       </Fab>
     </>
+  );
+}
+
+export function SellRemoveDialog({ backToParent, bookToRemove }) {
+  const [
+    remove,
+    cancelRemoval,
+    responseRemoval,
+    errorRemoval,
+    isLoadingRemoval,
+  ] = useAxios(removeBook, 'removing book', backToParent(true));
+
+  const handleConfirm = () => remove(bookToRemove.bookId);
+  const handleCancel = () => {
+    cancelRemoval();
+    backToParent(false)();
+  };
+
+  return (
+    <ConfirmationDialog
+      title={`Are you sure you want to remove '${bookToRemove.title}'?`}
+      onConfirm={handleConfirm}
+      onCancel={handleCancel}
+      isLoading={isLoadingRemoval}
+    />
   );
 }

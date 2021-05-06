@@ -11,6 +11,7 @@ export const EXPLORE_ROUTE = `${DASHBOARD_ROUTE}/explore`;
 export const SELL_ROUTE = `${DASHBOARD_ROUTE}/sell`;
 export const NEW_SELL_ROUTE = `${SELL_ROUTE}/new`;
 export const EDIT_SELL_ROUTE = `${SELL_ROUTE}/edit`;
+export const REMOVE_SELL_ROUTE = `${SELL_ROUTE}/remove`;
 export const PROFILE_ROUTE = `${DASHBOARD_ROUTE}/profile`;
 export const NO_MATCH_ROUTE = '*';
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -18,6 +18,7 @@ export default function ConfirmationDialog({
   onCancel,
   onConfirm,
   isLoading,
+  loadingCancellable,
 }) {
   return (
     <Dialog fullScreen={false} fullWidth={true} open={true}>
@@ -34,7 +35,10 @@ export default function ConfirmationDialog({
           spacing={2}
         >
           <Grid item>
-            <Button onClick={unwrapEventValue(onCancel)} disabled={isLoading}>
+            <Button
+              onClick={unwrapEventValue(onCancel)}
+              disabled={loadingCancellable && isLoading}
+            >
               Cancel
             </Button>
             <Button onClick={unwrapEventValue(onConfirm)} disabled={isLoading}>

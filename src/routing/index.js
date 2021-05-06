@@ -6,6 +6,7 @@ import Book from 'screens/Book';
 import Dashboard from 'screens/Dashboard';
 import Authorization from 'screens/Authorization';
 import SellBookDialog from 'components/SellBookDialog';
+import { SellRemoveDialog } from 'screens/Sell/Sell.jsx';
 import {
   BOOK_ROUTE,
   DASHBOARD_ROUTE,
@@ -16,6 +17,7 @@ import {
   NEW_SELL_ROUTE,
   PROFILE_ROUTE,
   SELL_ROUTE,
+  REMOVE_SELL_ROUTE,
 } from './helpers';
 
 const routes = [
@@ -66,6 +68,12 @@ const routes = [
             isExact: false,
             isProtected: true,
             component: SellBookDialog,
+          },
+          {
+            path: REMOVE_SELL_ROUTE,
+            isExact: false,
+            isProtected: true,
+            component: SellRemoveDialog,
           },
         ],
       },

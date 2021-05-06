@@ -5,13 +5,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import useAxios from 'hooks/axios';
 import { editBook, sellBook } from 'api/books';
 import { CircularProgress } from '@material-ui/core';
-import { SELL_ROUTE } from 'routing/helpers';
 import { Autocomplete } from '@material-ui/lab';
 import conditions from 'utils/condition';
 
@@ -19,7 +17,7 @@ const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
 };
 
-export default function SellBookDialog({ refreshBooksList, bookToEdit }) {
+export default function SellBookDialog({ backToParent, bookToEdit }) {
   const defaultCondition = bookToEdit?.condition || conditions[0];
   const [newBook, setNewBook] = useState({
     description: bookToEdit?.description,
@@ -37,31 +35,34 @@ export default function SellBookDialog({ refreshBooksList, bookToEdit }) {
     };
     setNewBook(bookGen);
   };
-  const history = useHistory();
-  const backToParent = () => history.push(SELL_ROUTE);
 
-  const [sell, cancelSell, dataSell, errorSell, isLoadingSell] = useAxios(
-    sellBook,
-    'selling book',
-    () => {
-      backToParent();
-      refreshBooksList();
-    },
-    () => setInvalid(true)
+  const [
+    sell,
+    cancelSell,
+    dataSell,
+    errorSell,
+    isLoadingSell,
+  ] = useAxios(sellBook, 'selling book', backToParent(true), () =>
+    setInvalid(true)
   );
-  const [edit, cancelEdit, dataEdit, errorEdit, isLoadingEdit] = useAxios(
-    editBook,
-    'editing book',
-    () => {
-      backToParent();
-      refreshBooksList();
-    },
-    () => setInvalid(true)
+  const [
+    edit,
+    cancelEdit,
+    dataEdit,
+    errorEdit,
+    isLoadingEdit,
+  ] = useAxios(editBook, 'editing book', backToParent(true), () =>
+    setInvalid(true)
   );
   const isLoading = isLoadingSell || isLoadingEdit;
-  const handleSubmit = () => {
+  const handleConfirm = () => {
     if (bookToEdit) edit(bookToEdit.bookId, newBook);
-    sell(newBook);
+    else sell(newBook);
+  };
+  const handleCancel = () => {
+    if (bookToEdit) cancelEdit();
+    else cancelSell();
+    backToParent(false)();
   };
 
   return (
@@ -176,10 +177,8 @@ export default function SellBookDialog({ refreshBooksList, bookToEdit }) {
           spacing={2}
         >
           <Grid item>
-            <Button onClick={backToParent} disabled={isLoading}>
-              Cancel
-            </Button>
-            <Button onClick={handleSubmit} disabled={isLoading}>
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button onClick={handleConfirm} disabled={isLoading}>
               {bookToEdit ? 'Modify' : 'Sell'}
             </Button>
           </Grid>
