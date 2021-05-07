@@ -56,7 +56,7 @@ export const confirmSell = (
         cancelToken,
       })
     )
-    .then(successWith(onSuccess, 200))
+    .then(successWith(onSuccess, onFailure, 200))
     .catch(failureWith(onFailure, 500, 422));
 };
 
@@ -73,6 +73,6 @@ export const getBookByTransaction = (
         cancelToken,
       })
     )
-    .then(successWith(onSuccess, 200))
+    .then(successWith(onSuccess, onFailure, 200))
     .catch(failureWith(onFailure, 500, 422));
 };

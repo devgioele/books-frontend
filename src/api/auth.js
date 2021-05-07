@@ -32,7 +32,10 @@ export const login = (
   password
 ) => {
   axios
-    .post(`${BASE_URL}/auth/login`, { usernameOrEmail, password })
+    .post(`${BASE_URL}/auth/login`, {
+      usernameOrEmail,
+      password,
+    })
     .then(successWith(onSuccess, onFailure, 200))
     .catch(failureWith(onFailure, 401, 422));
 };

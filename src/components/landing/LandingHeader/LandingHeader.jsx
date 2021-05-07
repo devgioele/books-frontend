@@ -31,16 +31,16 @@ export default function LandingHeader() {
     <Grid
       className={classes.root}
       container
-      direction='row'
-      justify='space-between'
-      alignItems='center'
+      direction="row"
+      justify="space-between"
+      alignItems="center"
       spacing={2}
     >
       <Grid item xs={6}>
         <CloudImage
           className={classes.logo}
-          alt='logo extended'
-          url='https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/logo_extended_tzumtl.'
+          alt="logo extended"
+          url="https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/logo_extended_tzumtl."
         />
       </Grid>
       <Grid item>
@@ -48,8 +48,8 @@ export default function LandingHeader() {
           <Grid item>
             <Button
               className={classes.button}
-              variant='outlined'
-              color='default'
+              variant="outlined"
+              color="default"
               onClick={() => changePage(EXPLORE_ROUTE)}
             >
               Log in
@@ -58,8 +58,8 @@ export default function LandingHeader() {
           <Grid item>
             <Button
               className={classes.button}
-              variant='contained'
-              color='primary'
+              variant="contained"
+              color="primary"
               disableElevation={true}
               onClick={() => changePage(EXPLORE_ROUTE)}
             >

@@ -9,17 +9,17 @@ import SellBookDialog from 'components/SellBookDialog';
 import { SellRemoveDialog } from 'screens/Sell/Sell.jsx';
 import Confirm from 'screens/Confirm';
 import {
+  AUTH_ROUTE,
   BOOK_ROUTE,
   CONFIRM_ROUTE,
   DASHBOARD_ROUTE,
   EDIT_SELL_ROUTE,
   EXPLORE_ROUTE,
   LANDING_ROUTE,
-  AUTH_ROUTE,
   NEW_SELL_ROUTE,
   PROFILE_ROUTE,
-  SELL_ROUTE,
   REMOVE_SELL_ROUTE,
+  SELL_ROUTE,
 } from './helpers';
 
 const routes = [

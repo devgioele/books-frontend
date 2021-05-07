@@ -14,60 +14,62 @@ import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 /**
  * More info: [https://material-ui.com/customization/default-theme/]
  */
-export default responsiveFontSizes(createMuiTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      smmd: 800,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
+export default responsiveFontSizes(
+  createMuiTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        smmd: 800,
+        md: 960,
+        lg: 1280,
+        xl: 1920,
+      },
     },
-  },
-  palette: {
-    primary: {
-      main: '#eae1da',
+    palette: {
+      primary: {
+        main: '#eae1da',
+      },
+      secondary: {
+        main: '#b8afa8',
+      },
     },
-    secondary: {
-      main: '#b8afa8',
+    typography: {
+      h1: {
+        fontFamily: 'Libre Baskerville',
+      },
+      h2: {
+        fontFamily: 'Libre Baskerville',
+      },
+      h3: {
+        fontFamily: 'Libre Baskerville',
+      },
+      h4: {
+        fontFamily: 'Libre Baskerville',
+      },
+      h5: {
+        fontFamily: 'Libre Baskerville',
+      },
+      h6: {
+        fontFamily: 'Roboto',
+      },
+      body1: {
+        fontFamily: 'Roboto',
+      },
+      body2: {
+        fontFamily: 'Roboto',
+      },
+      subtitle1: {
+        fontFamily: 'Roboto',
+      },
+      subtitle2: {
+        fontFamily: 'Roboto',
+      },
     },
-  },
-  typography: {
-    h1: {
-      fontFamily: 'Libre Baskerville',
+    colors: {
+      black: '#000000',
+      shadowGray: '#dadada',
+      linkBlue: '#2858f4',
     },
-    h2: {
-      fontFamily: 'Libre Baskerville',
-    },
-    h3: {
-      fontFamily: 'Libre Baskerville',
-    },
-    h4: {
-      fontFamily: 'Libre Baskerville',
-    },
-    h5: {
-      fontFamily: 'Libre Baskerville',
-    },
-    h6: {
-      fontFamily: 'Roboto',
-    },
-    body1: {
-      fontFamily: 'Roboto',
-    },
-    body2: {
-      fontFamily: 'Roboto',
-    },
-    subtitle1: {
-      fontFamily: 'Roboto',
-    },
-    subtitle2: {
-      fontFamily: 'Roboto',
-    },
-  },
-  colors: {
-    black: '#000000',
-    shadowGray: '#dadada',
-    linkBlue: '#2858f4',
-  },
-}));
+  })
+);

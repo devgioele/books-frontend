@@ -13,9 +13,11 @@ export const BASE_URL = `${HOST}/${API_VERSION}`;
 export const successWith = (onSuccess, onFailure, ...successStatusCodes) => (
   response
 ) => {
-  if (successStatusCodes.includes(response.status))
+  if (successStatusCodes.includes(response.status)) {
     onSuccess(response.data.body);
-  else onFailure(response, false);
+  } else {
+    onFailure(response, false);
+  }
 };
 
 export const failureWith = (onFailure, ...expectedStatusCodes) => (error) => {

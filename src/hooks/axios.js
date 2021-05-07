@@ -26,19 +26,23 @@ const useAxios = (
       (body) => {
         setIsLoading(false);
         setData(body);
+        setError(null);
         onSuccess(body);
       },
       (err, expected) => {
         setIsLoading(false);
-        if (expected) onExpectedError(err);
-        else
+        if (expected) {
+          onExpectedError(err);
+        } else {
           enqueueSnackbar(
             `${STD_MESSAGES.UNEXPECTED(operationName)}\nCause: ${err}`,
             {
               variant: 'error',
             }
           );
+        }
         setError(err);
+        setData(null);
       },
       localSource.token,
       ...args

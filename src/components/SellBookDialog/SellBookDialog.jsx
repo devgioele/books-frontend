@@ -50,8 +50,11 @@ export default function SellBookDialog({ backToParent, bookToEdit }) {
   );
   const isLoading = isLoadingSell || isLoadingEdit;
   const handleConfirm = () => {
-    if (bookToEdit) edit(bookToEdit.bookId, newBook);
-    else sell(newBook);
+    if (bookToEdit) {
+      edit(bookToEdit.bookId, newBook);
+    } else {
+      sell(newBook);
+    }
   };
   const handleCancel = () => backToParent(false)();
 

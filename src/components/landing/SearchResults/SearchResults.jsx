@@ -27,13 +27,13 @@ export default function SearchResults({ books }) {
   const history = useHistory();
 
   return (
-    <Paper className={classes.searchResults} variant='outlined'>
+    <Paper className={classes.searchResults} variant="outlined">
       <Grid
         container
         spacing={3}
-        direction='column'
-        justify='flex-start'
-        alignItems='stretch'
+        direction="column"
+        justify="flex-start"
+        alignItems="stretch"
       >
         {books.map((book, index) => (
           <Grid
@@ -59,18 +59,18 @@ function SeeMore() {
   return (
     <Grid
       container
-      direction='column'
-      justify='center'
-      alignItems='center'
+      direction="column"
+      justify="center"
+      alignItems="center"
       spacing={1}
     >
       <Grid item>
-        <Typography variant='body1'>Interested in these books?</Typography>
+        <Typography variant="body1">Interested in these books?</Typography>
       </Grid>
       <Grid item>
         <Button
-          variant='contained'
-          color='primary'
+          variant="contained"
+          color="primary"
           disableElevation={true}
           onClick={() => history.push(toRoute(EXPLORE_ROUTE))}
         >

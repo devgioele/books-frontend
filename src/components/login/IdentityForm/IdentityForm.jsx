@@ -19,12 +19,15 @@ export default function IdentityForm({
   const classes = useStyles();
   const [invalid, setInvalid] = useState(false);
   const btnContinue = useRef(null);
-  const [doCheckIdentity, cancelCheckIdentity, ,] = useAxios(
+  const [doCheckIdentity, cancelCheckIdentity] = useAxios(
     checkIdentity,
     'verifying existence of user',
     (fetchedData) => {
-      if (fetchedData.username) onProgress(AuthProgress.LOGIN);
-      else onProgress(AuthProgress.SIGNUP);
+      if (fetchedData.username) {
+        onProgress(AuthProgress.LOGIN);
+      } else {
+        onProgress(AuthProgress.SIGNUP);
+      }
     },
     () => setInvalid(true)
   );

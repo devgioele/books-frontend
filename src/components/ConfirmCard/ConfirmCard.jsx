@@ -33,47 +33,41 @@ export default function ConfirmCard({
   const classes = useStyles();
 
   return (
-    <Paper className={classes.card} variant='outlined'>
+    <Paper className={classes.card} variant="outlined">
       <Grid container>
+        <Grid item>{isLoadingBook && <CircularProgress />}</Grid>
+        <Grid item>{bookError && <Error onRetry={onRetry} />}</Grid>
         <Grid item>
-          {isLoadingBook && <CircularProgress />}
-        </Grid>
-        <Grid item>
-          {bookError && <Error onRetry={onRetry} />}
-        </Grid>
-        <Grid item>
-          {book && <Success
-            book={book}
-            confirm={confirm}
-            confirmError={confirmError}
-            isLoadingConfirm={isLoadingConfirm}
-            onConfirm={onConfirm} />}
+          {book && (
+            <Success
+              book={book}
+              confirm={confirm}
+              confirmError={confirmError}
+              isLoadingConfirm={isLoadingConfirm}
+              onConfirm={onConfirm}
+            />
+          )}
         </Grid>
       </Grid>
     </Paper>
   );
 }
 
-function Error({
-  onRetry,
-}) {
+function Error({ onRetry }) {
   const classes = useStyles();
 
   return (
-    <Grid container
-          direction='column'
-          spacing={2}
-    >
+    <Grid container direction="column" spacing={2}>
       <Grid item>
-        <Typography variant='subtitle2'>
+        <Typography variant="subtitle2">
           An error occurred, the transaction might be expired.
         </Typography>
       </Grid>
       <Grid item>
         <Button
           className={classes.cardButton}
-          color='primary'
-          variant='contained'
+          color="primary"
+          variant="contained"
           disableElevation={true}
           onClick={() => onRetry()}
         >
@@ -84,23 +78,18 @@ function Error({
   );
 }
 
-function Success({
-  book,
-  confirm,
-  confirmError,
-  isLoadingConfirm,
-  onConfirm,
-}) {
+function Success({ book, confirm, confirmError, isLoadingConfirm, onConfirm }) {
   const classes = useStyles();
-  useStatefulSnackbar(confirmError, 'Error while confirming the selling.', 'error');
+  useStatefulSnackbar(
+    confirmError,
+    'Error while confirming the selling.',
+    'error'
+  );
 
   return (
-    <Grid container
-          direction='column'
-          spacing={2}
-    >
+    <Grid container direction="column" spacing={2}>
       <Grid item>
-        <Typography variant='subtitle2'>
+        <Typography variant="subtitle2">
           You have been request to confirm the selling of {book.title}.
         </Typography>
       </Grid>
@@ -109,22 +98,23 @@ function Success({
       </Grid>
       <Grid item>
         {!confirm && isLoadingConfirm && <CircularProgress />}
-        {!confirm && !isLoadingConfirm &&
-        <Button
-          className={classes.cardButton}
-          color='primary'
-          variant='contained'
-          disableElevation={true}
-          onClick={() => onConfirm()}
-        >
-          Confirm selling
-        </Button>}
-        {confirm &&
-        <Typography variant='subtitle2'>
-          Selling confirmed successfully!
-        </Typography>}
+        {!confirm && !isLoadingConfirm && (
+          <Button
+            className={classes.cardButton}
+            color="primary"
+            variant="contained"
+            disableElevation={true}
+            onClick={() => onConfirm()}
+          >
+            Confirm selling
+          </Button>
+        )}
+        {confirm && (
+          <Typography variant="subtitle2">
+            Selling confirmed successfully!
+          </Typography>
+        )}
       </Grid>
     </Grid>
   );
 }
-

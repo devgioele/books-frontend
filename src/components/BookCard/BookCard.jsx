@@ -27,52 +27,55 @@ export default function BookCard(props) {
   return (
     <Grid
       container
-      direction='row'
-      justify='space-between'
-      alignItems='center'
+      direction="row"
+      justify="space-between"
+      alignItems="center"
       spacing={2}
     >
       <Grid item>
-        <Grid container justify='flex-start' alignItems='center' spacing={2}>
+        <Grid container justify="flex-start" alignItems="center" spacing={2}>
           <Grid item>
             <img
               className={classes.bookCover}
               src={book.pictures[0]}
-              alt='book cover'
+              alt="book cover"
             />
           </Grid>
           <Grid item>
             <Grid
               container
-              direction='column'
-              justify='center'
-              alignItems='flex-start'
+              direction="column"
+              justify="center"
+              alignItems="flex-start"
               spacing={1}
             >
               <Grid item>
                 <Link
-                  variant='body1'
-                  color='inherit'
+                  variant="body1"
+                  color="inherit"
                   // Link disabled
                   onClick={(event) => event.preventDefault()}
-                  href=''
+                  href=""
                 >
                   <b>{book.title}</b>
                 </Link>
               </Grid>
               <Grid item>
-                <Typography variant='body2'>{book.isbn}</Typography>
+                <Typography variant="body2">{book.isbn}</Typography>
               </Grid>
               <Grid item>
-                <Typography variant='subtitle1'>{book.condition}</Typography>
+                <Typography variant="subtitle1">{book.condition}</Typography>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
       <Grid item>
-        <Typography variant='body1'>
-          <b>{book.currency}{book.price}</b>
+        <Typography variant="body1">
+          <b>
+            {book.currency}
+            {book.price}
+          </b>
         </Typography>
       </Grid>
     </Grid>

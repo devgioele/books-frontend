@@ -29,8 +29,8 @@ export default function LandingSearch() {
   );
 
   const handleSearch = debounce((query) => {
-    cancelPrevious();
     fetch(query);
+    return () => cancelPrevious();
   }, 250);
 
   const showSearchResults = !hideSearch && data && data.length > 0;

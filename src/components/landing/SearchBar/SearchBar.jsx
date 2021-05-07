@@ -43,28 +43,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBar({
-  onSearching,
-  isLoading,
-}) {
+export default function SearchBar({ onSearching, isLoading }) {
   const classes = useStyles();
 
   return (
     <div className={classes.search}>
       <div className={classes.searchIconContainer}>
-        {isLoading ?
+        {isLoading ? (
           <CircularProgress
-            variant='indeterminate'
+            variant="indeterminate"
             disableShrink
-            color='secondary'
+            color="secondary"
             size={20}
             thickness={4}
           />
-          :
-          <SearchIcon className={classes.searchIcon} />}
+        ) : (
+          <SearchIcon className={classes.searchIcon} />
+        )}
       </div>
       <InputBase
-        placeholder='Search by isbn, title, description'
+        placeholder="Search by isbn, title, description"
         classes={{
           root: classes.inputRoot,
           input: classes.inputInput,

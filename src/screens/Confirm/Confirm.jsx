@@ -32,9 +32,8 @@ export default function Confirm() {
   ] = useAxios(confirmSell);
 
   useEffect(() => {
-    cGetBookByTransaction();
     fGetBookByTransaction(transactionId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => cGetBookByTransaction();
   }, [transactionId]);
 
   const onRetry = () => {

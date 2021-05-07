@@ -49,9 +49,11 @@ export default function Authorization() {
   const [progress, setProgress] = useState(COMPILATION_PROGRESS.IDENTITY);
 
   const redirect = () => {
-    if (location.state && location.state.from)
+    if (location.state && location.state.from) {
       history.replace(location.state.from);
-    else history.push(EXPLORE_ROUTE);
+    } else {
+      history.push(EXPLORE_ROUTE);
+    }
   };
 
   return (

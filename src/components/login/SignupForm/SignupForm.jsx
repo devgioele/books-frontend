@@ -36,7 +36,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
   };
   const passwordConfirmed = newUser.password === newUser.passwordConfirmed;
 
-  const [doSignup, cancelSignup, ,] = useAxios(
+  const [doSignup, cancelSignup] = useAxios(
     signup,
     'signing up',
     () => redirect(),

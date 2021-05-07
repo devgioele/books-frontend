@@ -12,31 +12,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FeatureCard({
-  icon,
-  title,
-  description,
-}) {
+export default function FeatureCard({ icon, title, description }) {
   const classes = useStyles();
 
   return (
     <Grid
       container
-      direction='column'
-      justify='center'
-      alignItems='center'
+      direction="column"
+      justify="center"
+      alignItems="center"
       spacing={1}
     >
       <Grid item>
         <Avatar className={classes.avatar}>{icon}</Avatar>
       </Grid>
       <Grid item>
-        <Typography variant='h5' align='center'>
+        <Typography variant="h5" align="center">
           <b>{title}</b>
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant='body1' align='center'>
+        <Typography variant="body1" align="center">
           {description}
         </Typography>
       </Grid>
