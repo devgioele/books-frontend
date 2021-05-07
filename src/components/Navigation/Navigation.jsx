@@ -5,7 +5,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 import { EXPLORE_ROUTE, PROFILE_ROUTE, SELL_ROUTE } from 'routing/helpers';
 import { useMediaQuery } from '@material-ui/core';
-import SimpleBottomNavigation from '../SimpleBottomNavigation';
+import SimpleBottomNavigation from 'components/SimpleBottomNavigation';
 
 const sections = [
   {

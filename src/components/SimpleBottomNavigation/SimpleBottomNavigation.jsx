@@ -13,30 +13,32 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     width: '100%',
   },
-  contentNavigation: {
+  contentContainer: {
     height: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'nowrap',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    // display: 'flex',
+    // flexDirection: 'column',
+    // flexWrap: 'nowrap',
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
   },
-  // Necessary for content to be below app bar
+  // Necessary for content to be below toolbar
   toolbarPlaceholder: theme.mixins.toolbar,
+  // Necessary for content to be above navigator
+  navigatorPlaceholder: theme.mixins.navigator,
   content: {
-    position: 'relative',
     width: '100%',
     height: '100%',
     padding: theme.spacing(3),
-    flexGrow: 1,
-    flexShrink: 1,
-    alignSelf: 'flex-start',
+    // flexGrow: 1,
+    // flexShrink: 1,
+    // alignSelf: 'flex-start',
   },
   navigator: {
+    height: theme.mixins.navigator,
     background: theme.palette.background.default,
-    flexGrow: 0,
-    flexShrink: 1,
     width: '100%',
+    position: 'fixed',
+    bottom: 0,
   },
 }));
 
@@ -58,26 +60,28 @@ export default function SimpleBottomNavigation({
           </Typography>
         </Toolbar>
       </AppBar>
-      <div className={classes.contentNavigation}>
+      <div className={classes.contentContainer}>
         <div className={classes.toolbarPlaceholder} />
         <main className={classes.content}>{content}</main>
-        <BottomNavigation
-          className={classes.navigator}
-          value={selectedIndex}
-          onChange={(event, newIndex) => {
-            changeSection(sections[newIndex].route);
-          }}
-          showLabels
-        >
-          {sections.map((section) => (
-            <BottomNavigationAction
-              key={section.label}
-              label={section.label}
-              icon={section.icon}
-            />
-          ))}
-        </BottomNavigation>
+        {/* TODO: The navigator placeholder is placed wrongly. */}
+        <div className={classes.navigatorPlaceholder} />
       </div>
+      <BottomNavigation
+        className={classes.navigator}
+        value={selectedIndex}
+        onChange={(event, newIndex) => {
+          changeSection(sections[newIndex].route);
+        }}
+        showLabels
+      >
+        {sections.map((section) => (
+          <BottomNavigationAction
+            key={section.label}
+            label={section.label}
+            icon={section.icon}
+          />
+        ))}
+      </BottomNavigation>
     </div>
   );
 }
