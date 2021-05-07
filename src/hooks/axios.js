@@ -3,6 +3,10 @@ import axios from 'axios';
 import STD_MESSAGES from 'messages/standard';
 import { useSnackbar } from 'notistack';
 
+function isNetworkError(error) {
+  return !!error.isAxiosError && !error.response;
+}
+
 const useAxios = (
   axiosBlock,
   operationName = '',
@@ -33,6 +37,10 @@ const useAxios = (
         setIsLoading(false);
         if (expected) {
           onExpectedError(err);
+        } else if (isNetworkError(err)) {
+          enqueueSnackbar(`${STD_MESSAGES.NETWORK_ERROR(operationName)}`, {
+            variant: 'error',
+          });
         } else {
           enqueueSnackbar(
             `${STD_MESSAGES.UNEXPECTED(operationName)}\nCause: ${err}`,

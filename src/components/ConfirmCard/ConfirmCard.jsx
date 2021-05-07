@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import BookCard from '../BookCard';
-import useStatefulSnackbar from '../../hooks/snackbar';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -24,7 +23,6 @@ export default function ConfirmCard({
   book,
   bookError,
   confirm,
-  confirmError,
   isLoadingBook,
   isLoadingConfirm,
   onRetry,
@@ -42,7 +40,6 @@ export default function ConfirmCard({
             <Success
               book={book}
               confirm={confirm}
-              confirmError={confirmError}
               isLoadingConfirm={isLoadingConfirm}
               onConfirm={onConfirm}
             />
@@ -78,13 +75,8 @@ function Error({ onRetry }) {
   );
 }
 
-function Success({ book, confirm, confirmError, isLoadingConfirm, onConfirm }) {
+function Success({ book, confirm, isLoadingConfirm, onConfirm }) {
   const classes = useStyles();
-  useStatefulSnackbar(
-    confirmError,
-    'Error while confirming the selling.',
-    'error'
-  );
 
   return (
     <Grid container direction="column" spacing={2}>

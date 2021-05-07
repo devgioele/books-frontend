@@ -115,14 +115,14 @@ export default function SellBooksList({
       data: sellingBooks,
       isLoading: loadingSelling,
       isSold: false,
-      showSection: sellingBooks.length > 0,
+      showSection: sellingBooks?.length > 0,
     },
     {
       title: 'Sold',
       data: soldBooks,
       isLoading: loadingSold,
       isSold: true,
-      showSection: soldBooks.length > 0,
+      showSection: soldBooks?.length > 0,
     },
   ];
 
