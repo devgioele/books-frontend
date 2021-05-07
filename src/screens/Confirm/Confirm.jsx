@@ -23,17 +23,14 @@ export default function Confirm() {
     bookError,
     isLoadingBook,
   ] = useAxios(getBookByTransaction);
-  const [
-    fConfirmSell,
-    cConfirmSell,
-    confirm,
-    confirmError,
-    isLoadingConfirm,
-  ] = useAxios(confirmSell);
+  const [fConfirmSell, cConfirmSell, confirm, , isLoadingConfirm] = useAxios(
+    confirmSell
+  );
 
   useEffect(() => {
     fGetBookByTransaction(transactionId);
     return () => cGetBookByTransaction();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transactionId]);
 
   const onRetry = () => {
@@ -58,7 +55,6 @@ export default function Confirm() {
           book={book}
           confirm={confirm}
           bookError={bookError}
-          confirmError={confirmError}
           isLoadingBook={isLoadingBook}
           isLoadingConfirm={isLoadingConfirm}
           onRetry={onRetry}
