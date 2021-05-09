@@ -117,6 +117,7 @@ export default function Sell({ routes }) {
         <Fab
           className={classes.fab}
           color="primary"
+          elevation={24}
           aria-label="sell-book"
           onClick={() => history.push(toRoute(NEW_SELL_ROUTE))}
         >

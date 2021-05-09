@@ -2,24 +2,15 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import AppBar from '@material-ui/core/AppBar';
+import clsx from 'clsx';
+import BooksAppBar from 'components/BooksAppBar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
-  appBar: {
-    width: '100%',
-  },
   contentContainer: {
-    height: '100vh',
-    // display: 'flex',
-    // flexDirection: 'column',
-    // flexWrap: 'nowrap',
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
+    height: '100%',
   },
   // Necessary for content to be below toolbar
   toolbarPlaceholder: theme.mixins.toolbar,
@@ -27,18 +18,15 @@ const useStyles = makeStyles((theme) => ({
   navigatorPlaceholder: theme.mixins.navigator,
   content: {
     width: '100%',
-    height: '100%',
     padding: theme.spacing(3),
-    // flexGrow: 1,
-    // flexShrink: 1,
-    // alignSelf: 'flex-start',
   },
   navigator: {
-    height: theme.mixins.navigator,
     background: theme.palette.background.default,
     width: '100%',
     position: 'fixed',
     bottom: 0,
+    // offset-x | offset-y | blur-radius | spread-radius
+    boxShadow: `0px 0px 5px 2px ${theme.colors.shadowGray}`,
   },
 }));
 
@@ -53,25 +41,16 @@ export default function SimpleBottomNavigation({
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" noWrap>
-            {title}
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <BooksAppBar title={title} variant="bottomNavigation" />
       <div className={classes.contentContainer}>
         <div className={classes.toolbarPlaceholder} />
         <main className={classes.content}>{content}</main>
-        {/* TODO: The navigator placeholder is placed wrongly. */}
         <div className={classes.navigatorPlaceholder} />
       </div>
       <BottomNavigation
-        className={classes.navigator}
+        className={clsx(classes.navigatorPlaceholder, classes.navigator)}
         value={selectedIndex}
-        onChange={(event, newIndex) => {
-          changeSection(sections[newIndex].route);
-        }}
+        onChange={(event, newIndex) => changeSection(sections[newIndex].route)}
         showLabels
       >
         {sections.map((section) => (

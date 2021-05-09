@@ -10,6 +10,9 @@ import { Skeleton } from '@material-ui/lab';
 import formatStringDate from 'utils/dates';
 
 const useStyles = makeStyles((theme) => ({
+  sectionGrid: {
+    marginTop: -theme.spacing(3),
+  },
   sectionHeader: {
     fontWeight: 'bold',
     marginBottom: -theme.spacing(1),
@@ -132,9 +135,18 @@ export default function SellBooksList({
         .filter((section) => section.showSection)
         .map((section, sectionIndex) => (
           <Grid key={sectionIndex} item>
-            <Grid container direction="column" spacing={4}>
+            <Grid
+              container
+              className={classes.sectionGrid}
+              direction="column"
+              spacing={4}
+            >
               <Grid item>
-                <Typography className={classes.sectionHeader} variant="h4">
+                <Typography
+                  className={classes.sectionHeader}
+                  elevation={15}
+                  variant="h4"
+                >
                   {section.title}
                 </Typography>
               </Grid>
