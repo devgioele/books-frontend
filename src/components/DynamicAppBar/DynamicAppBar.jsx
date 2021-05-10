@@ -15,10 +15,16 @@ const useStyles = makeStyles(() => ({
   }),
 }));
 
-export default function BooksAppBar({ title, variant, drawerWidth }) {
+export default function DynamicAppBar({ title, variant, drawerWidth }) {
   const classes = useStyles({ drawerWidth });
-  const scrollTriggerHide = useScrollTrigger({ threshold: 200 });
-  const scrollTriggerShadow = useScrollTrigger({ threshold: 0 });
+  const scrollTriggerHide = useScrollTrigger({
+    threshold: 200,
+    disableHysteresis: true,
+  });
+  const scrollTriggerShadow = useScrollTrigger({
+    threshold: 0,
+    disableHysteresis: true,
+  });
 
   return (
     <Slide appear={false} direction="down" in={!scrollTriggerHide}>

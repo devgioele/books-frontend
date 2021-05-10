@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
-import BooksAppBar from '../BooksAppBar';
+import DynamicAppBar from '../DynamicAppBar';
 
 const drawerWidth = 180;
 
@@ -43,7 +43,7 @@ export default function DrawerLeft({
 
   return (
     <div className={classes.root}>
-      <BooksAppBar title={title} variant="drawer" drawerWidth={drawerWidth} />
+      <DynamicAppBar title={title} variant="drawer" drawerWidth={drawerWidth} />
       <Drawer
         className={classes.drawer}
         variant="permanent"
