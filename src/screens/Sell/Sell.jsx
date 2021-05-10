@@ -20,7 +20,15 @@ import ConfirmationDialog from 'components/ConfirmationDialog';
 const useStyles = makeStyles((theme) => ({
   fab: {
     position: 'fixed',
-    bottom: theme.spacing(9),
+    [theme.breakpoints.up('xs')]: {
+      bottom: theme.spacing(9),
+    },
+    [theme.breakpoints.up('sm')]: {
+      bottom: theme.spacing(10),
+    },
+    [theme.breakpoints.up('smmd')]: {
+      bottom: theme.spacing(2),
+    },
     right: theme.spacing(2),
   },
 }));
