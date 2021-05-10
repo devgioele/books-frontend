@@ -19,3 +19,12 @@ export function useAsync(asyncFn, onSuccess, onFailure) {
     };
   }, [asyncFn, onSuccess]);
 }
+
+// TODO: implement check of key absence.
+export function getFromObject(object, key) {
+  const keys = key.split('.');
+  return keys.reduce(
+    (prevObject, currentKey) => prevObject[currentKey],
+    object
+  );
+}
