@@ -10,6 +10,9 @@ import { Skeleton } from '@material-ui/lab';
 import formatStringDate from 'utils/dates';
 
 const useStyles = makeStyles((theme) => ({
+  sectionGrid: {
+    marginTop: -theme.spacing(3),
+  },
   sectionHeader: {
     fontWeight: 'bold',
     marginBottom: -theme.spacing(1),
@@ -132,9 +135,18 @@ export default function SellBooksList({
         .filter((section) => section.showSection)
         .map((section, sectionIndex) => (
           <Grid key={sectionIndex} item>
-            <Grid container direction="column" spacing={4}>
+            <Grid
+              container
+              className={classes.sectionGrid}
+              direction="column"
+              spacing={4}
+            >
               <Grid item>
-                <Typography className={classes.sectionHeader} variant="h4">
+                <Typography
+                  className={classes.sectionHeader}
+                  elevation={15}
+                  variant="h4"
+                >
                   {section.title}
                 </Typography>
               </Grid>
@@ -168,18 +180,19 @@ function Book({ isSold, book, onEdit, onRemove }) {
     <Grid
       className={classes.bookContainer}
       container
-      justify="flex-start"
+      direction="row"
+      justify="center"
       alignItems="center"
       spacing={2}
     >
-      <Grid item>
+      <Grid item align>
         <img
           className={classes.bookCover}
           src={book.pictures[0]}
           alt="book cover"
         />
       </Grid>
-      <Grid item>
+      <Grid item xs={8}>
         <Grid
           container
           direction="column"

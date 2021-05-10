@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, useTheme, Zoom } from '@material-ui/core';
 import SellBooksList from 'components/SellBooksList';
 import {
   EDIT_SELL_ROUTE,
@@ -19,14 +19,27 @@ import ConfirmationDialog from 'components/ConfirmationDialog';
 
 const useStyles = makeStyles((theme) => ({
   fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
+    position: 'fixed',
+    [theme.breakpoints.up('xs')]: {
+      bottom: theme.spacing(9),
+    },
+    [theme.breakpoints.up('sm')]: {
+      bottom: theme.spacing(10),
+    },
+    [theme.breakpoints.up('smmd')]: {
+      bottom: theme.spacing(2),
+    },
     right: theme.spacing(2),
   },
 }));
 
 export default function Sell({ routes }) {
   const classes = useStyles();
+  const theme = useTheme();
+  const transitionDuration = {
+    enter: theme.transitions.duration.enteringScreen,
+    exit: theme.transitions.duration.leavingScreen,
+  };
   const [bookToEdit, setBookToEdit] = useState(undefined);
   const [bookToRemove, setBookToRemove] = useState(undefined);
   const history = useHistory();
@@ -101,14 +114,24 @@ export default function Sell({ routes }) {
           />
         </Grid>
       </Grid>
-      <Fab
-        className={classes.fab}
-        color="primary"
-        aria-label="sell-book"
-        onClick={() => history.push(toRoute(NEW_SELL_ROUTE))}
+      <Zoom
+        in={true}
+        timeout={transitionDuration}
+        style={{
+          transitionDelay: `${transitionDuration.exit}ms`,
+        }}
+        unmountOnExit
       >
-        <AddIcon />
-      </Fab>
+        <Fab
+          className={classes.fab}
+          color="primary"
+          elevation={24}
+          aria-label="sell-book"
+          onClick={() => history.push(toRoute(NEW_SELL_ROUTE))}
+        >
+          <AddIcon />
+        </Fab>
+      </Zoom>
     </>
   );
 }
