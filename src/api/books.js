@@ -42,6 +42,18 @@ export const removeBook = (onSuccess, onFailure, cancelToken, bookId) => {
     .catch(failureWith(onFailure));
 };
 
+export const getSellLink = (onSuccess, onFailure, cancelToken, bookId) => {
+  axios
+    .get(
+      `${BASE_URL}/books/sell/link/${bookId}`,
+      withAuth({
+        cancelToken,
+      })
+    )
+    .then(successWith(onSuccess, onFailure, 200))
+    .catch(failureWith(onFailure));
+};
+
 export const confirmSell = (
   onSuccess,
   onFailure,

@@ -17,7 +17,7 @@ const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
 };
 
-export default function SellBookDialog({ backToParent, bookToEdit }) {
+export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   const defaultCondition = bookToEdit?.condition || bookConditions[0];
   const [newBook, setNewBook] = useState({
     description: bookToEdit?.description,

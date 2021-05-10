@@ -5,9 +5,10 @@ import Profile from 'screens/Profile';
 import Book from 'screens/Book';
 import Dashboard from 'screens/Dashboard';
 import Authorization from 'screens/Authorization';
-import SellBookDialog from 'components/SellBookDialog';
-import { SellRemoveDialog } from 'screens/Sell/Sell.jsx';
+import BookEditSellDialog from 'components/BookEditSellDialog';
+import { BookRemoveDialog } from 'screens/Sell/Sell.jsx';
 import Confirm from 'screens/Confirm';
+import BookLinkDialog from 'components/BookLinkDialog';
 import {
   AUTH_ROUTE,
   BOOK_ROUTE,
@@ -16,6 +17,7 @@ import {
   EDIT_SELL_ROUTE,
   EXPLORE_ROUTE,
   LANDING_ROUTE,
+  LINK_SELL_ROUTE,
   NEW_SELL_ROUTE,
   PROFILE_ROUTE,
   REMOVE_SELL_ROUTE,
@@ -69,19 +71,25 @@ const routes = [
             path: NEW_SELL_ROUTE,
             isExact: false,
             isProtected: true,
-            component: SellBookDialog,
+            component: BookEditSellDialog,
           },
           {
             path: EDIT_SELL_ROUTE,
             isExact: false,
             isProtected: true,
-            component: SellBookDialog,
+            component: BookEditSellDialog,
           },
           {
             path: REMOVE_SELL_ROUTE,
             isExact: false,
             isProtected: true,
-            component: SellRemoveDialog,
+            component: BookRemoveDialog,
+          },
+          {
+            path: LINK_SELL_ROUTE,
+            isExact: false,
+            isProtected: true,
+            component: BookLinkDialog,
           },
         ],
       },

@@ -109,6 +109,7 @@ export default function SellBooksList({
   soldBooks,
   onEdit,
   onRemove,
+  onSellLink,
 }) {
   const classes = useStyles();
 
@@ -162,6 +163,7 @@ export default function SellBooksList({
                       book={book}
                       onEdit={onEdit}
                       onRemove={onRemove}
+                      onSellLink={onSellLink}
                     />
                   </Grid>
                 ))
@@ -173,7 +175,7 @@ export default function SellBooksList({
   );
 }
 
-function Book({ isSold, book, onEdit, onRemove }) {
+function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
   const classes = useStyles();
 
   return (
@@ -255,6 +257,7 @@ function Book({ isSold, book, onEdit, onRemove }) {
                     variant="contained"
                     disableElevation={true}
                     startIcon={<ShareIcon />}
+                    onClick={() => onSellLink(book)}
                   >
                     Share Sell Link
                   </Button>
