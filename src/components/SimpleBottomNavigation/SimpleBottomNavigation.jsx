@@ -22,7 +22,12 @@ const useStyles = makeStyles((theme) => ({
   },
   navigator: {
     background: theme.palette.background.default,
-    width: '100%',
+    /*
+    We use viewport width instead of page width, because the page includes
+    the scroll bar, which is not always visible.
+    We don't want this width to change when the scrollbar appears.
+     */
+    width: '100vw',
     position: 'fixed',
     bottom: 0,
     // offset-x | offset-y | blur-radius | spread-radius
