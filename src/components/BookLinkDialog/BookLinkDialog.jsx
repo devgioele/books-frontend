@@ -8,20 +8,12 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import useAxios from 'hooks/axios';
 import { getSellLink } from 'api/books';
-import { Box, CircularProgress, Typography } from '@material-ui/core';
+import { Box, CircularProgress } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { green } from '@material-ui/core/colors';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles(() => ({
-  linkField: {
-    width: `100%`,
-  },
-}));
 
 export default function BookLinkDialog({ backToParent, bookToLink }) {
   const [link, setLink] = useState('');
-  const classes = useStyles();
   const linkFieldRef = useRef(null);
   const [generateLink, cancelGeneration, , , isGenerating] = useAxios(
     getSellLink,
@@ -41,11 +33,9 @@ export default function BookLinkDialog({ backToParent, bookToLink }) {
   return (
     <Dialog open={true}>
       <DialogTitle align="center">
-        <Typography variant="h5">
-          {isGenerating
-            ? `Generating your sell link for '${bookToLink.title}'...`
-            : 'Sell link copied to the clipboard!'}
-        </Typography>
+        {isGenerating
+          ? `Generating your sell link for '${bookToLink.title}'...`
+          : 'Sell link copied to the clipboard!'}
       </DialogTitle>
       <DialogContent>
         <Grid
@@ -69,10 +59,10 @@ export default function BookLinkDialog({ backToParent, bookToLink }) {
             )}
           </Grid>
           {!isGenerating && (
-            <Grid item xs={12}>
-              <Box m="auto">
+            <Grid item xs={12} style={{ width: '100%' }}>
+              <Box m="auto" style={{ width: '100%' }}>
                 <TextField
-                  className={classes.linkField}
+                  fullWidth
                   variant="outlined"
                   size="small"
                   InputProps={{
