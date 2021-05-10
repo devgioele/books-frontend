@@ -180,18 +180,19 @@ function Book({ isSold, book, onEdit, onRemove }) {
     <Grid
       className={classes.bookContainer}
       container
-      justify="flex-start"
+      direction="row"
+      justify="center"
       alignItems="center"
       spacing={2}
     >
-      <Grid item>
+      <Grid item align>
         <img
           className={classes.bookCover}
           src={book.pictures[0]}
           alt="book cover"
         />
       </Grid>
-      <Grid item>
+      <Grid item xs={8}>
         <Grid
           container
           direction="column"

@@ -38,7 +38,7 @@ export default function Navigation({ children, selectedRoute, changeSection }) {
   );
 
   return (
-    <>
+    <div style={{ width: '100%' }}>
       {downXSmall ? (
         <SimpleBottomNavigation
           title="Books"
@@ -58,6 +58,6 @@ export default function Navigation({ children, selectedRoute, changeSection }) {
           changeSection={changeSection}
         />
       )}
-    </>
+    </div>
   );
 }

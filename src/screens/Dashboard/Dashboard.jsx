@@ -12,7 +12,11 @@ export default function Dashboard({ routes }) {
   };
 
   return (
-    <Navigation selectedRoute={location.pathname} changeSection={changeSection}>
+    <Navigation
+      // style={{ minWidth: '100%' }}
+      selectedRoute={location.pathname}
+      changeSection={changeSection}
+    >
       <Routes routes={routes} />
     </Navigation>
   );

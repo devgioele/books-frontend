@@ -41,7 +41,7 @@ export default function SimpleBottomNavigation({
 
   return (
     <div className={classes.root}>
-      <BooksAppBar title={title} variant="bottomNavigation" />
+      <DynamicAppBar title={title} variant="bottomNavigation" />
       <div className={classes.contentContainer}>
         <div className={classes.toolbarPlaceholder} />
         <main className={classes.content}>{content}</main>
