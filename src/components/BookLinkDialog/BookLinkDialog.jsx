@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -33,13 +33,10 @@ export default function BookLinkDialog({ backToParent, bookToLink }) {
   const [generateLink, cancelGeneration, , , isGenerating] = useAxios(
     getSellLink,
     'generating the sell link',
-    // TODO: Copy linkData.link to the clipboard
     (linkData) => {
       setLink(linkData?.link || '');
       linkFieldRef.current.focus();
-      console.log('focused');
-    },
-    () => setInvalid(true)
+    }
   );
   const handleClose = () => backToParent(false)();
   useEffect(() => {
@@ -72,7 +69,7 @@ export default function BookLinkDialog({ backToParent, bookToLink }) {
                   variant="indeterminate"
                   disableShrink
                   color="secondary"
-                  size={20}
+                  size={30}
                   thickness={4}
                 />
               ) : (
@@ -82,16 +79,20 @@ export default function BookLinkDialog({ backToParent, bookToLink }) {
             {!isGenerating && (
               <Grid item xs={12}>
                 <TextField
-                  ref={linkFieldRef}
                   className={classes.linkField}
                   variant="outlined"
                   size="small"
                   InputProps={{
                     readOnly: true,
                   }}
-                  inputProps={{ style: { textAlign: 'center' } }}
+                  inputProps={{
+                    style: { textAlign: 'center' },
+                    ref: linkFieldRef,
+                  }}
                   onFocus={(e) => {
+                    // Select the whole text
                     e.target.select();
+                    // Copy to clipboard
                     document.execCommand('copy');
                   }}
                   value={link}
