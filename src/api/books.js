@@ -69,7 +69,7 @@ export const confirmSell = (
       })
     )
     .then(successWith(onSuccess, onFailure, 200))
-    .catch(failureWith(onFailure, 500, 422));
+    .catch(failureWith(onFailure, 500));
 };
 
 export const getBookByTransaction = (
@@ -86,5 +86,5 @@ export const getBookByTransaction = (
       })
     )
     .then(successWith(onSuccess, onFailure, 200))
-    .catch(failureWith(onFailure, 500, 422));
+    .catch(failureWith(onFailure, 500));
 };

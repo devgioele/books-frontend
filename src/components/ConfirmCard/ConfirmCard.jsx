@@ -23,20 +23,22 @@ export default function ConfirmCard({
   book,
   bookError,
   confirm,
+  confirmError,
   isLoadingBook,
   isLoadingConfirm,
   onRetry,
   onConfirm,
 }) {
   const classes = useStyles();
+  const error = bookError || confirmError;
 
   return (
     <Paper className={classes.card} variant="outlined">
       <Grid container>
         <Grid item>{isLoadingBook && <CircularProgress />}</Grid>
-        <Grid item>{bookError && <Error onRetry={onRetry} />}</Grid>
+        <Grid item>{error && <Error onRetry={onRetry} />}</Grid>
         <Grid item>
-          {book && (
+          {!error && book && (
             <Success
               book={book}
               confirm={confirm}
@@ -56,8 +58,11 @@ function Error({ onRetry }) {
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
+        <Typography variant="subtitle1">A problem occurred!</Typography>
         <Typography variant="subtitle2">
-          An error occurred, the transaction might be expired.
+          The transaction might be expired. If that&apos;s the case, ask the
+          seller to create a new sell link for you. Keep in mind that you cannot
+          confirm your own sell links.
         </Typography>
       </Grid>
       <Grid item>
@@ -66,7 +71,7 @@ function Error({ onRetry }) {
           color="primary"
           variant="contained"
           disableElevation={true}
-          onClick={() => onRetry()}
+          onClick={onRetry}
         >
           Try again
         </Button>
