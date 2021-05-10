@@ -13,6 +13,7 @@ import {
   BOOK_ROUTE,
   CONFIRM_ROUTE,
   DASHBOARD_ROUTE,
+  EDIT_PROFILE_ROUTE,
   EDIT_SELL_ROUTE,
   EXPLORE_ROUTE,
   LANDING_ROUTE,
@@ -21,6 +22,7 @@ import {
   REMOVE_SELL_ROUTE,
   SELL_ROUTE,
 } from './helpers';
+import EditProfileDialog from '../components/profile/EditProfileDialog';
 
 const routes = [
   {
@@ -90,6 +92,14 @@ const routes = [
         isExact: false,
         isProtected: true,
         component: Profile,
+        routes: [
+          {
+            path: EDIT_PROFILE_ROUTE,
+            isExact: false,
+            isProtected: true,
+            component: EditProfileDialog,
+          },
+        ],
       },
     ],
   },

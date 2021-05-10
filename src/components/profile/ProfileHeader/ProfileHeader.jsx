@@ -1,9 +1,8 @@
 import React from 'react';
 import { Avatar, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
-const PLACEHOLDER_IMAGE_URL =
-  'https://www.kindpng.com/picc/m/22-223863_no-avatar-png-circle-transparent-png.png';
+import Profile from '../../../screens/Profile';
+import ProfileTypography from '../ProfileTypography';
 
 const useStyles = makeStyles(() => ({
   picture: {
@@ -12,20 +11,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ProfileHeader({ profile }) {
+export default function ProfileHeader({ fields }) {
   const classes = useStyles();
+
+  const [name, surname, picture] = fields;
 
   return (
     <Grid container justify="flex-start" alignItems="center" spacing={2}>
       <Grid item>
-        <Avatar
-          className={classes.picture}
-          src={
-            profile.profilePicture
-              ? profile.profilePicture
-              : PLACEHOLDER_IMAGE_URL
-          }
-        />
+        <Avatar className={classes.picture} src={picture.data} />
       </Grid>
       <Grid item>
         <Grid
@@ -36,11 +30,26 @@ export default function ProfileHeader({ profile }) {
           spacing={1}
         >
           <Grid item>
-            <Typography variant="h5">
-              <b>
-                {profile.name} {profile.surname}
-              </b>
-            </Typography>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item>
+                <ProfileTypography
+                  text={name.data}
+                  errorText="Missing name"
+                  show={name.data}
+                  successVariant="h5"
+                  errorVariant="h6"
+                />
+              </Grid>
+              <Grid item>
+                <ProfileTypography
+                  text={surname.data}
+                  errorText="Missing surname"
+                  show={surname.data}
+                  successVariant="h5"
+                  errorVariant="h6"
+                />
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item>
             <Typography variant="h6">Ranked #1</Typography>

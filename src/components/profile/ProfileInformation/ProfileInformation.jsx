@@ -1,27 +1,10 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { getFromObject } from '../../../utils/functions';
+import ProfileTypography from '../ProfileTypography';
+import CompleteProfileBanner from '../CompleteProfileBanner';
 
-const fields = [
-  {
-    title: 'Email',
-    value: 'email',
-  },
-  {
-    title: 'Phone Number',
-    value: 'contactInformation.phoneNumber',
-  },
-  {
-    title: 'Telegram',
-    value: 'contactInformation.telegramUsername',
-  },
-  {
-    title: 'Facebook',
-    value: 'contactInformation.facebookUsername',
-  },
-];
-
-export default function ProfileInformation({ profile }) {
+export default function ProfileInformation({ fields }) {
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
@@ -34,9 +17,11 @@ export default function ProfileInformation({ profile }) {
           <Typography variant="h6">
             <b>{field.title}</b>
           </Typography>
-          <Typography variant="body1">
-            {getFromObject(profile, field.value)}
-          </Typography>
+          <ProfileTypography
+            text={field.data}
+            show={field.data}
+            successVariant="body1"
+          />
         </Grid>
       ))}
     </Grid>

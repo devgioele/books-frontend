@@ -24,7 +24,8 @@ export function useAsync(asyncFn, onSuccess, onFailure) {
 export function getFromObject(object, key) {
   const keys = key.split('.');
   return keys.reduce(
-    (prevObject, currentKey) => prevObject[currentKey],
+    (prevObject, currentKey) =>
+      prevObject ? prevObject[currentKey] : undefined,
     object
   );
 }
