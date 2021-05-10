@@ -3,32 +3,25 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import useAxios from 'hooks/axios';
 import { getSellLink } from 'api/books';
-import { CircularProgress, Typography } from '@material-ui/core';
+import { Box, CircularProgress, Typography } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { green } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
-  contentElement: {
-    width: '100%',
+  linkField: {
+    width: `100%`,
   },
-  linkField: (textLength) => ({
-    // Set the width to match the length of the text with some margin
-    // 1ch is the width of the char '0'
-    width: `${textLength + 2}ch`,
-    maxWidth: '100%',
-  }),
 }));
 
 export default function BookLinkDialog({ backToParent, bookToLink }) {
   const [link, setLink] = useState('');
-  const classes = useStyles(link.length || 0);
+  const classes = useStyles();
   const linkFieldRef = useRef(null);
   const [generateLink, cancelGeneration, , , isGenerating] = useAxios(
     getSellLink,
@@ -55,29 +48,29 @@ export default function BookLinkDialog({ backToParent, bookToLink }) {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          <Grid
-            container
-            direction="column"
-            spacing={2}
-            alignItems="center"
-            justify="center"
-          >
+        <Grid
+          container
+          direction="column"
+          spacing={2}
+          alignItems="center"
+          justify="center"
+        >
+          <Grid item xs={12}>
+            {isGenerating ? (
+              <CircularProgress
+                variant="indeterminate"
+                disableShrink
+                color="secondary"
+                size={30}
+                thickness={4}
+              />
+            ) : (
+              <CheckCircleIcon style={{ color: green[500], fontSize: 40 }} />
+            )}
+          </Grid>
+          {!isGenerating && (
             <Grid item xs={12}>
-              {isGenerating ? (
-                <CircularProgress
-                  variant="indeterminate"
-                  disableShrink
-                  color="secondary"
-                  size={30}
-                  thickness={4}
-                />
-              ) : (
-                <CheckCircleIcon style={{ color: green[500], fontSize: 40 }} />
-              )}
-            </Grid>
-            {!isGenerating && (
-              <Grid item xs={12}>
+              <Box m="auto">
                 <TextField
                   className={classes.linkField}
                   variant="outlined"
@@ -97,10 +90,10 @@ export default function BookLinkDialog({ backToParent, bookToLink }) {
                   }}
                   value={link}
                 />
-              </Grid>
-            )}
-          </Grid>
-        </DialogContentText>
+              </Box>
+            </Grid>
+          )}
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Grid

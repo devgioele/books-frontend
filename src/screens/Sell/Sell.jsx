@@ -21,15 +21,19 @@ import ConfirmationDialog from 'components/ConfirmationDialog';
 const useStyles = makeStyles((theme) => ({
   fab: {
     position: 'fixed',
-    [theme.breakpoints.up('xs')]: {
-      bottom: theme.spacing(9),
-    },
-    [theme.breakpoints.up('sm')]: {
-      bottom: theme.spacing(10),
-    },
+    // Reduce, because drawer is used
     [theme.breakpoints.up('smmd')]: {
       bottom: theme.spacing(2),
     },
+    // Increase, because bottom navigation is used
+    [theme.breakpoints.up('sm')]: {
+      bottom: theme.spacing(10),
+    },
+    // Reduce again, because bottom navigation becomes smaller
+    [theme.breakpoints.up('xs')]: {
+      bottom: theme.spacing(9),
+    },
+
     right: theme.spacing(2),
   },
 }));

@@ -151,7 +151,7 @@ export default function SellBooksList({
                   {section.title}
                 </Typography>
               </Grid>
-              {loadingSelling ? (
+              {section.isLoading ? (
                 <Grid item>
                   <SkeletonBook isSold={section.isSold} />
                 </Grid>
@@ -187,7 +187,7 @@ function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
       alignItems="center"
       spacing={2}
     >
-      <Grid item align>
+      <Grid item>
         <img
           className={classes.bookCover}
           src={book.pictures[0]}
