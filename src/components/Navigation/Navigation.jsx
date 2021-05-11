@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import PermanentDrawerLeft from 'components/DrawerLeft';
+import DrawerLeft from 'components/DrawerLeft';
 import ExploreIcon from '@material-ui/icons/Explore';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
@@ -49,7 +49,7 @@ export default function Navigation({ children, selectedRoute, changeSection }) {
           changeSection={changeSection}
         />
       ) : (
-        <PermanentDrawerLeft
+        <DrawerLeft
           title="Books"
           content={children}
           selectedSection={selectedSection}

@@ -109,6 +109,7 @@ export default function SellBooksList({
   soldBooks,
   onEdit,
   onRemove,
+  onSellLink,
 }) {
   const classes = useStyles();
 
@@ -118,14 +119,14 @@ export default function SellBooksList({
       data: sellingBooks,
       isLoading: loadingSelling,
       isSold: false,
-      showSection: sellingBooks?.length > 0,
+      showSection: loadingSelling || sellingBooks.length > 0,
     },
     {
       title: 'Sold',
       data: soldBooks,
       isLoading: loadingSold,
       isSold: true,
-      showSection: soldBooks?.length > 0,
+      showSection: loadingSold || soldBooks.length > 0,
     },
   ];
 
@@ -150,7 +151,7 @@ export default function SellBooksList({
                   {section.title}
                 </Typography>
               </Grid>
-              {loadingSelling ? (
+              {section.isLoading ? (
                 <Grid item>
                   <SkeletonBook isSold={section.isSold} />
                 </Grid>
@@ -162,6 +163,7 @@ export default function SellBooksList({
                       book={book}
                       onEdit={onEdit}
                       onRemove={onRemove}
+                      onSellLink={onSellLink}
                     />
                   </Grid>
                 ))
@@ -173,7 +175,7 @@ export default function SellBooksList({
   );
 }
 
-function Book({ isSold, book, onEdit, onRemove }) {
+function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
   const classes = useStyles();
 
   return (
@@ -185,7 +187,7 @@ function Book({ isSold, book, onEdit, onRemove }) {
       alignItems="center"
       spacing={2}
     >
-      <Grid item align>
+      <Grid item>
         <img
           className={classes.bookCover}
           src={book.pictures[0]}
@@ -255,6 +257,7 @@ function Book({ isSold, book, onEdit, onRemove }) {
                     variant="contained"
                     disableElevation={true}
                     startIcon={<ShareIcon />}
+                    onClick={() => onSellLink(book)}
                   >
                     Share Sell Link
                   </Button>

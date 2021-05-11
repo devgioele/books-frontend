@@ -23,9 +23,13 @@ export default function Confirm() {
     bookError,
     isLoadingBook,
   ] = useAxios(getBookByTransaction);
-  const [fConfirmSell, cConfirmSell, confirm, , isLoadingConfirm] = useAxios(
-    confirmSell
-  );
+  const [
+    fConfirmSell,
+    cConfirmSell,
+    confirm,
+    confirmError,
+    isLoadingConfirm,
+  ] = useAxios(confirmSell);
 
   useEffect(() => {
     fGetBookByTransaction(transactionId);
@@ -34,6 +38,11 @@ export default function Confirm() {
   }, [transactionId]);
 
   const onRetry = () => {
+    /*
+    We might retry just because the confirmation failed.
+    Therefore, cancel the confirmation to reset 'confirmError'.
+     */
+    cConfirmSell();
     cGetBookByTransaction();
     fGetBookByTransaction(transactionId);
   };
@@ -53,8 +62,9 @@ export default function Confirm() {
       <Grid item>
         <ConfirmCard
           book={book}
-          confirm={confirm}
           bookError={bookError}
+          confirm={confirm}
+          confirmError={confirmError}
           isLoadingBook={isLoadingBook}
           isLoadingConfirm={isLoadingConfirm}
           onRetry={onRetry}

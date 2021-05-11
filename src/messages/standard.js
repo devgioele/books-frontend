@@ -6,6 +6,6 @@ const STD_MESSAGES = {
   NETWORK_ERROR: (operation = '') =>
     `The communication with the server failed${
       operation === '' ? '' : ` while ${operation}`
-    }. Check you internet connection.`,
+    }. Check your internet connection.`,
 };
 export default STD_MESSAGES;

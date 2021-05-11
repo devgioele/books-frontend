@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Grid, useTheme, Zoom } from '@material-ui/core';
 import SellBooksList from 'components/SellBooksList';
 import {
-  EDIT_SELL_ROUTE,
-  NEW_SELL_ROUTE,
-  REMOVE_SELL_ROUTE,
   renderRoute,
-  SELL_ROUTE,
   toRoute,
+  SELL_ROUTE,
+  NEW_SELL_ROUTE,
+  EDIT_SELL_ROUTE,
+  REMOVE_SELL_ROUTE,
+  LINK_SELL_ROUTE,
 } from 'routing/helpers';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -20,15 +21,19 @@ import ConfirmationDialog from 'components/ConfirmationDialog';
 const useStyles = makeStyles((theme) => ({
   fab: {
     position: 'fixed',
-    [theme.breakpoints.up('xs')]: {
-      bottom: theme.spacing(9),
-    },
-    [theme.breakpoints.up('sm')]: {
-      bottom: theme.spacing(10),
-    },
+    // Reduce, because drawer is used
     [theme.breakpoints.up('smmd')]: {
       bottom: theme.spacing(2),
     },
+    // Increase, because bottom navigation is used
+    [theme.breakpoints.up('sm')]: {
+      bottom: theme.spacing(10),
+    },
+    // Reduce again, because bottom navigation becomes smaller
+    [theme.breakpoints.up('xs')]: {
+      bottom: theme.spacing(9),
+    },
+
     right: theme.spacing(2),
   },
 }));
@@ -42,8 +47,9 @@ export default function Sell({ routes }) {
   };
   const [bookToEdit, setBookToEdit] = useState(undefined);
   const [bookToRemove, setBookToRemove] = useState(undefined);
+  const [bookToLink, setBookToLink] = useState(undefined);
   const history = useHistory();
-  const [newSellRoute, editSellRoute, removeSellRoute] = routes;
+  const [newSellRoute, editSellRoute, removeSellRoute, linkSellRoute] = routes;
 
   const [
     fetchSellingBooks,
@@ -86,16 +92,13 @@ export default function Sell({ routes }) {
       {newSellRoute && renderRoute(newSellRoute, { backToParent })}
       {editSellRoute &&
         bookToEdit &&
-        renderRoute(editSellRoute, {
-          backToParent,
-          bookToEdit,
-        })}
+        renderRoute(editSellRoute, { backToParent, bookToEdit })}
       {removeSellRoute &&
         bookToRemove &&
-        renderRoute(removeSellRoute, {
-          backToParent,
-          bookToRemove,
-        })}
+        renderRoute(removeSellRoute, { backToParent, bookToRemove })}
+      {linkSellRoute &&
+        bookToLink &&
+        renderRoute(linkSellRoute, { backToParent, bookToLink })}
       <Grid container>
         <Grid item xs={12}>
           <SellBooksList
@@ -110,6 +113,10 @@ export default function Sell({ routes }) {
             onRemove={(book) => {
               setBookToRemove(book);
               history.push(toRoute(REMOVE_SELL_ROUTE));
+            }}
+            onSellLink={(book) => {
+              setBookToLink(book);
+              history.push(toRoute(LINK_SELL_ROUTE));
             }}
           />
         </Grid>
@@ -136,7 +143,7 @@ export default function Sell({ routes }) {
   );
 }
 
-export function SellRemoveDialog({ backToParent, bookToRemove }) {
+export function BookRemoveDialog({ backToParent, bookToRemove }) {
   const [remove, cancelRemoval, , , isLoadingRemoval] = useAxios(
     removeBook,
     'removing book',
