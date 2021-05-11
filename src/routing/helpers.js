@@ -1,6 +1,8 @@
 import { Route } from 'react-router-dom';
 import React from 'react';
-import ProtectedRoute from 'components/ProtectedRoute';
+import ProtectedRoute from 'components/routing/ProtectedRoute';
+import GuestRoute from 'components/routing/GuestRoute';
+import RoutePrivileges from './privileges';
 
 export const LANDING_ROUTE = '/';
 export const CONFIRM_ROUTE = '/confirm/:transactionId';
@@ -26,29 +28,49 @@ export const toRoute = (routeName, ...params) => {
   }
 };
 
-export const renderRoute = (route, extraProps = {}) =>
-  route.isProtected ? (
-    <ProtectedRoute
-      key={route.path}
-      exact={route.isExact}
-      path={route.path}
-      render={(props) => (
-        <route.component
-          {...{ ...props, ...extraProps }}
-          routes={route.routes}
+export const renderRoute = (route, extraProps = {}) => {
+  switch (route.privilege) {
+    case RoutePrivileges.AUTHENTICATED:
+      return (
+        <ProtectedRoute
+          key={route.path}
+          exact={route.isExact}
+          path={route.path}
+          render={(props) => (
+            <route.component
+              {...{ ...props, ...extraProps }}
+              routes={route.routes}
+            />
+          )}
         />
-      )}
-    />
-  ) : (
-    <Route
-      key={route.path}
-      exact={route.isExact}
-      path={route.path}
-      render={(props) => (
-        <route.component
-          {...{ ...props, ...extraProps }}
-          routes={route.routes}
+      );
+    case RoutePrivileges.GUEST:
+      return (
+        <GuestRoute
+          key={route.path}
+          exact={route.isExact}
+          path={route.path}
+          render={(props) => (
+            <route.component
+              {...{ ...props, ...extraProps }}
+              routes={route.routes}
+            />
+          )}
         />
-      )}
-    />
-  );
+      );
+    default:
+      return (
+        <Route
+          key={route.path}
+          exact={route.isExact}
+          path={route.path}
+          render={(props) => (
+            <route.component
+              {...{ ...props, ...extraProps }}
+              routes={route.routes}
+            />
+          )}
+        />
+      );
+  }
+};

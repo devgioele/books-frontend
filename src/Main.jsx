@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 import routes from './routing';
 import ProvideAuth from './components/ProvideAuth';
-import Routes from './components/Routes';
+import Routes from './components/routing/Routes';
 
 export default function Main() {
   return (

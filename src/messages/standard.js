@@ -1,4 +1,4 @@
-const STD_MESSAGES = {
+const StdMessages = {
   UNEXPECTED: (operation = '') => `Something went wrong${
     operation === '' ? '' : ` while ${operation}`
   }. Please contact the support for help if the
@@ -8,4 +8,4 @@ const STD_MESSAGES = {
       operation === '' ? '' : ` while ${operation}`
     }. Check your internet connection.`,
 };
-export default STD_MESSAGES;
+export default StdMessages;
