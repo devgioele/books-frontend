@@ -1,49 +1,58 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CircularProgress, Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import ProfileHeader from '../../components/profile/ProfileHeader';
 import ProfileInformation from '../../components/profile/ProfileInformation';
 import useAxios from '../../hooks/axios';
 import { getProfileDetails } from '../../api/profile';
-import { renderRoute } from '../../routing/helpers';
+import { PROFILE_ROUTE, renderRoute, toRoute } from '../../routing/helpers';
 import { getFromObject } from '../../utils/functions';
 import CompleteProfileBanner from '../../components/profile/CompleteProfileBanner';
 
+// TODO: add required fields.
 const profileFields = [
   {
-    title: 'Name',
-    value: 'name',
+    displayName: 'Name',
+    name: 'name',
     showInHeader: true,
+    showInEditDialog: true,
   },
   {
-    title: 'Surname',
-    value: 'surname',
+    displayName: 'Surname',
+    name: 'surname',
     showInHeader: true,
+    showInEditDialog: true,
   },
   {
-    title: 'Picture',
-    value: 'profilePicture',
+    displayName: 'Picture',
+    name: 'profilePicture',
     showInHeader: true,
+    showInEditDialog: false,
   },
   {
-    title: 'Email',
-    value: 'email',
+    displayName: 'Email',
+    name: 'email',
     showInHeader: false,
+    showInEditDialog: true,
   },
   {
-    title: 'Phone Number',
-    value: 'contactInformation.phoneNumber',
+    displayName: 'Phone Number',
+    name: 'contactInformation.phoneNumber',
     showInHeader: false,
+    showInEditDialog: true,
   },
   {
-    title: 'Telegram',
-    value: 'contactInformation.telegramUsername',
+    displayName: 'Telegram',
+    name: 'contactInformation.telegramUsername',
     showInHeader: false,
+    showInEditDialog: true,
   },
   {
-    title: 'Facebook',
-    value: 'contactInformation.facebookUsername',
+    displayName: 'Facebook',
+    name: 'contactInformation.facebookUsername',
     showInHeader: false,
+    showInEditDialog: true,
   },
 ];
 
@@ -56,6 +65,8 @@ const computeMissingFields = (zippedData) => {
 };
 
 export default function Profile({ routes }) {
+  const history = useHistory();
+
   const [
     fGetProfileDetails,
     cGetProfileDetails,
@@ -76,7 +87,7 @@ export default function Profile({ routes }) {
     setZippedData(
       zippedData.map((field) => ({
         ...field,
-        data: getFromObject(profileDetails, field.value),
+        data: getFromObject(profileDetails, field.name),
       }))
     );
   }, [setZippedData, profileDetails]);
@@ -86,9 +97,22 @@ export default function Profile({ routes }) {
     setCompletePercentage(computeMissingFields(zippedData));
   }, [zippedData]);
 
+  const backToProfile = (refresh) => {
+    history.replace(toRoute(PROFILE_ROUTE));
+    if (refresh) {
+      cGetProfileDetails();
+      fGetProfileDetails();
+    }
+  };
+
   return (
     <>
-      {editProfileRoute && renderRoute(editProfileRoute)}
+      {editProfileRoute &&
+        renderRoute(editProfileRoute, {
+          backToProfile,
+          isDataLoaded: !!profileDetails,
+          fields: zippedData.filter((field) => field.showInEditDialog),
+        })}
       <Grid container direction="column" spacing={4}>
         {isLoadingProfileDetails && (
           <Grid item>
