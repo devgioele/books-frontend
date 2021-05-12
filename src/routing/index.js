@@ -23,72 +23,73 @@ import {
   REMOVE_SELL_ROUTE,
   SELL_ROUTE,
 } from './helpers';
+import RoutePrivilege from './privileges';
 
 const routes = [
   {
     path: LANDING_ROUTE,
     isExact: true,
-    isProtected: false,
+    privilege: RoutePrivilege.GUEST,
     component: Landing,
   },
   {
     path: CONFIRM_ROUTE,
     isExact: true,
-    isProtected: true,
+    privilege: RoutePrivilege.AUTHENTICATED,
     component: Confirm,
   },
   {
     path: AUTH_ROUTE,
     isExact: true,
-    isProtected: false,
+    privilege: RoutePrivilege.GUEST,
     component: Authorization,
   },
   {
     path: BOOK_ROUTE,
     isExact: true,
-    isProtected: true,
+    privilege: RoutePrivilege.AUTHENTICATED,
     component: Book,
   },
   {
     path: DASHBOARD_ROUTE,
     isExact: false,
-    isProtected: true,
+    privilege: RoutePrivilege.AUTHENTICATED,
     component: Dashboard,
     routes: [
       {
         path: EXPLORE_ROUTE,
         isExact: false,
-        isProtected: true,
+        privilege: RoutePrivilege.AUTHENTICATED,
         component: Explore,
       },
       {
         path: SELL_ROUTE,
         isExact: false,
-        isProtected: true,
+        privilege: RoutePrivilege.AUTHENTICATED,
         component: Sell,
         routes: [
           {
             path: NEW_SELL_ROUTE,
             isExact: false,
-            isProtected: true,
+            privilege: RoutePrivilege.AUTHENTICATED,
             component: BookEditSellDialog,
           },
           {
             path: EDIT_SELL_ROUTE,
             isExact: false,
-            isProtected: true,
+            privilege: RoutePrivilege.AUTHENTICATED,
             component: BookEditSellDialog,
           },
           {
             path: REMOVE_SELL_ROUTE,
             isExact: false,
-            isProtected: true,
+            privilege: RoutePrivilege.AUTHENTICATED,
             component: BookRemoveDialog,
           },
           {
             path: LINK_SELL_ROUTE,
             isExact: false,
-            isProtected: true,
+            privilege: RoutePrivilege.AUTHENTICATED,
             component: BookLinkDialog,
           },
         ],
@@ -96,7 +97,7 @@ const routes = [
       {
         path: PROFILE_ROUTE,
         isExact: false,
-        isProtected: true,
+        privilege: RoutePrivilege.AUTHENTICATED,
         component: Profile,
       },
     ],

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import Routes from 'components/Routes';
+import Routes from 'components/routing/Routes';
 import Navigation from 'components/Navigation';
 
 export default function Dashboard({ routes }) {
@@ -12,11 +12,7 @@ export default function Dashboard({ routes }) {
   };
 
   return (
-    <Navigation
-      // style={{ minWidth: '100%' }}
-      selectedRoute={location.pathname}
-      changeSection={changeSection}
-    >
+    <Navigation selectedRoute={location.pathname} changeSection={changeSection}>
       <Routes routes={routes} />
     </Navigation>
   );
