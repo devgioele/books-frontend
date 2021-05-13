@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -50,11 +49,8 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   );
   const isLoading = isLoadingSell || isLoadingEdit;
   const handleConfirm = () => {
-    if (bookToEdit) {
-      edit(bookToEdit.bookId, newBook);
-    } else {
-      sell(newBook);
-    }
+    if (bookToEdit) edit(bookToEdit.bookId, newBook);
+    else sell(newBook);
   };
   const handleCancel = () => backToParent(false)();
 
@@ -64,7 +60,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
         {bookToEdit ? `Modify '${bookToEdit.title}'` : 'Sell a new book'}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
+        <div style={{ padding: 20 }}>
           <Grid container spacing={4}>
             {!bookToEdit && (
               <Grid item xs={12}>
@@ -159,7 +155,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
               </Grid>
             )}
           </Grid>
-        </DialogContentText>
+        </div>
       </DialogContent>
       <DialogActions>
         <Grid
