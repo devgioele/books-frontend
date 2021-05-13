@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
 export default function ProfileHeader({ fields }) {
   const classes = useStyles();
 
-  const [name, surname, picture] = fields;
+  const [username, name, surname, picture] = fields;
 
   return (
     <Grid container justify="flex-start" alignItems="center" spacing={2}>
@@ -51,10 +51,10 @@ export default function ProfileHeader({ fields }) {
             </Grid>
           </Grid>
           <Grid item>
-            <Typography variant="h6">Ranked #1</Typography>
+            <Typography variant="h6">@{username.data}</Typography>
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1">Booker since 2021</Typography>
+            <Typography variant="subtitle1"></Typography>
           </Grid>
         </Grid>
       </Grid>

@@ -9,8 +9,12 @@ import { PROFILE_ROUTE, renderRoute, toRoute } from '../../routing/helpers';
 import { getFromObject } from '../../utils/functions';
 import CompleteProfileBanner from '../../components/profile/CompleteProfileBanner';
 
-// TODO: add required fields.
 const profileFields = [
+  {
+    displayName: 'Username',
+    name: 'username',
+    showInHeader: true,
+  },
   {
     displayName: 'Name',
     name: 'name',
@@ -27,30 +31,26 @@ const profileFields = [
     displayName: 'Picture',
     name: 'profilePicture',
     showInHeader: true,
-    showInEditDialog: false,
   },
   {
     displayName: 'Email',
     name: 'email',
-    showInHeader: false,
     showInEditDialog: true,
+    isRequired: true,
   },
   {
     displayName: 'Phone Number',
     name: 'contactInformation.phoneNumber',
-    showInHeader: false,
     showInEditDialog: true,
   },
   {
     displayName: 'Telegram',
     name: 'contactInformation.telegramUsername',
-    showInHeader: false,
     showInEditDialog: true,
   },
   {
     displayName: 'Facebook',
     name: 'contactInformation.facebookUsername',
-    showInHeader: false,
     showInEditDialog: true,
   },
 ];

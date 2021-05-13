@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Grid,
   TextField,
@@ -60,7 +59,7 @@ export default function EditProfileDialog({
           {fields.map((field, index) => (
             <Grid key={index} item xs={12}>
               <TextField
-                required
+                required={field.isRequired}
                 variant="outlined"
                 fullWidth
                 label={field.displayName}
