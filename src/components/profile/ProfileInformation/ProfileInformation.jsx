@@ -11,6 +11,7 @@ export default function ProfileInformation({ fields }) {
   const openEditDialog = () => {
     history.push(toRoute(EDIT_PROFILE_ROUTE));
   };
+
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>

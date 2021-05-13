@@ -1,7 +1,6 @@
 import React from 'react';
 import { Avatar, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Profile from '../../../screens/Profile';
 import ProfileTypography from '../ProfileTypography';
 
 const useStyles = makeStyles(() => ({

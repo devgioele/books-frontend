@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
+  Button,
   CircularProgress,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  DialogActions,
   Grid,
   TextField,
-  Button,
 } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
 import { buildObjectFromFields, imprintObject } from '../../../utils/functions';
 import useAxios from '../../../hooks/axios';
 import { editProfile } from '../../../api/profile';
-import { PROFILE_ROUTE, toRoute } from '../../../routing/helpers';
 
 const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
@@ -58,22 +56,20 @@ export default function EditProfileDialog({
     <Dialog fullScreen={false} fullWidth={true} open={true}>
       <DialogTitle>Update your profile</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          <Grid container spacing={4}>
-            {fields.map((field, index) => (
-              <Grid key={index} item xs={12}>
-                <TextField
-                  required
-                  variant="outlined"
-                  fullWidth
-                  label={field.displayName}
-                  defaultValue={profileDetails[field.name]}
-                  onChange={unwrapEventValue(updateProfileDetails(field.name))}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </DialogContentText>
+        <Grid container spacing={4}>
+          {fields.map((field, index) => (
+            <Grid key={index} item xs={12}>
+              <TextField
+                required
+                variant="outlined"
+                fullWidth
+                label={field.displayName}
+                defaultValue={profileDetails[field.name]}
+                onChange={unwrapEventValue(updateProfileDetails(field.name))}
+              />
+            </Grid>
+          ))}
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Grid

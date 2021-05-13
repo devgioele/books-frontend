@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { CircularProgress, Grid, Link, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
+import { CircularProgress, Grid } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import ProfileHeader from '../../components/profile/ProfileHeader';
 import ProfileInformation from '../../components/profile/ProfileInformation';

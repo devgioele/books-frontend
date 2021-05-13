@@ -18,5 +18,5 @@ export const editProfile = (
   axios
     .put(`${BASE_URL}/profile/edit`, profileDetails, withAuth({ cancelToken }))
     .then(successWith(onSuccess, onFailure, 200))
-    .catch(failureWith(onFailure, 422));
+    .catch(failureWith(onFailure));
 };
