@@ -4,7 +4,6 @@ import SellBooksList from 'components/SellBooksList';
 import {
   renderRoute,
   toRoute,
-  SELL_ROUTE,
   NEW_SELL_ROUTE,
   EDIT_SELL_ROUTE,
   REMOVE_SELL_ROUTE,
@@ -21,17 +20,17 @@ import ConfirmationDialog from 'components/ConfirmationDialog';
 const useStyles = makeStyles((theme) => ({
   fab: {
     position: 'fixed',
-    // Reduce, because drawer is used
-    [theme.breakpoints.up('smmd')]: {
-      bottom: theme.spacing(2),
+    // Thin bottom navigation
+    [theme.breakpoints.up('xs')]: {
+      bottom: theme.spacing(9),
     },
-    // Increase, because bottom navigation is used
+    // Fat bottom navigation
     [theme.breakpoints.up('sm')]: {
       bottom: theme.spacing(10),
     },
-    // Reduce again, because bottom navigation becomes smaller
-    [theme.breakpoints.up('xs')]: {
-      bottom: theme.spacing(9),
+    // Left drawer
+    [theme.breakpoints.up('smmd')]: {
+      bottom: theme.spacing(2),
     },
 
     right: theme.spacing(2),
@@ -80,7 +79,7 @@ export default function Sell({ routes }) {
   }, []);
 
   const backToParent = (doRefresh) => () => {
-    history.push(SELL_ROUTE);
+    history.goBack();
     if (doRefresh) {
       fetchSellingBooks();
       fetchSoldBooks();
