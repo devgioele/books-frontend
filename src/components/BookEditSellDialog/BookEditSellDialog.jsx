@@ -11,14 +11,14 @@ import useAxios from 'hooks/axios';
 import { editBook, sellBook } from 'api/books';
 import { CircularProgress } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
-import conditions from 'utils/condition';
+import bookConditions from 'utils/bookConditions';
 
 const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
 };
 
-export default function SellBookDialog({ backToParent, bookToEdit }) {
-  const defaultCondition = bookToEdit?.condition || conditions[0];
+export default function BookEditSellDialog({ backToParent, bookToEdit }) {
+  const defaultCondition = bookToEdit?.condition || bookConditions[0];
   const [newBook, setNewBook] = useState({
     description: bookToEdit?.description,
     currency: bookToEdit?.currency,
@@ -140,7 +140,7 @@ export default function SellBookDialog({ backToParent, bookToEdit }) {
                     variant="outlined"
                   />
                 )}
-                options={conditions}
+                options={bookConditions}
                 defaultValue={defaultCondition}
                 onChange={(event, value) => updateNewBook('condition')(value)}
               />

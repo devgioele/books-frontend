@@ -10,6 +10,9 @@ import { Skeleton } from '@material-ui/lab';
 import formatStringDate from 'utils/dates';
 
 const useStyles = makeStyles((theme) => ({
+  sectionGrid: {
+    marginTop: -theme.spacing(3),
+  },
   sectionHeader: {
     fontWeight: 'bold',
     marginBottom: -theme.spacing(1),
@@ -106,6 +109,7 @@ export default function SellBooksList({
   soldBooks,
   onEdit,
   onRemove,
+  onSellLink,
 }) {
   const classes = useStyles();
 
@@ -115,14 +119,14 @@ export default function SellBooksList({
       data: sellingBooks,
       isLoading: loadingSelling,
       isSold: false,
-      showSection: sellingBooks?.length > 0,
+      showSection: loadingSelling || sellingBooks.length > 0,
     },
     {
       title: 'Sold',
       data: soldBooks,
       isLoading: loadingSold,
       isSold: true,
-      showSection: soldBooks?.length > 0,
+      showSection: loadingSold || soldBooks.length > 0,
     },
   ];
 
@@ -132,13 +136,22 @@ export default function SellBooksList({
         .filter((section) => section.showSection)
         .map((section, sectionIndex) => (
           <Grid key={sectionIndex} item>
-            <Grid container direction="column" spacing={4}>
+            <Grid
+              container
+              className={classes.sectionGrid}
+              direction="column"
+              spacing={4}
+            >
               <Grid item>
-                <Typography className={classes.sectionHeader} variant="h4">
+                <Typography
+                  className={classes.sectionHeader}
+                  elevation={15}
+                  variant="h4"
+                >
                   {section.title}
                 </Typography>
               </Grid>
-              {loadingSelling ? (
+              {section.isLoading ? (
                 <Grid item>
                   <SkeletonBook isSold={section.isSold} />
                 </Grid>
@@ -150,6 +163,7 @@ export default function SellBooksList({
                       book={book}
                       onEdit={onEdit}
                       onRemove={onRemove}
+                      onSellLink={onSellLink}
                     />
                   </Grid>
                 ))
@@ -161,14 +175,15 @@ export default function SellBooksList({
   );
 }
 
-function Book({ isSold, book, onEdit, onRemove }) {
+function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
   const classes = useStyles();
 
   return (
     <Grid
       className={classes.bookContainer}
       container
-      justify="flex-start"
+      direction="row"
+      justify="center"
       alignItems="center"
       spacing={2}
     >
@@ -179,7 +194,7 @@ function Book({ isSold, book, onEdit, onRemove }) {
           alt="book cover"
         />
       </Grid>
-      <Grid item>
+      <Grid item xs={8}>
         <Grid
           container
           direction="column"
@@ -242,6 +257,7 @@ function Book({ isSold, book, onEdit, onRemove }) {
                     variant="contained"
                     disableElevation={true}
                     startIcon={<ShareIcon />}
+                    onClick={() => onSellLink(book)}
                   >
                     Share Sell Link
                   </Button>

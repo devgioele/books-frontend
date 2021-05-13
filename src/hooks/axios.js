@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import STD_MESSAGES from 'messages/standard';
+import StdMessages from 'messages/standard';
 import { useSnackbar } from 'notistack';
 
 function isNetworkError(error) {
@@ -38,12 +38,12 @@ const useAxios = (
         if (expected) {
           onExpectedError(err);
         } else if (isNetworkError(err)) {
-          enqueueSnackbar(`${STD_MESSAGES.NETWORK_ERROR(operationName)}`, {
+          enqueueSnackbar(`${StdMessages.NETWORK_ERROR(operationName)}`, {
             variant: 'error',
           });
         } else {
           enqueueSnackbar(
-            `${STD_MESSAGES.UNEXPECTED(operationName)}\nCause: ${err}`,
+            `${StdMessages.UNEXPECTED(operationName)}\nCause: ${err}`,
             {
               variant: 'error',
             }
