@@ -212,7 +212,7 @@ function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
             item
           >
             <Typography variant="h6">
-              {`${book.currency} ${book.price}`}
+              {`${book.currency} ${book.amount}`}
             </Typography>
           </Grid>
           <Grid item>

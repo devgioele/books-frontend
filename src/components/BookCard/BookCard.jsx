@@ -72,7 +72,7 @@ export default function BookCard(props) {
       </Grid>
       <Grid item>
         <Typography variant="body1">
-          <b>{`${book.currency} ${book.price}`}</b>
+          <b>{`${book.currency} ${book.amount}`}</b>
         </Typography>
       </Grid>
     </Grid>

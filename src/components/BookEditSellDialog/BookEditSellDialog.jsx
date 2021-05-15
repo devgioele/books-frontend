@@ -21,7 +21,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   const [newBook, setNewBook] = useState({
     description: bookToEdit?.description,
     currency: bookToEdit?.currency,
-    price: bookToEdit?.price,
+    amount: bookToEdit?.amount,
     condition: defaultCondition,
     pictures: [],
   });
@@ -116,12 +116,12 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 variant="outlined"
                 fullWidth
                 error={invalid}
-                label="Price"
+                label="Amount"
                 type="number"
                 inputProps={{ min: 0 }}
-                defaultValue={bookToEdit?.price}
+                defaultValue={bookToEdit?.amount}
                 onChange={(event) =>
-                  updateNewBook('price')(parseFloat(event.target.value, 10))
+                  updateNewBook('amount')(parseFloat(event.target.value, 10))
                 }
               />
             </Grid>
