@@ -1,9 +1,14 @@
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
 import { Slide, useScrollTrigger } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../../hooks/auth';
+import { AUTH_ROUTE, toRoute } from '../../routing/helpers';
 
 const useStyles = makeStyles(() => ({
   appBarBottomNavigation: {
@@ -25,6 +30,11 @@ export default function DynamicAppBar({ title, variant, drawerWidth }) {
     threshold: 0,
     disableHysteresis: true,
   });
+  const auth = useAuth();
+
+  const logout = () => {
+    auth.logout();
+  };
 
   return (
     <Slide appear={false} direction="down" in={!scrollTriggerHide}>
@@ -41,6 +51,14 @@ export default function DynamicAppBar({ title, variant, drawerWidth }) {
           <Typography variant="h6" noWrap>
             {title}
           </Typography>
+          <IconButton
+            aria-label="logout"
+            color="inherit"
+            edge="end"
+            onClick={logout}
+          >
+            <ExitToAppIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
     </Slide>
