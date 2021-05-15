@@ -1,9 +1,143 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { CircularProgress, Grid } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import ProfileHeader from '../../components/profile/ProfileHeader';
+import ProfileInformation from '../../components/profile/ProfileInformation';
+import useAxios from '../../hooks/axios';
+import { getProfileDetails } from '../../api/profile';
+import { PROFILE_ROUTE, renderRoute, toRoute } from '../../routing/helpers';
+import { getFromObject } from '../../utils/functions';
+import CompleteProfileBanner from '../../components/profile/CompleteProfileBanner';
 
-export default function Profile() {
+const profileFields = [
+  {
+    displayName: 'Username',
+    name: 'username',
+    showInHeader: true,
+  },
+  {
+    displayName: 'Name',
+    name: 'name',
+    showInHeader: true,
+    showInEditDialog: true,
+  },
+  {
+    displayName: 'Surname',
+    name: 'surname',
+    showInHeader: true,
+    showInEditDialog: true,
+  },
+  {
+    displayName: 'Picture',
+    name: 'profilePicture',
+    showInHeader: true,
+  },
+  {
+    displayName: 'Email',
+    name: 'email',
+    showInEditDialog: true,
+    isRequired: true,
+  },
+  {
+    displayName: 'Phone Number',
+    name: 'contactInformation.phoneNumber',
+    showInEditDialog: true,
+  },
+  {
+    displayName: 'Telegram',
+    name: 'contactInformation.telegramUsername',
+    showInEditDialog: true,
+  },
+  {
+    displayName: 'Facebook',
+    name: 'contactInformation.facebookUsername',
+    showInEditDialog: true,
+  },
+];
+
+const computeMissingFields = (zippedData) => {
+  const validFields = zippedData
+    .filter((field) => field.data)
+    .reduce((acc, _) => acc + 1, 0);
+
+  return parseInt((validFields / zippedData.length) * 100, 10);
+};
+
+export default function Profile({ routes }) {
+  const history = useHistory();
+
+  const [
+    fGetProfileDetails,
+    cGetProfileDetails,
+    profileDetails,
+    ,
+    isLoadingProfileDetails,
+  ] = useAxios(getProfileDetails);
+
+  const [editProfileRoute] = routes;
+
+  useEffect(() => {
+    fGetProfileDetails();
+    return () => cGetProfileDetails();
+  }, []);
+
+  const [zippedData, setZippedData] = useState(profileFields);
+  useEffect(() => {
+    setZippedData(
+      zippedData.map((field) => ({
+        ...field,
+        data: getFromObject(profileDetails, field.name),
+      }))
+    );
+  }, [setZippedData, profileDetails]);
+
+  const [completePercentage, setCompletePercentage] = useState(100);
+  useEffect(() => {
+    setCompletePercentage(computeMissingFields(zippedData));
+  }, [zippedData]);
+
+  const backToProfile = (refresh) => {
+    history.replace(toRoute(PROFILE_ROUTE));
+    if (refresh) {
+      cGetProfileDetails();
+      fGetProfileDetails();
+    }
+  };
+
   return (
     <>
-      <h1>Profile</h1>
+      {editProfileRoute &&
+        renderRoute(editProfileRoute, {
+          backToProfile,
+          isDataLoaded: !!profileDetails,
+          fields: zippedData.filter((field) => field.showInEditDialog),
+        })}
+      <Grid container direction="column" spacing={4}>
+        {isLoadingProfileDetails && (
+          <Grid item>
+            <CircularProgress />
+          </Grid>
+        )}
+        {!isLoadingProfileDetails && profileDetails && (
+          <>
+            {completePercentage < 100 && (
+              <Grid item>
+                <CompleteProfileBanner progress={completePercentage} />
+              </Grid>
+            )}
+            <Grid item>
+              <ProfileHeader
+                fields={zippedData.filter((field) => field.showInHeader)}
+              />
+            </Grid>
+            <Grid item>
+              <ProfileInformation
+                fields={zippedData.filter((field) => !field.showInHeader)}
+              />
+            </Grid>
+          </>
+        )}
+      </Grid>
     </>
   );
 }

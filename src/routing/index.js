@@ -14,6 +14,7 @@ import {
   BOOK_ROUTE,
   CONFIRM_ROUTE,
   DASHBOARD_ROUTE,
+  EDIT_PROFILE_ROUTE,
   EDIT_SELL_ROUTE,
   EXPLORE_ROUTE,
   LANDING_ROUTE,
@@ -23,6 +24,7 @@ import {
   REMOVE_SELL_ROUTE,
   SELL_ROUTE,
 } from './helpers';
+import EditProfileDialog from '../components/profile/EditProfileDialog';
 import RoutePrivilege from './privileges';
 
 const routes = [
@@ -99,6 +101,14 @@ const routes = [
         isExact: false,
         privilege: RoutePrivilege.AUTHENTICATED,
         component: Profile,
+        routes: [
+          {
+            path: EDIT_PROFILE_ROUTE,
+            isExact: false,
+            isProtected: true,
+            component: EditProfileDialog,
+          },
+        ],
       },
     ],
   },
