@@ -38,52 +38,54 @@ export default function BookLinkDialog({ backToParent, bookToLink }) {
           : 'Sell link copied to the clipboard!'}
       </DialogTitle>
       <DialogContent>
-        <Grid
-          container
-          direction="column"
-          spacing={2}
-          alignItems="center"
-          justify="center"
-        >
-          <Grid item xs={12}>
-            {isGenerating ? (
-              <CircularProgress
-                variant="indeterminate"
-                disableShrink
-                color="secondary"
-                size={30}
-                thickness={4}
-              />
-            ) : (
-              <CheckCircleIcon style={{ color: green[500], fontSize: 40 }} />
+        <div style={{ padding: 20 }}>
+          <Grid
+            container
+            direction="column"
+            spacing={2}
+            alignItems="center"
+            justify="center"
+          >
+            <Grid item xs={12}>
+              {isGenerating ? (
+                <CircularProgress
+                  variant="indeterminate"
+                  disableShrink
+                  color="secondary"
+                  size={30}
+                  thickness={4}
+                />
+              ) : (
+                <CheckCircleIcon style={{ color: green[500], fontSize: 40 }} />
+              )}
+            </Grid>
+            {!isGenerating && (
+              <Grid item xs={12} style={{ width: '100%' }}>
+                <Box m="auto" style={{ width: '100%' }}>
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                    inputProps={{
+                      style: { textAlign: 'center' },
+                      ref: linkFieldRef,
+                    }}
+                    onFocus={(e) => {
+                      // Select the whole text
+                      e.target.select();
+                      // Copy to clipboard
+                      document.execCommand('copy');
+                    }}
+                    value={link}
+                  />
+                </Box>
+              </Grid>
             )}
           </Grid>
-          {!isGenerating && (
-            <Grid item xs={12} style={{ width: '100%' }}>
-              <Box m="auto" style={{ width: '100%' }}>
-                <TextField
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  inputProps={{
-                    style: { textAlign: 'center' },
-                    ref: linkFieldRef,
-                  }}
-                  onFocus={(e) => {
-                    // Select the whole text
-                    e.target.select();
-                    // Copy to clipboard
-                    document.execCommand('copy');
-                  }}
-                  value={link}
-                />
-              </Box>
-            </Grid>
-          )}
-        </Grid>
+        </div>
       </DialogContent>
       <DialogActions>
         <Grid
