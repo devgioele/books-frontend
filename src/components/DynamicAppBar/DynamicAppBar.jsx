@@ -6,9 +6,8 @@ import { Slide, useScrollTrigger } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../../hooks/auth';
-import { AUTH_ROUTE, toRoute } from '../../routing/helpers';
+import Grid from '@material-ui/core/Grid';
+import { useAuth } from 'hooks/auth';
 
 const useStyles = makeStyles(() => ({
   appBarBottomNavigation: {
@@ -48,17 +47,24 @@ export default function DynamicAppBar({ title, variant, drawerWidth }) {
         elevation={scrollTriggerShadow ? 4 : 0}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap>
-            {title}
-          </Typography>
-          <IconButton
-            aria-label="logout"
-            color="inherit"
-            edge="end"
-            onClick={logout}
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="center"
+            spacing={2}
           >
-            <ExitToAppIcon />
-          </IconButton>
+            <Grid item xs={6}>
+              <Typography variant="h6" noWrap>
+                {title}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <IconButton aria-label="logout" color="inherit" onClick={logout}>
+                <ExitToAppIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
         </Toolbar>
       </AppBar>
     </Slide>
