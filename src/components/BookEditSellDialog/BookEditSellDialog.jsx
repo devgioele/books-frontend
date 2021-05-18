@@ -6,11 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import useAxios from 'hooks/axios';
+import { useAxios } from 'hooks/axios';
 import { editBook, sellBook } from 'api/books';
 import { CircularProgress } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import bookConditions from 'utils/bookConditions';
+import ImageDropzone from '../ImageDropzone';
 
 const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
@@ -18,18 +19,18 @@ const unwrapEventValue = (block) => (event) => {
 
 export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   const defaultCondition = bookToEdit?.condition || bookConditions[0];
-  const [newBook, setNewBook] = useState({
+  const [currentBook, setNewBook] = useState({
     description: bookToEdit?.description,
     currency: bookToEdit?.currency,
     amount: bookToEdit?.amount,
+    pictures: bookToEdit?.pictures || [],
     condition: defaultCondition,
-    pictures: [],
   });
   const [invalid, setInvalid] = useState(false);
-  const updateNewBook = (fieldName) => (value) => {
+  const updateBook = (fieldName) => (value) => {
     setInvalid(false);
     const bookGen = {
-      ...newBook,
+      ...currentBook,
       [fieldName]: value,
     };
     setNewBook(bookGen);
@@ -49,8 +50,8 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   );
   const isLoading = isLoadingSell || isLoadingEdit;
   const handleConfirm = () => {
-    if (bookToEdit) edit(bookToEdit.bookId, newBook);
-    else sell(newBook);
+    if (bookToEdit) edit(bookToEdit.bookId, currentBook);
+    else sell(currentBook);
   };
   const handleCancel = () => backToParent(false)();
 
@@ -71,7 +72,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                   error={invalid}
                   label="ISBN"
                   defaultValue={bookToEdit?.isbn}
-                  onChange={unwrapEventValue(updateNewBook('isbn'))}
+                  onChange={unwrapEventValue(updateBook('isbn'))}
                 />
               </Grid>
             )}
@@ -84,7 +85,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                   error={invalid}
                   label="Title"
                   defaultValue={bookToEdit?.title}
-                  onChange={unwrapEventValue(updateNewBook('title'))}
+                  onChange={unwrapEventValue(updateBook('title'))}
                 />
               </Grid>
             )}
@@ -96,7 +97,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 error={invalid}
                 label="Description"
                 defaultValue={bookToEdit?.description}
-                onChange={unwrapEventValue(updateNewBook('description'))}
+                onChange={unwrapEventValue(updateBook('description'))}
               />
             </Grid>
             <Grid item xs={12}>
@@ -107,7 +108,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 error={invalid}
                 label="Currency"
                 defaultValue={bookToEdit?.currency}
-                onChange={unwrapEventValue(updateNewBook('currency'))}
+                onChange={unwrapEventValue(updateBook('currency'))}
               />
             </Grid>
             <Grid item xs={12}>
@@ -121,7 +122,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 inputProps={{ min: 0 }}
                 defaultValue={bookToEdit?.amount}
                 onChange={(event) =>
-                  updateNewBook('amount')(parseFloat(event.target.value, 10))
+                  updateBook('amount')(parseFloat(event.target.value))
                 }
               />
             </Grid>
@@ -138,7 +139,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 )}
                 options={bookConditions}
                 defaultValue={defaultCondition}
-                onChange={(event, value) => updateNewBook('condition')(value)}
+                onChange={(event, value) => updateBook('condition')(value)}
               />
             </Grid>
             {!bookToEdit && (
@@ -150,10 +151,18 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                   error={invalid}
                   label="Location"
                   defaultValue={bookToEdit?.locationName}
-                  onChange={unwrapEventValue(updateNewBook('locationName'))}
+                  onChange={unwrapEventValue(updateBook('locationName'))}
                 />
               </Grid>
             )}
+            <Grid item xs={12}>
+              <ImageDropzone
+                minImages={1}
+                maxImages={3}
+                currentImages={currentBook.pictures}
+                setCurrentImages={updateBook('pictures')}
+              />
+            </Grid>
           </Grid>
         </div>
       </DialogContent>

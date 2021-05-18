@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     bottom: 0,
     // offset-x | offset-y | blur-radius | spread-radius
-    boxShadow: `0px 0px 5px 2px ${theme.colors.shadowGray}`,
+    boxShadow: `0px 0px 5px 2px ${theme.palette.shadowGray}`,
   },
 }));
 

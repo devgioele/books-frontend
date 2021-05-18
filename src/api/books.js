@@ -42,6 +42,22 @@ export const removeBook = (onSuccess, onFailure, cancelToken, bookId) => {
     .catch(failureWith(onFailure));
 };
 
+export const uploadBookImage = (
+  onSuccess,
+  onFailure,
+  cancelToken,
+  bookBase64
+) => {
+  axios
+    .post(
+      `${BASE_URL}/books/picture/upload`,
+      { 'book-picture': bookBase64 },
+      withAuth({ cancelToken })
+    )
+    .then(successWith(onSuccess, onFailure, 200))
+    .catch(failureWith(onFailure));
+};
+
 export const getSellLink = (onSuccess, onFailure, cancelToken, bookId) => {
   axios
     .get(

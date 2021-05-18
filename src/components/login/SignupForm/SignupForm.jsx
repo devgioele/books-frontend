@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { signup } from 'api/auth';
 import PasswordField from 'components/PasswordField';
-import useAxios from 'hooks/axios';
+import { useAxios } from 'hooks/axios';
 
 function exactMatch(text, regex) {
   const matches = text.match(regex);

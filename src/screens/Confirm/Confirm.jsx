@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ConfirmCard from 'components/ConfirmCard';
-import useAxios from 'hooks/axios';
+import { useAxios } from 'hooks/axios';
 import { confirmSell, getBookByTransaction } from 'api/books';
 
 const useStyles = makeStyles({

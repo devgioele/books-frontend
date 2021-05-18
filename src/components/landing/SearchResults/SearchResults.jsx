@@ -15,9 +15,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     padding: theme.spacing(3),
     // offset-x | offset-y | blur-radius | spread-radius
-    boxShadow: `0px 1px 3px 0px ${theme.colors.shadowGray}`,
+    boxShadow: `0px 1px 3px 0px ${theme.palette.custom.shadowGray}`,
     '&:hover': {
-      boxShadow: `0px 20px 25px -5px ${theme.colors.shadowGray}`,
+      boxShadow: `0px 20px 25px -5px ${theme.palette.custom.shadowGray}`,
     },
   },
 }));

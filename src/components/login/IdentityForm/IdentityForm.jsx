@@ -3,7 +3,7 @@ import { Button, TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { checkIdentity } from 'api/auth';
-import useAxios from 'hooks/axios';
+import { useAxios } from 'hooks/axios';
 import AuthProgress from 'screens/Authorization/authProgress';
 
 const useStyles = makeStyles(() => ({

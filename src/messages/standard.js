@@ -1,11 +1,15 @@
 const StdMessages = {
-  UNEXPECTED: (operation = '') => `Something went wrong${
-    operation === '' ? '' : ` while ${operation}`
-  }. Please contact the support for help if the
-   problem persists.`,
+  CONTACT_SUPPORT:
+    'Please contact the support for help if the problem persists.',
+  UNEXPECTED: (operation = '') =>
+    `Something went wrong${operation === '' ? '' : ` while ${operation}`}. ${
+      StdMessages.CONTACT_SUPPORT
+    }`,
   NETWORK_ERROR: (operation = '') =>
     `The communication with the server failed${
       operation === '' ? '' : ` while ${operation}`
     }. Check your internet connection.`,
+  IMPORT_ERROR: (filename) =>
+    `Could not import file '${filename}'! ${StdMessages.CONTACT_SUPPORT}`,
 };
 export default StdMessages;

@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   searchIcon: {
-    color: fade(theme.colors.black, 0.4),
+    color: fade(theme.palette.custom.black, 0.4),
   },
 }));
 

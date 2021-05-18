@@ -33,6 +33,12 @@ export default responsiveFontSizes(
       secondary: {
         main: '#b8afa8',
       },
+      custom: {
+        black: '#000000',
+        shadowGray: '#dadada',
+        linkBlue: '#2858f4',
+        lightGrey: '#989898',
+      },
     },
     typography: {
       h1: {
@@ -65,11 +71,6 @@ export default responsiveFontSizes(
       subtitle2: {
         fontFamily: 'Roboto',
       },
-    },
-    colors: {
-      black: '#000000',
-      shadowGray: '#dadada',
-      linkBlue: '#2858f4',
     },
     mixins: {
       // Like the mixins.toolbar of the default material UI theme

@@ -13,7 +13,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import useAxios from 'hooks/axios';
+import { useAxios } from 'hooks/axios';
 import { getSellingBooks, getSoldBooks, removeBook } from 'api/books';
 import ConfirmationDialog from 'components/ConfirmationDialog';
 

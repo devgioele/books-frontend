@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { login } from 'api/auth';
 import PasswordField from 'components/PasswordField';
-import useAxios from 'hooks/axios';
+import { useAxios } from 'hooks/axios';
 import { useAuth } from 'hooks/auth';
 
 const useStyles = makeStyles(() => ({

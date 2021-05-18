@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import StdMessages from 'messages/standard';
 import { useSnackbar } from 'notistack';
+import { sellBook } from '../api/books';
 
 function isNetworkError(error) {
   return !!error.isAxiosError && !error.response;
 }
 
-const useAxios = (
+export const useAxios = (
   axiosBlock,
   operationName = '',
   onSuccess = () => {},
@@ -35,9 +36,8 @@ const useAxios = (
       },
       (err, expected) => {
         setIsLoading(false);
-        if (expected) {
-          onExpectedError(err);
-        } else if (isNetworkError(err)) {
+        if (expected) onExpectedError(err);
+        else if (isNetworkError(err)) {
           enqueueSnackbar(`${StdMessages.NETWORK_ERROR(operationName)}`, {
             variant: 'error',
           });
@@ -65,4 +65,46 @@ const useAxios = (
   return [fetch, cancelPrevious, data, error, isLoading];
 };
 
-export default useAxios;
+// Tasks delivered to this hook calling 'dispatch' must have UNIQUE keys!
+export const useAxiosDispatcher = (
+  operationName,
+  onSuccess,
+  onExpectedError
+) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const [tasksWorking, setTasksWorking] = useState([]);
+  const addTaskWorking = (task) => setTasksWorking([...tasksWorking, task]);
+  const removeTaskWorking = (taskToRemove) =>
+    setTasksWorking(tasksWorking.filter((task) => task !== taskToRemove));
+
+  const dispatch = (key, axiosBlock, ...args) => {
+    const taskName = `${operationName} [${key}]`;
+    addTaskWorking(key);
+    axiosBlock(
+      (body) => {
+        removeTaskWorking(key);
+        onSuccess(key, body);
+      },
+      (err, expected) => {
+        removeTaskWorking(key);
+        if (expected) onExpectedError(key, err);
+        else if (isNetworkError(err)) {
+          enqueueSnackbar(`${StdMessages.NETWORK_ERROR(taskName)}`, {
+            variant: 'error',
+          });
+        } else {
+          enqueueSnackbar(
+            `${StdMessages.UNEXPECTED(taskName)}\nCause: ${err}`,
+            {
+              variant: 'error',
+            }
+          );
+        }
+      },
+      null,
+      ...args
+    );
+  };
+
+  return [dispatch, tasksWorking];
+};

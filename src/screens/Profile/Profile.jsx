@@ -3,7 +3,7 @@ import { CircularProgress, Grid } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import ProfileHeader from '../../components/profile/ProfileHeader';
 import ProfileInformation from '../../components/profile/ProfileInformation';
-import useAxios from '../../hooks/axios';
+import { useAxios } from '../../hooks/axios';
 import { getProfileDetails } from '../../api/profile';
 import { PROFILE_ROUTE, renderRoute, toRoute } from '../../routing/helpers';
 import { getFromObject } from '../../utils/functions';

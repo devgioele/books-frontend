@@ -9,9 +9,9 @@ import {
   Grid,
   TextField,
 } from '@material-ui/core';
-import { buildObjectFromFields, imprintObject } from '../../../utils/functions';
-import useAxios from '../../../hooks/axios';
-import { editProfile } from '../../../api/profile';
+import { buildObjectFromFields, imprintObject } from 'utils/functions';
+import { useAxios } from 'hooks/axios';
+import { editProfile } from 'api/profile';
 
 const unwrapEventValue = (block) => (event) => {
   block(event.target.value);

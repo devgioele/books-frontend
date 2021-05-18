@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     height: 'auto',
     objectFit: 'scale-down',
     borderRadius: 3,
-    boxShadow: `1px 1px 5px 1px ${theme.colors.shadowGray}`,
+    boxShadow: `1px 1px 5px 1px ${theme.palette.custom.shadowGray}`,
     '&:hover': {
       outline: `3px solid ${theme.palette.primary.dark}`,
     },
