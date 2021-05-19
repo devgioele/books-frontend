@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import StdMessages from 'messages/standard';
 import { useSnackbar } from 'notistack';
-import { sellBook } from '../api/books';
+import { uploadBookImage } from 'api/books';
+import {
+  makeUnique,
+  toBase64,
+  cleanBase64,
+  makeFilenameUnique,
+} from 'utils/files';
 
 function isNetworkError(error) {
   return !!error.isAxiosError && !error.response;
@@ -68,22 +74,27 @@ export const useAxios = (
 // Tasks delivered to this hook calling 'dispatch' must have UNIQUE keys!
 export const useAxiosDispatcher = (
   operationName,
-  onSuccess,
+  maxConcurrentUploads,
+  queue,
+  onTaken,
+  onCompletion,
   onExpectedError
 ) => {
   const { enqueueSnackbar } = useSnackbar();
   const [tasksWorking, setTasksWorking] = useState([]);
   const addTaskWorking = (task) => setTasksWorking([...tasksWorking, task]);
   const removeTaskWorking = (taskToRemove) =>
-    setTasksWorking(tasksWorking.filter((task) => task !== taskToRemove));
+    setTasksWorking(
+      tasksWorking.filter((task) => task.key !== taskToRemove.key)
+    );
 
-  const dispatch = (key, axiosBlock, ...args) => {
+  const dispatch = (key, axiosBlock, data) => {
     const taskName = `${operationName} [${key}]`;
-    addTaskWorking(key);
+    addTaskWorking({ key, data });
     axiosBlock(
       (body) => {
         removeTaskWorking(key);
-        onSuccess(key, body);
+        onCompletion(key, body);
       },
       (err, expected) => {
         removeTaskWorking(key);
@@ -102,9 +113,27 @@ export const useAxiosDispatcher = (
         }
       },
       null,
-      ...args
+      cleanBase64(data)
     );
   };
 
-  return [dispatch, tasksWorking];
+  useEffect(() => {
+    const tasksReady = maxConcurrentUploads - tasksWorking.length;
+    console.log(`tasksReady = ${tasksReady}`);
+    const nextToUpload = queue[0];
+    // If we can start another task without exceeding the limit
+    // and there is another task pending
+    if (tasksReady > 0 && nextToUpload) {
+      onTaken(nextToUpload.key);
+      const newKey = makeFilenameUnique(
+        (key) => !!tasksWorking.find((task) => task.key === key),
+        nextToUpload.key
+      );
+      console.log(`dispatcher chose key: ${newKey}`);
+      dispatch(newKey, uploadBookImage, nextToUpload.data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maxConcurrentUploads, tasksWorking, queue]);
+
+  return [tasksWorking];
 };

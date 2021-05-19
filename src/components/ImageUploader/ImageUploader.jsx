@@ -1,54 +1,114 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { uploadBookImage } from 'api/books';
 import { useAxiosDispatcher } from 'hooks/axios';
-import makeUnique from '../../utils/strings';
-import toBase64 from '../../utils/images';
+import { useSnackbar } from 'notistack';
+import Grid from '@material-ui/core/Grid';
+import StdMessages from 'messages/standard';
+import CloudImage from 'components/CloudImage';
+import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternateOutlined';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    minHeight: '100px',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: theme.palette.custom.lightGrey,
-    borderStyle: 'solid',
+  previewContainer: {
+    padding: '12px',
+    height: '100px',
+    maxHeight: '100px',
+  },
+  previewItem: { height: `calc(100% - ${theme.spacing(2)}px)` },
+  preview: { height: '100%', objectFit: 'scale-down' },
+  iconContainer: {
+    height: '100%',
+    padding: '10px',
+  },
+  icon: {
+    color: theme.palette.divider,
+    height: '50px',
+    width: '50px',
   },
 }));
 
 export default function ImageUploader({
   maxConcurrentUploads,
-  toUpload, // contains files
+  toUpload,
   removeToUpload,
   uploaded,
   setUploaded,
-  onExpectedError,
 }) {
   const classes = useStyles();
-  const [upload, tasksWorking] = useAxiosDispatcher(
+  const { enqueueSnackbar } = useSnackbar();
+  const [uploadingTasks] = useAxiosDispatcher(
     'uploading book image',
+    maxConcurrentUploads,
+    [], // toUpload,
+    removeToUpload,
     (key, body) => setUploaded([...uploaded, body.secureUrl]),
-    onExpectedError
+    (key, err) => {
+      const reason = err.message.includes('413')
+        ? 'File is too large.'
+        : err.message;
+      enqueueSnackbar(`${StdMessages.IMPORT_ERROR(key, reason)}`, {
+        variant: 'warning',
+      });
+    }
   );
 
-  // Effect that runs whenever the limit is changed, images to upload are
-  // queued or uploads are completed
-  useEffect(() => {
-    const tasksReady = maxConcurrentUploads - tasksWorking.length;
-    console.log(`tasksReady = ${tasksReady}`);
-    const nextToUpload = toUpload[0];
-    // If we can start another upload without exceeding the limit
-    // and there is another job pending
-    if (tasksReady > 0 && nextToUpload) {
-      removeToUpload(nextToUpload);
-      const newKey = makeUnique(
-        (key) => !!tasksWorking[key],
-        nextToUpload.name
-      );
-      console.log(`newKey = ${newKey}`);
-      upload(newKey, uploadBookImage, toBase64(nextToUpload));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maxConcurrentUploads, tasksWorking, toUpload]);
+  const emptyPreview =
+    uploaded.length + uploadingTasks.length + toUpload.length === 0;
 
-  return <div className={classes.root}></div>;
+  // TODO: Fix the warning 'each child in a list should have
+  //  a unique "key" prop'.
+  return (
+    <Grid
+      container
+      className={classes.previewContainer}
+      direction="row"
+      alignItems="center"
+      justify="flex-start"
+      spacing={2}
+    >
+      {!emptyPreview &&
+        uploaded.map((img) => (
+          <Grid item className={classes.previewItem} key={img.publicId}>
+            <CloudImage
+              className={classes.preview}
+              key={`image preview ${img.publicId}`}
+              alt={`image preview ${img.publicId}`}
+              url={img.secureUrl}
+            />
+          </Grid>
+        ))}
+      {!emptyPreview &&
+        uploadingTasks.map((upload) => (
+          <Grid item className={classes.previewItem} key={upload.key}>
+            <img
+              className={classes.preview}
+              key={`image preview ${upload.key}`}
+              alt={`image preview ${upload.key}`}
+              src={upload.data}
+            />
+          </Grid>
+        ))}
+      {!emptyPreview &&
+        toUpload.map((img) => (
+          <Grid item className={classes.previewItem} key={img.key}>
+            <img
+              className={classes.preview}
+              key={`image preview ${img.key}`}
+              alt={`image preview ${img.key}`}
+              src={img.data}
+            />
+          </Grid>
+        ))}
+      {emptyPreview && (
+        <Grid
+          container
+          className={classes.iconContainer}
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+          <AddPhotoIcon className={classes.icon} />
+        </Grid>
+      )}
+    </Grid>
+  );
 }
