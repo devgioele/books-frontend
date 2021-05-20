@@ -35,6 +35,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/*
+If the file has been dropped, the name is stored in the field 'name'.
+If it has been selected with some file explorer, the name is stored in
+the field 'path'.
+We normalize by setting the name equal to the path, if the name is missing.
+*/
+const normalizeNamePath = (files) =>
+  files.map((file) => {
+    const normalizedFile = file;
+    if (!normalizedFile.name) normalizedFile.name = file.path;
+    return normalizedFile;
+  });
+
 export default function ImageDropzone({
   minImages,
   maxImages,
@@ -49,6 +62,7 @@ export default function ImageDropzone({
       imgFiles.map(async (imgFile) =>
         toBase64(imgFile)
           .then((data) => {
+            console.log(`name = ${imgFile.name}`);
             const key = makeFilenameUnique(
               (k) => !!imagesToUpload.find((img) => img.key === k),
               imgFile.name
@@ -68,10 +82,13 @@ export default function ImageDropzone({
   const removeToUpload = (k) =>
     setImagesToUpload(imagesToUpload.filter((img) => img.key !== k));
   const onDrop = (acceptedFiles, fileRejections) => {
-    uploadImages(acceptedFiles);
-    // Show error for failed imports
-    fileRejections.forEach((fileRejection) =>
-      enqueueSnackbar(StdMessages.IMPORT_ERROR(fileRejection), {
+    const normAcceptedFiles = normalizeNamePath(acceptedFiles);
+    const normFileRejections = normalizeNamePath(fileRejections);
+    console.log(JSON.stringify(normAcceptedFiles));
+    console.log(JSON.stringify(normFileRejections));
+    uploadImages(normAcceptedFiles);
+    normFileRejections.forEach((fileRejection) =>
+      enqueueSnackbar(StdMessages.IMPORT_ERROR(fileRejection.file.name), {
         variant: 'error',
       })
     );
