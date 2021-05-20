@@ -6,16 +6,21 @@ import Grid from '@material-ui/core/Grid';
 import StdMessages from 'messages/standard';
 import CloudImage from 'components/CloudImage';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternateOutlined';
-import { GridList, GridListTile, useTheme } from '@material-ui/core';
+import {
+  CircularProgress,
+  GridList,
+  GridListTile,
+  useTheme,
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  previewContainer: {
-    padding: '12px',
-    height: '100px',
-    maxHeight: '100px',
-  },
-  previewItem: { height: `calc(100% - ${theme.spacing(2)}px)` },
-  preview: { height: '100%', objectFit: 'scale-down' },
+  // previewContainer: {
+  //   padding: '12px',
+  //   height: '100px',
+  //   maxHeight: '100px',
+  // },
+  // previewItem: { height: `calc(100% - ${theme.spacing(2)}px)` },
+  // preview: { height: '100%', objectFit: 'scale-down' },
   iconContainer: {
     height: '100%',
     padding: '10px',
@@ -37,6 +42,11 @@ const useStyles = makeStyles((theme) => ({
   gridList: {
     width: '100%',
   },
+  imgLoading: {
+    height: '100%',
+    width: 'auto',
+    opacity: 0.5,
+  },
 }));
 
 export default function ImageUploader({
@@ -52,12 +62,12 @@ export default function ImageUploader({
   const [uploadingTasks] = useAxiosDispatcher(
     'uploading book image',
     maxConcurrentUploads,
-    [], // toUpload,
+    toUpload,
     removeToUpload,
     (key, body) => setUploaded([...uploaded, body.secureUrl]),
     (key, err) => {
       const reason = err.message.includes('413')
-        ? 'File is too large.'
+        ? 'File is too big.'
         : err.message;
       enqueueSnackbar(`${StdMessages.IMPORT_ERROR(key, reason)}`, {
         variant: 'warning',
@@ -91,17 +101,34 @@ export default function ImageUploader({
         {toUpload.map((img) => (
           <GridListTile key={img.key} cols={1}>
             <img
-              key={`image preview ${img.key}`}
-              alt={`image preview ${img.key}`}
+              className={classes.imgLoading}
+              key={img.key}
+              alt={img.key}
               src={img.data}
             />
           </GridListTile>
         ))}
         {uploadingTasks.map((upload) => (
           <GridListTile key={upload.key} cols={1}>
+            <Grid
+              container
+              style={{ height: '100%', position: 'absolute' }}
+              direction="column"
+              justify="center"
+              alignItems="center"
+            >
+              <CircularProgress
+                variant="indeterminate"
+                disableShrink
+                color="secondary"
+                size={50}
+                thickness={4}
+              />
+            </Grid>
             <img
-              key={`image preview ${upload.key}`}
-              alt={`image preview ${upload.key}`}
+              className={classes.imgLoading}
+              key={upload.key}
+              alt={upload.key}
               src={upload.data}
             />
           </GridListTile>

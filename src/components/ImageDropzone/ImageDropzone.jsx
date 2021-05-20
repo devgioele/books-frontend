@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack';
@@ -45,9 +45,6 @@ export default function ImageDropzone({
   const { enqueueSnackbar } = useSnackbar();
   const [imagesToUpload, setImagesToUpload] = useState([]);
   const uploadImages = async (imgFiles) => {
-    console.log(
-      `uploadImages' imagesToUpload = ${JSON.stringify(imagesToUpload)}`
-    );
     const newImagesToUpload = await Promise.all(
       imgFiles.map(async (imgFile) =>
         toBase64(imgFile)
@@ -56,7 +53,6 @@ export default function ImageDropzone({
               (k) => !!imagesToUpload.find((img) => img.key === k),
               imgFile.name
             );
-            console.log(`dropzone chose new key: ${key}`);
             return { key, data };
           })
           .catch(() =>
