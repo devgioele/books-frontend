@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import StdMessages from 'messages/standard';
 import CloudImage from 'components/CloudImage';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternateOutlined';
+import { GridList, GridListTile, useTheme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   previewContainer: {
@@ -24,6 +25,18 @@ const useStyles = makeStyles((theme) => ({
     height: '50px',
     width: '50px',
   },
+
+  root: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+  },
+  gridList: {
+    width: '100%',
+  },
 }));
 
 export default function ImageUploader({
@@ -34,6 +47,7 @@ export default function ImageUploader({
   setUploaded,
 }) {
   const classes = useStyles();
+  const theme = useTheme();
   const { enqueueSnackbar } = useSnackbar();
   const [uploadingTasks] = useAxiosDispatcher(
     'uploading book image',
@@ -56,59 +70,52 @@ export default function ImageUploader({
 
   // TODO: Fix the warning 'each child in a list should have
   //  a unique "key" prop'.
-  return (
+  return emptyPreview ? (
     <Grid
       container
-      className={classes.previewContainer}
-      direction="row"
+      className={classes.iconContainer}
+      direction="column"
+      justify="center"
       alignItems="center"
-      justify="flex-start"
-      spacing={2}
     >
-      {!emptyPreview &&
-        uploaded.map((img) => (
-          <Grid item className={classes.previewItem} key={img.publicId}>
-            <CloudImage
-              className={classes.preview}
-              key={`image preview ${img.publicId}`}
-              alt={`image preview ${img.publicId}`}
-              url={img.secureUrl}
-            />
-          </Grid>
-        ))}
-      {!emptyPreview &&
-        uploadingTasks.map((upload) => (
-          <Grid item className={classes.previewItem} key={upload.key}>
+      <AddPhotoIcon className={classes.icon} />
+    </Grid>
+  ) : (
+    <div className={classes.root}>
+      <GridList
+        className={classes.gridList}
+        cellHeight={100}
+        cols={3}
+        spacing={theme.spacing(2)}
+      >
+        {toUpload.map((img) => (
+          <GridListTile key={img.key} cols={1}>
             <img
-              className={classes.preview}
-              key={`image preview ${upload.key}`}
-              alt={`image preview ${upload.key}`}
-              src={upload.data}
-            />
-          </Grid>
-        ))}
-      {!emptyPreview &&
-        toUpload.map((img) => (
-          <Grid item className={classes.previewItem} key={img.key}>
-            <img
-              className={classes.preview}
               key={`image preview ${img.key}`}
               alt={`image preview ${img.key}`}
               src={img.data}
             />
-          </Grid>
+          </GridListTile>
         ))}
-      {emptyPreview && (
-        <Grid
-          container
-          className={classes.iconContainer}
-          direction="column"
-          justify="center"
-          alignItems="center"
-        >
-          <AddPhotoIcon className={classes.icon} />
-        </Grid>
-      )}
-    </Grid>
+        {uploadingTasks.map((upload) => (
+          <GridListTile key={upload.key} cols={1}>
+            <img
+              key={`image preview ${upload.key}`}
+              alt={`image preview ${upload.key}`}
+              src={upload.data}
+            />
+          </GridListTile>
+        ))}
+        {uploaded.map((img) => (
+          <GridListTile key={img.publicId} cols={1}>
+            <CloudImage
+              key={`image preview ${img.publicId}`}
+              alt={`image preview ${img.publicId}`}
+              url={img.secureUrl}
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+    </div>
   );
 }

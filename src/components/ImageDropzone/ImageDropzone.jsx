@@ -44,31 +44,34 @@ export default function ImageDropzone({
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [imagesToUpload, setImagesToUpload] = useState([]);
-  const uploadImages = (imgFiles) =>
-    imgFiles.forEach((imgFile) =>
-      toBase64(imgFile)
-        .then((data) => {
-          const newKey = makeFilenameUnique(
-            (key) => !!imagesToUpload.find((img) => img.key === key),
-            imgFile.name
-          );
-          console.log(`dropzone chose new key: ${newKey}`);
-          // TODO: This does not update the list as it should!
-          //  It only does so once!?!
-          setImagesToUpload([...imagesToUpload, { key: newKey, data }]);
-        })
-        .catch(() =>
-          enqueueSnackbar(StdMessages.IMPORT_ERROR(imgFile.name), {
-            variant: 'warning',
-          })
-        )
+  const uploadImages = async (imgFiles) => {
+    console.log(
+      `uploadImages' imagesToUpload = ${JSON.stringify(imagesToUpload)}`
     );
+    const newImagesToUpload = await Promise.all(
+      imgFiles.map(async (imgFile) =>
+        toBase64(imgFile)
+          .then((data) => {
+            const key = makeFilenameUnique(
+              (k) => !!imagesToUpload.find((img) => img.key === k),
+              imgFile.name
+            );
+            console.log(`dropzone chose new key: ${key}`);
+            return { key, data };
+          })
+          .catch(() =>
+            enqueueSnackbar(StdMessages.IMPORT_ERROR(imgFile.name), {
+              variant: 'warning',
+            })
+          )
+      )
+    );
+    setImagesToUpload([...imagesToUpload, ...newImagesToUpload]);
+  };
 
-  console.log(imagesToUpload);
-
-  const removeToUpload = (key) =>
-    setImagesToUpload(imagesToUpload.filter((img) => img.key !== key));
-  const onDrop = useCallback((acceptedFiles, fileRejections) => {
+  const removeToUpload = (k) =>
+    setImagesToUpload(imagesToUpload.filter((img) => img.key !== k));
+  const onDrop = (acceptedFiles, fileRejections) => {
     uploadImages(acceptedFiles);
     // Show error for failed imports
     fileRejections.forEach((fileRejection) =>
@@ -76,8 +79,7 @@ export default function ImageDropzone({
         variant: 'error',
       })
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: 'image/jpeg, image/jpg, image/png',
