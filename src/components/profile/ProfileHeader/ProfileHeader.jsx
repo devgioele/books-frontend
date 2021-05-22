@@ -3,10 +3,12 @@ import { Avatar, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ProfileTypography from '../ProfileTypography';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   picture: {
     width: '150px',
     height: '150px',
+    color: theme.palette.primary.dark,
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 
