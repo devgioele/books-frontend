@@ -160,7 +160,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 minImages={1}
                 maxImages={3}
                 currentImages={currentBook.pictures}
-                setCurrentImages={updateBook('pictures')}
+                setUploadUrls={updateBook('pictures')}
               />
             </Grid>
           </Grid>

@@ -46,14 +46,12 @@ export const uploadBookImage = (
   onSuccess,
   onFailure,
   cancelToken,
-  bookBase64
+  bookFile
 ) => {
+  const fd = new FormData();
+  fd.append('book-picture', bookFile, bookFile.name);
   axios
-    .post(
-      `${BASE_URL}/books/picture/upload`,
-      { 'book-picture': bookBase64 },
-      withAuth({ cancelToken })
-    )
+    .post(`${BASE_URL}/books/picture/upload`, fd, withAuth({ cancelToken }))
     .then(successWith(onSuccess, onFailure, 200))
     .catch(failureWith(onFailure, 413));
 };

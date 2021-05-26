@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAxiosDispatcher } from 'hooks/axios';
 import { useSnackbar } from 'notistack';
 import Grid from '@material-ui/core/Grid';
 import StdMessages from 'messages/standard';
-import CloudImage from 'components/CloudImage';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternateOutlined';
 import {
   CircularProgress,
@@ -12,15 +11,10 @@ import {
   GridListTile,
   useTheme,
 } from '@material-ui/core';
+import clsx from 'clsx';
+import { uploadBookImage } from 'api/books';
 
 const useStyles = makeStyles((theme) => ({
-  // previewContainer: {
-  //   padding: '12px',
-  //   height: '100px',
-  //   maxHeight: '100px',
-  // },
-  // previewItem: { height: `calc(100% - ${theme.spacing(2)}px)` },
-  // preview: { height: '100%', objectFit: 'scale-down' },
   iconContainer: {
     height: '100%',
     padding: '10px',
@@ -30,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     height: '50px',
     width: '50px',
   },
-
   root: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
@@ -42,29 +35,42 @@ const useStyles = makeStyles((theme) => ({
   gridList: {
     width: '100%',
   },
-  imgLoading: {
+  img: {
     height: '100%',
-    width: 'auto',
+    width: '100%',
+    objectFit: 'scale-down',
+  },
+  imgLoading: {
     opacity: 0.5,
   },
 }));
 
 export default function ImageUploader({
-  maxConcurrentUploads,
-  toUpload,
+  imagesToUpload,
   removeToUpload,
-  uploaded,
-  setUploaded,
+  addUploadUrl,
 }) {
   const classes = useStyles();
   const theme = useTheme();
   const { enqueueSnackbar } = useSnackbar();
-  const [uploadingTasks] = useAxiosDispatcher(
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const addUploadedImage = (img) => {
+    console.log(
+      `adding uploaded image, while current uploaded images = ${JSON.stringify(
+        uploadedImages
+      )}`
+    );
+    setUploadedImages((prev) => [...prev, img]);
+  };
+  const [uploadingImages] = useAxiosDispatcher(
+    uploadBookImage,
     'uploading book image',
-    maxConcurrentUploads,
-    toUpload,
+    imagesToUpload,
     removeToUpload,
-    (key, body) => setUploaded([...uploaded, body.secureUrl]),
+    (img, response) => {
+      addUploadedImage(img);
+      addUploadUrl(response.secure_url);
+    },
     (key, err) => {
       const reason = err.message.includes('413')
         ? 'File is too big.'
@@ -76,10 +82,12 @@ export default function ImageUploader({
   );
 
   const emptyPreview =
-    uploaded.length + uploadingTasks.length + toUpload.length === 0;
+    uploadedImages.length + uploadingImages.length + imagesToUpload.length ===
+    0;
+  console.log(`imagesToUpload = ${JSON.stringify(imagesToUpload)}`);
+  console.log(`uploadingImages = ${JSON.stringify(uploadingImages)}`);
+  console.log(`uploadedImages = ${JSON.stringify(uploadedImages)}`);
 
-  // TODO: Fix the warning 'each child in a list should have
-  //  a unique "key" prop'.
   return emptyPreview ? (
     <Grid
       container
@@ -98,50 +106,54 @@ export default function ImageUploader({
         cols={3}
         spacing={theme.spacing(2)}
       >
-        {toUpload.map((img) => (
-          <GridListTile key={img.key} cols={1}>
-            <img
-              className={classes.imgLoading}
-              key={img.key}
-              alt={img.key}
-              src={img.data}
-            />
-          </GridListTile>
-        ))}
-        {uploadingTasks.map((upload) => (
-          <GridListTile key={upload.key} cols={1}>
-            <Grid
-              container
-              style={{ height: '100%', position: 'absolute' }}
-              direction="column"
-              justify="center"
-              alignItems="center"
-            >
-              <CircularProgress
-                variant="indeterminate"
-                disableShrink
-                color="secondary"
-                size={50}
-                thickness={4}
+        {uploadedImages.length > 0 &&
+          uploadedImages.map((uploadedImg, index) => (
+            <GridListTile key={`uploadedImage-${index}`} cols={1}>
+              <img
+                className={classes.img}
+                key={index}
+                alt="uploaded image"
+                src={URL.createObjectURL(uploadedImg)}
               />
-            </Grid>
-            <img
-              className={classes.imgLoading}
-              key={upload.key}
-              alt={upload.key}
-              src={upload.data}
-            />
-          </GridListTile>
-        ))}
-        {uploaded.map((img) => (
-          <GridListTile key={img.publicId} cols={1}>
-            <CloudImage
-              key={`image preview ${img.publicId}`}
-              alt={`image preview ${img.publicId}`}
-              url={img.secureUrl}
-            />
-          </GridListTile>
-        ))}
+            </GridListTile>
+          ))}
+        {uploadingImages.length > 0 &&
+          uploadingImages.map((uploadingImg, index) => (
+            <GridListTile key={`uploadingImage-${index}`} cols={1}>
+              <Grid
+                container
+                style={{ height: '100%', position: 'absolute' }}
+                direction="column"
+                justify="center"
+                alignItems="center"
+              >
+                <CircularProgress
+                  variant="indeterminate"
+                  disableShrink
+                  color="secondary"
+                  size={50}
+                  thickness={4}
+                />
+              </Grid>
+              <img
+                className={clsx(classes.img, classes.imgLoading)}
+                key={uploadingImg.name}
+                alt="uploading image"
+                src={URL.createObjectURL(uploadingImg)}
+              />
+            </GridListTile>
+          ))}
+        {imagesToUpload.length > 0 &&
+          imagesToUpload.map((imgToUpload, index) => (
+            <GridListTile key={`imageToUpload-${index}`} cols={1}>
+              <img
+                className={clsx(classes.img, classes.imgLoading)}
+                key={imgToUpload.name}
+                alt="image to be uploaded"
+                src={URL.createObjectURL(imgToUpload)}
+              />
+            </GridListTile>
+          ))}
       </GridList>
     </div>
   );

@@ -5,7 +5,6 @@ import { useSnackbar } from 'notistack';
 import clsx from 'clsx';
 import ImageUploader from 'components/ImageUploader';
 import StdMessages from 'messages/standard';
-import { makeFilenameUnique, toBase64 } from 'utils/files';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
 If the file has been dropped, the name is stored in the field 'name'.
 If it has been selected with some file explorer, the name is stored in
 the field 'path'.
-We normalize by setting the name equal to the path, if the name is missing.
+We normalize by setting the name equal to the path, if the name is missing,
+such that the field `name` is always available.
 */
 const normalizeNamePath = (files) =>
   files.map((file) => {
@@ -51,43 +51,20 @@ const normalizeNamePath = (files) =>
 export default function ImageDropzone({
   minImages,
   maxImages,
-  currentImages,
-  setCurrentImages,
+  uploadUrls,
+  setUploadUrls,
 }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [imagesToUpload, setImagesToUpload] = useState([]);
-  const uploadImages = async (imgFiles) => {
-    const newImagesToUpload = await Promise.all(
-      imgFiles.map(async (imgFile) =>
-        toBase64(imgFile)
-          .then((data) => {
-            console.log(`name = ${imgFile.name}`);
-            const key = makeFilenameUnique(
-              (k) => !!imagesToUpload.find((img) => img.key === k),
-              imgFile.name
-            );
-            return { key, data };
-          })
-          .catch(() =>
-            enqueueSnackbar(StdMessages.IMPORT_ERROR(imgFile.name), {
-              variant: 'warning',
-            })
-          )
-      )
-    );
-    setImagesToUpload([...imagesToUpload, ...newImagesToUpload]);
-  };
-
+  const addToUpload = (images) =>
+    setImagesToUpload((prev) => [...prev, ...images]);
   const removeToUpload = (k) =>
-    setImagesToUpload(imagesToUpload.filter((img) => img.key !== k));
+    setImagesToUpload((prev) => prev.filter((img) => img !== k));
+
   const onDrop = (acceptedFiles, fileRejections) => {
-    const normAcceptedFiles = normalizeNamePath(acceptedFiles);
-    const normFileRejections = normalizeNamePath(fileRejections);
-    console.log(JSON.stringify(normAcceptedFiles));
-    console.log(JSON.stringify(normFileRejections));
-    uploadImages(normAcceptedFiles);
-    normFileRejections.forEach((fileRejection) =>
+    addToUpload(acceptedFiles);
+    fileRejections.forEach((fileRejection) =>
       enqueueSnackbar(StdMessages.IMPORT_ERROR(fileRejection.file.name), {
         variant: 'error',
       })
@@ -107,11 +84,10 @@ export default function ImageDropzone({
         <input {...getInputProps()} />
         <ImageUploader
           className={classes.content}
-          maxConcurrentUploads={3}
-          toUpload={imagesToUpload}
+          maxConcurrentUploads={1}
+          imagesToUpload={imagesToUpload}
           removeToUpload={removeToUpload}
-          uploaded={currentImages}
-          setUploaded={setCurrentImages}
+          addUploadUrl={(url) => setUploadUrls([uploadUrls, ...url])}
         />
       </div>
       <em style={{ marginTop: '10px' }}>

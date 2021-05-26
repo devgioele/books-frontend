@@ -2,13 +2,6 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import StdMessages from 'messages/standard';
 import { useSnackbar } from 'notistack';
-import { uploadBookImage } from 'api/books';
-import {
-  makeUnique,
-  toBase64,
-  cleanBase64,
-  makeFilenameUnique,
-} from 'utils/files';
 
 function isNetworkError(error) {
   return !!error.isAxiosError && !error.response;
@@ -73,67 +66,60 @@ export const useAxios = (
 
 // Tasks delivered to this hook calling 'dispatch' must have UNIQUE keys!
 export const useAxiosDispatcher = (
+  axiosBlock,
   operationName,
-  maxConcurrentUploads,
   queue,
-  onTaken,
+  removeFromQueue,
   onCompletion,
   onExpectedError
 ) => {
   const { enqueueSnackbar } = useSnackbar();
-  const [tasksWorking, setTasksWorking] = useState([]);
-  const addTaskWorking = (task) => setTasksWorking([...tasksWorking, task]);
-  const removeTaskWorking = (taskToRemove) =>
-    setTasksWorking(
-      tasksWorking.filter((task) => task.key !== taskToRemove.key)
-    );
-
-  const dispatch = (key, axiosBlock, data) => {
-    const taskName = `${operationName} [${key}]`;
-    addTaskWorking({ key, data });
-    axiosBlock(
-      (body) => {
-        removeTaskWorking(key);
-        onCompletion(key, body);
-      },
-      (err, expected) => {
-        removeTaskWorking(key);
-        if (expected) onExpectedError(key, err);
-        else if (isNetworkError(err)) {
-          enqueueSnackbar(`${StdMessages.NETWORK_ERROR(taskName)}`, {
-            variant: 'error',
-          });
-        } else {
-          enqueueSnackbar(
-            `${StdMessages.UNEXPECTED(taskName)}\nCause: ${err}`,
-            {
-              variant: 'error',
-            }
-          );
-        }
-      },
-      null,
-      cleanBase64(data)
-    );
-  };
+  const [currentTasks, setCurrentTasks] = useState([]);
 
   useEffect(() => {
-    const tasksReady = maxConcurrentUploads - tasksWorking.length;
-    console.log(`tasksReady = ${tasksReady}`);
-    const nextToUpload = queue[0];
+    console.log(`queue length = ${queue.length}`);
     // If we can start another task without exceeding the limit
     // and there is another task pending
-    if (tasksReady > 0 && nextToUpload) {
-      onTaken(nextToUpload.key);
-      const newKey = makeFilenameUnique(
-        (key) => !!tasksWorking.find((task) => task.key === key),
-        nextToUpload.key
-      );
-      console.log(`dispatcher chose key: ${newKey}`);
-      dispatch(newKey, uploadBookImage, nextToUpload.data);
+    if (queue.length > 0) {
+      const nextToUpload = queue[0];
+      console.log('taken a new one');
+      removeFromQueue(nextToUpload);
+      setCurrentTasks([nextToUpload]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maxConcurrentUploads, tasksWorking, queue]);
+  }, [queue]);
 
-  return [tasksWorking];
+  useEffect(() => {
+    if (currentTasks.length > 0) {
+      const currentTask = currentTasks[0];
+      axiosBlock(
+        (body) => {
+          console.log(`uploaded file: ${currentTask.name}`);
+          setCurrentTasks([]);
+          onCompletion(currentTask, body);
+        },
+        (err, expected) => {
+          console.log(`upload failed for file: ${currentTask.name}`);
+          setCurrentTasks([]);
+          if (expected) onExpectedError(currentTask.name, err);
+          else if (isNetworkError(err)) {
+            enqueueSnackbar(`${StdMessages.NETWORK_ERROR(currentTask.name)}`, {
+              variant: 'error',
+            });
+          } else {
+            enqueueSnackbar(
+              `${StdMessages.UNEXPECTED(currentTask.name)}\nCause: ${err}`,
+              {
+                variant: 'error',
+              }
+            );
+          }
+        },
+        null,
+        currentTasks[0]
+      );
+    }
+  }, [currentTasks]);
+
+  return [currentTasks];
 };
