@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useAxiosDispatcher } from 'hooks/axios';
-import { useSnackbar } from 'notistack';
+import { useStatelessAxios } from 'hooks/axios';
 import Grid from '@material-ui/core/Grid';
-import StdMessages from 'messages/standard';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternateOutlined';
 import {
   CircularProgress,
@@ -13,6 +11,7 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { uploadBookImage } from 'api/books';
+import { uploadProgress } from 'utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   iconContainer: {
@@ -25,8 +24,7 @@ const useStyles = makeStyles((theme) => ({
     width: '50px',
   },
   root: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    padding: theme.spacing(1),
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
@@ -45,50 +43,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ImageUploader({
-  imagesToUpload,
-  removeToUpload,
-  addUploadUrl,
-}) {
+export default function ImageUploader({ droppedImages, onUploadStateChange }) {
   const classes = useStyles();
   const theme = useTheme();
-  const { enqueueSnackbar } = useSnackbar();
-  const [uploadedImages, setUploadedImages] = useState([]);
-  const addUploadedImage = (img) => {
-    console.log(
-      `adding uploaded image, while current uploaded images = ${JSON.stringify(
-        uploadedImages
-      )}`
-    );
-    setUploadedImages((prev) => [...prev, img]);
+
+  const [uploadImage] = useStatelessAxios(uploadBookImage);
+
+  const uploadImageGuarded = (image) => {
+    /*
+    'image.id' that is used for the callback that we pass in 'uploadImage'
+    is bound to the scope of this function.
+    This means that when the callback is used, 'image.id' is always gonna be
+    the same.
+     */
+    uploadImage((state, data) => {
+      onUploadStateChange(image.id, state, data);
+    }, image.file);
   };
-  const [uploadingImages] = useAxiosDispatcher(
-    uploadBookImage,
-    'uploading book image',
-    imagesToUpload,
-    removeToUpload,
-    (img, response) => {
-      addUploadedImage(img);
-      addUploadUrl(response.secure_url);
-    },
-    (key, err) => {
-      const reason = err.message.includes('413')
-        ? 'File is too big.'
-        : err.message;
-      enqueueSnackbar(`${StdMessages.IMPORT_ERROR(key, reason)}`, {
-        variant: 'warning',
-      });
-    }
-  );
 
-  const emptyPreview =
-    uploadedImages.length + uploadingImages.length + imagesToUpload.length ===
-    0;
-  console.log(`imagesToUpload = ${JSON.stringify(imagesToUpload)}`);
-  console.log(`uploadingImages = ${JSON.stringify(uploadingImages)}`);
-  console.log(`uploadedImages = ${JSON.stringify(uploadedImages)}`);
+  useEffect(() => {
+    droppedImages
+      .filter((image) => image.status === uploadProgress.waiting)
+      .forEach((image) => uploadImageGuarded(image));
+  }, [droppedImages]);
 
-  return emptyPreview ? (
+  return droppedImages.length === 0 ? (
     <Grid
       container
       className={classes.iconContainer}
@@ -106,55 +85,62 @@ export default function ImageUploader({
         cols={3}
         spacing={theme.spacing(2)}
       >
-        {uploadedImages.length > 0 &&
-          uploadedImages.map((uploadedImg, index) => (
-            <GridListTile key={`uploadedImage-${index}`} cols={1}>
-              <img
-                className={classes.img}
-                key={index}
-                alt="uploaded image"
-                src={URL.createObjectURL(uploadedImg)}
-              />
-            </GridListTile>
-          ))}
-        {uploadingImages.length > 0 &&
-          uploadingImages.map((uploadingImg, index) => (
-            <GridListTile key={`uploadingImage-${index}`} cols={1}>
-              <Grid
-                container
-                style={{ height: '100%', position: 'absolute' }}
-                direction="column"
-                justify="center"
-                alignItems="center"
-              >
-                <CircularProgress
-                  variant="indeterminate"
-                  disableShrink
-                  color="secondary"
-                  size={50}
-                  thickness={4}
-                />
-              </Grid>
-              <img
-                className={clsx(classes.img, classes.imgLoading)}
-                key={uploadingImg.name}
-                alt="uploading image"
-                src={URL.createObjectURL(uploadingImg)}
-              />
-            </GridListTile>
-          ))}
-        {imagesToUpload.length > 0 &&
-          imagesToUpload.map((imgToUpload, index) => (
-            <GridListTile key={`imageToUpload-${index}`} cols={1}>
-              <img
-                className={clsx(classes.img, classes.imgLoading)}
-                key={imgToUpload.name}
-                alt="image to be uploaded"
-                src={URL.createObjectURL(imgToUpload)}
-              />
-            </GridListTile>
-          ))}
+        {droppedImages.map((image, index) => (
+          <GridListTile key={index} cols={1}>
+            <DroppedImage image={image} />
+          </GridListTile>
+        ))}
       </GridList>
     </div>
   );
+}
+
+function DroppedImage({ image }) {
+  const classes = useStyles();
+
+  switch (image.status) {
+    case uploadProgress.uploaded:
+      return (
+        <img
+          className={classes.img}
+          alt="uploaded image"
+          src={URL.createObjectURL(image.file)}
+        />
+      );
+    case uploadProgress.uploading:
+      return (
+        <>
+          <Grid
+            container
+            style={{ height: '100%', position: 'absolute' }}
+            direction="column"
+            justify="center"
+            alignItems="center"
+          >
+            <CircularProgress
+              variant="indeterminate"
+              disableShrink
+              color="secondary"
+              size={50}
+              thickness={4}
+            />
+          </Grid>
+          <img
+            className={clsx(classes.img, classes.imgLoading)}
+            alt="uploading image"
+            src={URL.createObjectURL(image.file)}
+          />
+        </>
+      );
+    case uploadProgress.waiting:
+      return (
+        <img
+          className={clsx(classes.img, classes.imgLoading)}
+          alt="image to be uploaded"
+          src={URL.createObjectURL(image.file)}
+        />
+      );
+    default:
+      break;
+  }
 }

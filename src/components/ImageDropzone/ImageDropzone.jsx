@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useReducer, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack';
 import clsx from 'clsx';
 import ImageUploader from 'components/ImageUploader';
 import StdMessages from 'messages/standard';
+import { axiosState, uploadProgress } from 'utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,22 +49,49 @@ const normalizeNamePath = (files) =>
     return normalizedFile;
   });
 
-export default function ImageDropzone({
-  minImages,
-  maxImages,
-  uploadUrls,
-  setUploadUrls,
-}) {
+export default function ImageDropzone({ minImages, maxImages, addUploadUrl }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  const [imagesToUpload, setImagesToUpload] = useState([]);
-  const addToUpload = (images) =>
-    setImagesToUpload((prev) => [...prev, ...images]);
-  const removeToUpload = (k) =>
-    setImagesToUpload((prev) => prev.filter((img) => img !== k));
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
+
+  const droppedImages = useRef([]);
+  const dropImages = (images) => {
+    droppedImages.current = [
+      ...droppedImages.current,
+      ...images.map((image, index) => ({
+        id: index + droppedImages.current.length,
+        file: image,
+        status: uploadProgress.waiting,
+      })),
+    ];
+  };
+
+  const onUploadStateChange = (imageId, state, data) => {
+    let newStatus = null;
+
+    switch (state) {
+      case axiosState.progress:
+        newStatus = uploadProgress.uploading;
+        break;
+      case axiosState.success:
+        addUploadUrl(data.secureUrl);
+        newStatus = uploadProgress.uploaded;
+        break;
+      case axiosState.error:
+      default:
+        newStatus = uploadProgress.error;
+        break;
+    }
+
+    droppedImages.current = droppedImages.current.map((image) =>
+      image.id === imageId ? { ...image, status: newStatus } : image
+    );
+
+    forceUpdate();
+  };
 
   const onDrop = (acceptedFiles, fileRejections) => {
-    addToUpload(acceptedFiles);
+    dropImages(acceptedFiles);
     fileRejections.forEach((fileRejection) =>
       enqueueSnackbar(StdMessages.IMPORT_ERROR(fileRejection.file.name), {
         variant: 'error',
@@ -84,10 +112,8 @@ export default function ImageDropzone({
         <input {...getInputProps()} />
         <ImageUploader
           className={classes.content}
-          maxConcurrentUploads={1}
-          imagesToUpload={imagesToUpload}
-          removeToUpload={removeToUpload}
-          addUploadUrl={(url) => setUploadUrls([uploadUrls, ...url])}
+          droppedImages={droppedImages.current}
+          onUploadStateChange={onUploadStateChange}
         />
       </div>
       <em style={{ marginTop: '10px' }}>

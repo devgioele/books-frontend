@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -10,23 +10,25 @@ import { useAxios } from 'hooks/axios';
 import { editBook, sellBook } from 'api/books';
 import { CircularProgress } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
-import bookConditions from 'utils/bookConditions';
-import ImageDropzone from '../ImageDropzone';
+import ImageDropzone from 'components/ImageDropzone';
+import { bookConditions } from 'utils/constants';
 
 const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
 };
 
 export default function BookEditSellDialog({ backToParent, bookToEdit }) {
+  const [invalid, setInvalid] = useState(false);
   const defaultCondition = bookToEdit?.condition || bookConditions[0];
+  // We store all props of the book in a state, expect for the picture urls.
+  // The picture urls are stored in a ref for writing with immediate effect.
   const [currentBook, setNewBook] = useState({
     description: bookToEdit?.description,
     currency: bookToEdit?.currency,
     amount: bookToEdit?.amount,
-    pictures: bookToEdit?.pictures || [],
     condition: defaultCondition,
   });
-  const [invalid, setInvalid] = useState(false);
+  const pictureUrls = useRef(bookToEdit?.pictures || []);
   const updateBook = (fieldName) => (value) => {
     setInvalid(false);
     const bookGen = {
@@ -50,8 +52,14 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   );
   const isLoading = isLoadingSell || isLoadingEdit;
   const handleConfirm = () => {
-    if (bookToEdit) edit(bookToEdit.bookId, currentBook);
-    else sell(currentBook);
+    if (bookToEdit) {
+      edit(bookToEdit.bookId, currentBook);
+    } else {
+      // Merge state and ref
+      const bookToSell = currentBook;
+      bookToSell.pictures = pictureUrls;
+      sell(bookToSell);
+    }
   };
   const handleCancel = () => backToParent(false)();
 
@@ -137,7 +145,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                     variant="outlined"
                   />
                 )}
-                options={bookConditions}
+                options={Object.keys(bookConditions)}
                 defaultValue={defaultCondition}
                 onChange={(event, value) => updateBook('condition')(value)}
               />
@@ -159,8 +167,9 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
               <ImageDropzone
                 minImages={1}
                 maxImages={3}
-                currentImages={currentBook.pictures}
-                setUploadUrls={updateBook('pictures')}
+                addUploadUrl={(url) => {
+                  pictureUrls.current = [...pictureUrls.current, url];
+                }}
               />
             </Grid>
           </Grid>
