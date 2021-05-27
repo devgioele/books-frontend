@@ -35,21 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-/*
-If the file has been dropped, the name is stored in the field 'name'.
-If it has been selected with some file explorer, the name is stored in
-the field 'path'.
-We normalize by setting the name equal to the path, if the name is missing,
-such that the field `name` is always available.
-*/
-const normalizeNamePath = (files) =>
-  files.map((file) => {
-    const normalizedFile = file;
-    if (!normalizedFile.name) normalizedFile.name = file.path;
-    return normalizedFile;
-  });
-
-export default function ImageDropzone({ minImages, maxImages, addUploadUrl }) {
+export default function ImageDropzone({ minImages, maxImages, addPictureUrl }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -67,24 +53,28 @@ export default function ImageDropzone({ minImages, maxImages, addUploadUrl }) {
   };
 
   const onUploadStateChange = (imageId, state, data) => {
-    let newStatus = null;
+    let newImageProps = null;
 
     switch (state) {
       case axiosState.progress:
-        newStatus = uploadProgress.uploading;
+        newImageProps = { status: uploadProgress.uploading };
         break;
       case axiosState.success:
-        addUploadUrl(data.secureUrl);
-        newStatus = uploadProgress.uploaded;
+        addPictureUrl(data.secureUrl);
+        newImageProps = {
+          status: uploadProgress.uploaded,
+          secureUrl: data.secureUrl,
+        };
         break;
       case axiosState.error:
       default:
-        newStatus = uploadProgress.error;
+        newImageProps = { status: uploadProgress.error };
         break;
     }
 
+    // Only change the one image with 'imageId' and leave the others unchanged
     droppedImages.current = droppedImages.current.map((image) =>
-      image.id === imageId ? { ...image, status: newStatus } : image
+      image.id === imageId ? { ...image, ...newImageProps } : image
     );
 
     forceUpdate();

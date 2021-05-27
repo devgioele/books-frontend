@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useStatelessAxios } from 'hooks/axios';
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +12,7 @@ import {
 import clsx from 'clsx';
 import { uploadBookImage } from 'api/books';
 import { uploadProgress } from 'utils/constants';
+import CloudImage from 'components/CloudImage';
 
 const useStyles = makeStyles((theme) => ({
   iconContainer: {
@@ -97,15 +98,47 @@ export default function ImageUploader({ droppedImages, onUploadStateChange }) {
 
 function DroppedImage({ image }) {
   const classes = useStyles();
+  const [downloaded, setDownloaded] = useState(false);
+  const cloudImg = (
+    <CloudImage
+      className={classes.img}
+      alt="uploaded image"
+      url={image.secureUrl}
+      cutExtension={true}
+      onLoad={() => setDownloaded(true)}
+    />
+  );
 
   switch (image.status) {
     case uploadProgress.uploaded:
       return (
-        <img
-          className={classes.img}
-          alt="uploaded image"
-          src={URL.createObjectURL(image.file)}
-        />
+        <>
+          {!downloaded && (
+            <Grid
+              container
+              style={{ height: '100%', position: 'absolute' }}
+              direction="column"
+              justify="center"
+              alignItems="center"
+            >
+              <CircularProgress
+                variant="indeterminate"
+                disableShrink
+                color="secondary"
+                size={50}
+                thickness={4}
+              />
+            </Grid>
+          )}
+          {!downloaded && image.file && (
+            <img
+              className={clsx(classes.img, classes.imgLoading)}
+              alt="downloading image"
+              src={URL.createObjectURL(image.file)}
+            />
+          )}
+          {cloudImg}
+        </>
       );
     case uploadProgress.uploading:
       return (

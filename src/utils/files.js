@@ -48,14 +48,3 @@ export function makeFilenameUnique(isNotUnique, filename) {
 
   return result;
 }
-
-/*
-Starting from the last point in the string,
-we have to delete whatever comes afterwards.
-Examples:
-'t.est.jpg' -> 't.est.'
-'t.est.webp' -> 't.est.'
- */
-export function cutExtension(url) {
-  return url.slice(0, url.lastIndexOf('.') + 1);
-}

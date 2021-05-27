@@ -167,7 +167,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
               <ImageDropzone
                 minImages={1}
                 maxImages={3}
-                addUploadUrl={(url) => {
+                addPictureUrl={(url) => {
                   pictureUrls.current = [...pictureUrls.current, url];
                 }}
               />
