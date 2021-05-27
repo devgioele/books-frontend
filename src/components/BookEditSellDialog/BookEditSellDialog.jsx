@@ -187,7 +187,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
           spacing={2}
         >
           <Grid item>
-            <Button onClick={handleCancel} disabled={isLoading}>
+            <Button onClick={handleCancel} disabled={isLoading || isBusy}>
               Cancel
             </Button>
             <Button onClick={handleConfirm} disabled={isLoading || isBusy}>
