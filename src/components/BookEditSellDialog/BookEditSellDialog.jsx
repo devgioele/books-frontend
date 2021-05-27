@@ -19,6 +19,7 @@ const unwrapEventValue = (block) => (event) => {
 
 export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   const [invalid, setInvalid] = useState(false);
+  const [isBusy, setBusy] = useState(false);
   const defaultCondition = bookToEdit?.condition || bookConditions[0];
   // We store all props of the book in a state, expect for the picture urls.
   // The picture urls are stored in a ref for writing with immediate effect.
@@ -29,7 +30,6 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
     condition: defaultCondition,
   });
   const pictureUrls = useRef(bookToEdit?.pictures || []);
-  console.log(`pictureUrls = ${JSON.stringify(pictureUrls.current)}`);
   const updateBook = (fieldName) => (value) => {
     setInvalid(false);
     const bookGen = {
@@ -109,7 +109,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 onChange={unwrapEventValue(updateBook('description'))}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <TextField
                 required
                 variant="outlined"
@@ -120,7 +120,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 onChange={unwrapEventValue(updateBook('currency'))}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <TextField
                 required
                 variant="outlined"
@@ -172,6 +172,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 addPictureUrl={(url) => {
                   pictureUrls.current = [...pictureUrls.current, url];
                 }}
+                setBusy={setBusy}
               />
             </Grid>
           </Grid>
@@ -189,7 +190,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
             <Button onClick={handleCancel} disabled={isLoading}>
               Cancel
             </Button>
-            <Button onClick={handleConfirm} disabled={isLoading}>
+            <Button onClick={handleConfirm} disabled={isLoading || isBusy}>
               {bookToEdit ? 'Modify' : 'Sell'}
             </Button>
           </Grid>

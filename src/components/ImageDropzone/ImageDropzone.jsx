@@ -40,11 +40,13 @@ export default function ImageDropzone({
   maxImages,
   pictureUrls,
   addPictureUrl,
+  setBusy,
 }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
+  // Initialize dropped images with the given picture urls
   const droppedImages = useRef(
     pictureUrls.map((pictureUrl, index) => ({
       id: index,
@@ -52,7 +54,19 @@ export default function ImageDropzone({
       secureUrl: pictureUrl,
     }))
   );
+
+  // If there is any image waiting or uploading, we are busy
+  const updateBusyness = () =>
+    setBusy(
+      droppedImages.current.some(
+        (img) =>
+          img.status === uploadProgress.waiting ||
+          img.status === uploadProgress.uploading
+      )
+    );
+
   const dropImages = (images) => {
+    updateBusyness();
     droppedImages.current = [
       ...droppedImages.current,
       ...images.map((image, index) => ({
@@ -88,6 +102,7 @@ export default function ImageDropzone({
       image.id === imageId ? { ...image, ...newImageProps } : image
     );
 
+    updateBusyness();
     forceUpdate();
   };
 
