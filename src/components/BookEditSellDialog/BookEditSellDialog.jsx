@@ -20,7 +20,7 @@ const unwrapEventValue = (block) => (event) => {
 export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   const [invalid, setInvalid] = useState(false);
   const [isBusy, setBusy] = useState(false);
-  const defaultCondition = bookToEdit?.condition || bookConditions[0];
+  const defaultCondition = bookToEdit?.condition || bookConditions.ok;
   // We store all props of the book in a state, expect for the picture urls.
   // The picture urls are stored in a ref for writing with immediate effect.
   const [currentBook, setNewBook] = useState({
