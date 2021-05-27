@@ -57,7 +57,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
     } else {
       // Merge state and ref
       const bookToSell = currentBook;
-      bookToSell.pictures = pictureUrls;
+      bookToSell.pictures = pictureUrls.current;
       sell(bookToSell);
     }
   };
