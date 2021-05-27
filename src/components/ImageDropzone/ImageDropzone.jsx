@@ -35,12 +35,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ImageDropzone({ minImages, maxImages, addPictureUrl }) {
+export default function ImageDropzone({
+  minImages,
+  maxImages,
+  pictureUrls,
+  addPictureUrl,
+}) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
-  const droppedImages = useRef([]);
+  const droppedImages = useRef(
+    pictureUrls.map((pictureUrl, index) => ({
+      id: index,
+      status: uploadProgress.uploaded,
+      secureUrl: pictureUrl,
+    }))
+  );
   const dropImages = (images) => {
     droppedImages.current = [
       ...droppedImages.current,

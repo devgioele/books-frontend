@@ -29,6 +29,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
     condition: defaultCondition,
   });
   const pictureUrls = useRef(bookToEdit?.pictures || []);
+  console.log(`pictureUrls = ${JSON.stringify(pictureUrls.current)}`);
   const updateBook = (fieldName) => (value) => {
     setInvalid(false);
     const bookGen = {
@@ -52,13 +53,13 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   );
   const isLoading = isLoadingSell || isLoadingEdit;
   const handleConfirm = () => {
+    // Merge state and ref
+    const currentBookWithPictures = currentBook;
+    currentBookWithPictures.pictures = pictureUrls.current;
     if (bookToEdit) {
-      edit(bookToEdit.bookId, currentBook);
+      edit(bookToEdit.bookId, currentBookWithPictures);
     } else {
-      // Merge state and ref
-      const bookToSell = currentBook;
-      bookToSell.pictures = pictureUrls.current;
-      sell(bookToSell);
+      sell(currentBookWithPictures);
     }
   };
   const handleCancel = () => backToParent(false)();
@@ -167,6 +168,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
               <ImageDropzone
                 minImages={1}
                 maxImages={3}
+                pictureUrls={pictureUrls.current}
                 addPictureUrl={(url) => {
                   pictureUrls.current = [...pictureUrls.current, url];
                 }}
