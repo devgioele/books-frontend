@@ -86,16 +86,27 @@ export default function ImageUploader({ droppedImages, onUploadStateChange }) {
         cols={3}
         spacing={theme.spacing(2)}
       >
-        {droppedImages
-          .filter((img) => img.status !== uploadProgress.error)
-          .map((image, index) => (
-            <GridListTile key={index} cols={1}>
-              <DroppedImage image={image} />
-            </GridListTile>
-          ))}
+        {droppedImages.map((image, index) => (
+          <GridListTile key={index} cols={1}>
+            <DroppedImage image={image} />
+          </GridListTile>
+        ))}
       </GridList>
     </div>
   );
+}
+
+function altFromStatus(imageStatus) {
+  switch (imageStatus) {
+    case uploadProgress.uploaded:
+      return 'uploaded image';
+    case uploadProgress.uploading:
+      return 'uploading image';
+    case uploadProgress.waiting:
+      return 'image to be uploaded';
+    default:
+      return 'invalid image';
+  }
 }
 
 function DroppedImage({ image }) {
@@ -104,79 +115,51 @@ function DroppedImage({ image }) {
   const cloudImg = (
     <CloudImage
       className={classes.img}
-      alt="uploaded image"
+      alt={altFromStatus(image.status)}
       url={image.secureUrl}
       cutExtension={true}
       onLoad={() => setDownloaded(true)}
     />
   );
+  const downloadRequired =
+    image.status === uploadProgress.uploaded && !image.file;
+  const loading =
+    image.status === uploadProgress.uploading ||
+    (downloadRequired && !downloaded);
 
-  switch (image.status) {
-    case uploadProgress.uploaded:
-      return (
-        <>
-          {!downloaded && (
-            <Grid
-              container
-              style={{ height: '100%', position: 'absolute' }}
-              direction="column"
-              justify="center"
-              alignItems="center"
-            >
-              <CircularProgress
-                variant="indeterminate"
-                disableShrink
-                color="secondary"
-                size={50}
-                thickness={4}
-              />
-            </Grid>
-          )}
-          {!downloaded && image.file && (
-            <img
-              className={clsx(classes.img, classes.imgLoading)}
-              alt="downloading image"
-              src={URL.createObjectURL(image.file)}
-            />
-          )}
-          {cloudImg}
-        </>
-      );
-    case uploadProgress.uploading:
-      return (
-        <>
-          <Grid
-            container
-            style={{ height: '100%', position: 'absolute' }}
-            direction="column"
-            justify="center"
-            alignItems="center"
-          >
-            <CircularProgress
-              variant="indeterminate"
-              disableShrink
-              color="secondary"
-              size={50}
-              thickness={4}
-            />
-          </Grid>
+  return (
+    <>
+      {loading && (
+        <Grid
+          container
+          style={{ height: '100%', position: 'absolute' }}
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+          <CircularProgress
+            variant="indeterminate"
+            disableShrink
+            color="secondary"
+            size={50}
+            thickness={4}
+          />
+        </Grid>
+      )}
+      {
+        // If not downloaded yet, show preview if it is available
+        !downloaded && image.file && (
           <img
-            className={clsx(classes.img, classes.imgLoading)}
-            alt="uploading image"
+            className={clsx(
+              classes.img,
+              image.status !== uploadProgress.uploaded && classes.imgLoading
+            )}
+            alt={altFromStatus(image.status)}
             src={URL.createObjectURL(image.file)}
           />
-        </>
-      );
-    case uploadProgress.waiting:
-      return (
-        <img
-          className={clsx(classes.img, classes.imgLoading)}
-          alt="image to be uploaded"
-          src={URL.createObjectURL(image.file)}
-        />
-      );
-    case uploadProgress.error:
-    default:
-      return <img className={classes.img} alt="invalid image" />;
-  }
+        )
+      }
+      {downloadRequired && cloudImg}
+    </>
+  );
 }
