@@ -31,7 +31,7 @@ const routes = [
   {
     path: LANDING_ROUTE,
     isExact: true,
-    privilege: RoutePrivilege.GUEST,
+    privilege: RoutePrivilege.ANYONE,
     component: Landing,
   },
   {
