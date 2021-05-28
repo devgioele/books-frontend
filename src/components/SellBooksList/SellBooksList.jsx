@@ -143,11 +143,7 @@ export default function SellBooksList({
               spacing={4}
             >
               <Grid item>
-                <Typography
-                  className={classes.sectionHeader}
-                  elevation={15}
-                  variant="h4"
-                >
+                <Typography className={classes.sectionHeader} variant="h4">
                   {section.title}
                 </Typography>
               </Grid>
@@ -194,7 +190,7 @@ function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
           alt="book cover"
         />
       </Grid>
-      <Grid item xs={8}>
+      <Grid item>
         <Grid
           container
           direction="column"

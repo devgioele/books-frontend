@@ -3,6 +3,7 @@ import axios from 'axios';
 import StdMessages from 'messages/standard';
 import { useSnackbar } from 'notistack';
 import { axiosState } from 'utils/constants';
+import { useAuth } from './auth';
 
 function isNetworkError(error) {
   return !!error.isAxiosError && !error.response;
@@ -20,6 +21,7 @@ export const useAxios = (
   const [source, setSource] = useState(null);
 
   const { enqueueSnackbar } = useSnackbar();
+  const auth = useAuth();
 
   const fetch = (...args) => {
     // We use this variable in order to pass the value to the axiosBlock and
@@ -40,7 +42,9 @@ export const useAxios = (
         setData(null);
         setError(err);
 
-        if (expected) {
+        if (err?.response?.status === 401) {
+          auth.logout();
+        } else if (expected) {
           onExpectedError(err);
         } else if (isNetworkError(err)) {
           enqueueSnackbar(`${StdMessages.NETWORK_ERROR(operationName)}`, {
