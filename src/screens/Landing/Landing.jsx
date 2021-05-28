@@ -11,6 +11,7 @@ import HeartIcon from '@material-ui/icons/Favorite';
 import LandingWelcome from 'components/landing/LandingWelcome';
 import LandingHeader from 'components/landing/LandingHeader';
 import LandingAbout from 'components/landing/LandingAbout';
+import { pageFrame } from '../../theming';
 
 const features = [
   {
@@ -47,17 +48,7 @@ const features = [
 ];
 
 const useStyles = makeStyles((theme) => ({
-  pageFrame: {
-    [theme.breakpoints.up('xs')]: {
-      padding: '20px 6%',
-    },
-    [theme.breakpoints.up('sm')]: {
-      padding: '20px 10%',
-    },
-    [theme.breakpoints.up('md')]: {
-      padding: '20px 10%',
-    },
-  },
+  ...pageFrame(theme),
   page: {
     [theme.breakpoints.up('xs')]: {
       marginTop: '25px',

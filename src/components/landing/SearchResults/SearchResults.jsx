@@ -15,14 +15,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     padding: theme.spacing(3),
     // offset-x | offset-y | blur-radius | spread-radius
-    boxShadow: `0px 1px 3px 0px ${theme.colors.shadowGray}`,
     '&:hover': {
       boxShadow: `0px 20px 25px -5px ${theme.colors.shadowGray}`,
     },
   },
 }));
 
-export default function SearchResults({ books }) {
+export default function SearchResults({ books, showSignup }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -44,10 +43,14 @@ export default function SearchResults({ books }) {
             <BookCard book={book} />
           </Grid>
         ))}
-        <Divider light />
-        <Grid item>
-          <SeeMore />
-        </Grid>
+        {showSignup && (
+          <>
+            <Divider light />
+            <Grid item>
+              <SeeMore />
+            </Grid>
+          </>
+        )}
       </Grid>
     </Paper>
   );

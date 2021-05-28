@@ -1,6 +1,31 @@
 import axios from 'axios';
 import { BASE_URL, failureWith, successWith, withAuth } from './base';
 
+export const exploreBooks = (onSuccess, onFailure, cancelToken) => {
+  axios
+    .get(`${BASE_URL}/books/explore`, withAuth({ cancelToken }))
+    .then(successWith(onSuccess, onFailure, 200))
+    .catch(failureWith(onFailure));
+};
+
+export const searchBookBy = (
+  onSuccess,
+  onFailure,
+  cancelToken,
+  searchQuery
+) => {
+  axios
+    .get(
+      `${BASE_URL}/books/search`,
+      withAuth({
+        params: { searchQuery },
+        cancelToken,
+      })
+    )
+    .then(successWith(onSuccess, onFailure, 200))
+    .catch(failureWith(onFailure, 500, 422));
+};
+
 export const getSellingBooks = (onSuccess, onFailure, cancelToken) => {
   axios
     .get(`${BASE_URL}/books/selling`, withAuth({ cancelToken }))

@@ -3,9 +3,9 @@ import { ClickAwayListener, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchResults from 'components/landing/SearchResults';
 import SearchBar from 'components/landing/SearchBar';
-import landingSearchBy from 'api/landing';
 import useAxios from 'hooks/axios';
 import { debounce } from 'utils/functions';
+import { searchBookBy } from '../../api/books';
 
 const useStyles = makeStyles((theme) => ({
   searchCard: {
@@ -19,11 +19,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LandingSearch() {
+export default function ExploreSearch() {
   const classes = useStyles();
   const [hideSearch, setHideSearch] = useState(true);
   const [fetch, cancelPrevious, data, , isLoading] = useAxios(
-    landingSearchBy,
+    searchBookBy,
     'searching'
   );
 
@@ -42,7 +42,7 @@ export default function LandingSearch() {
         onClick={() => setHideSearch(false)}
       >
         <SearchBar onSearching={handleSearch} isLoading={isLoading} />
-        {showSearchResults && <SearchResults books={data} showSignup={true} />}
+        {showSearchResults && <SearchResults books={data} showSignup={false} />}
       </Paper>
     </ClickAwayListener>
   );

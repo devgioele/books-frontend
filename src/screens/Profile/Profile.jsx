@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CircularProgress, Grid } from '@material-ui/core';
+import { CircularProgress, Grid, makeStyles } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import ProfileHeader from '../../components/profile/ProfileHeader';
 import ProfileInformation from '../../components/profile/ProfileInformation';
@@ -8,6 +8,7 @@ import { getProfileDetails } from '../../api/profile';
 import { PROFILE_ROUTE, renderRoute, toRoute } from '../../routing/helpers';
 import { getFromObject } from '../../utils/functions';
 import CompleteProfileBanner from '../../components/profile/CompleteProfileBanner';
+import { pageFrame } from '../../theming';
 
 const profileFields = [
   {
@@ -55,6 +56,10 @@ const profileFields = [
   },
 ];
 
+const useStyles = makeStyles((theme) => ({
+  ...pageFrame(theme),
+}));
+
 const computeMissingFields = (zippedData) => {
   const validFields = zippedData
     .filter((field) => field.data)
@@ -64,6 +69,7 @@ const computeMissingFields = (zippedData) => {
 };
 
 export default function Profile({ routes }) {
+  const classes = useStyles();
   const history = useHistory();
 
   const [
@@ -112,7 +118,12 @@ export default function Profile({ routes }) {
           isDataLoaded: !!profileDetails,
           fields: zippedData.filter((field) => field.showInEditDialog),
         })}
-      <Grid container direction="column" spacing={4}>
+      <Grid
+        className={classes.pageFrame}
+        container
+        direction="column"
+        spacing={4}
+      >
         {isLoadingProfileDetails && (
           <Grid item>
             <CircularProgress />
