@@ -169,8 +169,13 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 minImages={1}
                 maxImages={3}
                 pictureUrls={pictureUrls.current}
-                addPictureUrl={(url) => {
-                  pictureUrls.current = [...pictureUrls.current, url];
+                addPictureUrl={(urlToAdd) => {
+                  pictureUrls.current = [...pictureUrls.current, urlToAdd];
+                }}
+                removePictureUrl={(urlToRemove) => {
+                  pictureUrls.current = pictureUrls.current.filter(
+                    (url) => url !== urlToRemove
+                  );
                 }}
                 setBusy={setBusy}
               />

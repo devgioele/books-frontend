@@ -8,7 +8,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import { CircularProgress } from '@material-ui/core';
 
-const unwrapEventValue = (block) => (event) => {
+const sanitizeEvent = (block) => (event) => {
+  event.stopPropagation();
   block(event.target.value);
 };
 
@@ -36,12 +37,12 @@ export default function ConfirmationDialog({
         >
           <Grid item>
             <Button
-              onClick={unwrapEventValue(onCancel)}
+              onClick={sanitizeEvent(onCancel)}
               disabled={!loadingCancellable && isLoading}
             >
               Cancel
             </Button>
-            <Button onClick={unwrapEventValue(onConfirm)} disabled={isLoading}>
+            <Button onClick={sanitizeEvent(onConfirm)} disabled={isLoading}>
               Confirm
             </Button>
           </Grid>

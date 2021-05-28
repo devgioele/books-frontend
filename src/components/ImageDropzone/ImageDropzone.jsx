@@ -40,6 +40,7 @@ export default function ImageDropzone({
   maxImages,
   pictureUrls,
   addPictureUrl,
+  removePictureUrl,
   setBusy,
 }) {
   const classes = useStyles();
@@ -103,6 +104,10 @@ export default function ImageDropzone({
           status: uploadProgress.uploaded,
           secureUrl: data.secureUrl,
         });
+        break;
+      case axiosState.abort:
+        removePictureUrl(data.secureUrl);
+        removeDroppedImage(imageId);
         break;
       case axiosState.error:
       default: {

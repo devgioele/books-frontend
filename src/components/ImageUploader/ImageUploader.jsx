@@ -11,8 +11,9 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { uploadBookImage } from 'api/books';
-import { uploadProgress } from 'utils/constants';
+import { axiosState, uploadProgress } from 'utils/constants';
 import CloudImage from 'components/CloudImage';
+import ConfirmationDialog from '../ConfirmationDialog';
 
 const useStyles = makeStyles((theme) => ({
   iconContainer: {
@@ -88,7 +89,14 @@ export default function ImageUploader({ droppedImages, onUploadStateChange }) {
       >
         {droppedImages.map((image, index) => (
           <GridListTile key={index} cols={1}>
-            <DroppedImage image={image} />
+            <DroppedImage
+              image={image}
+              remove={() =>
+                onUploadStateChange(image.id, axiosState.abort, {
+                  secureUrl: image.secureUrl,
+                })
+              }
+            />
           </GridListTile>
         ))}
       </GridList>
@@ -109,9 +117,18 @@ function altFromStatus(imageStatus) {
   }
 }
 
-function DroppedImage({ image }) {
+function DroppedImage({ image, remove }) {
   const classes = useStyles();
   const [downloaded, setDownloaded] = useState(false);
+  const [showRemove, setShowRemove] = useState(false);
+  const handleClick = (event) => {
+    // Do not trigger click event of parent
+    event.stopPropagation();
+    if (image.status === uploadProgress.uploaded) {
+      setShowRemove(true);
+    }
+  };
+
   const cloudImg = (
     <CloudImage
       className={classes.img}
@@ -119,6 +136,7 @@ function DroppedImage({ image }) {
       url={image.secureUrl}
       cutExtension={true}
       onLoad={() => setDownloaded(true)}
+      onClick={handleClick}
     />
   );
   const downloadRequired =
@@ -129,6 +147,16 @@ function DroppedImage({ image }) {
 
   return (
     <>
+      {showRemove && (
+        <ConfirmationDialog
+          title="Are you sure you want to remove the image?"
+          onConfirm={() => {
+            remove();
+            setShowRemove(false);
+          }}
+          onCancel={() => setShowRemove(false)}
+        />
+      )}
       {loading && (
         <Grid
           container
@@ -156,6 +184,7 @@ function DroppedImage({ image }) {
             )}
             alt={altFromStatus(image.status)}
             src={URL.createObjectURL(image.file)}
+            onClick={handleClick}
           />
         )
       }

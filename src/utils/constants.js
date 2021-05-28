@@ -8,4 +8,4 @@ function createEnum(values) {
 
 export const bookConditions = createEnum(['great', 'good', 'ok', 'bad', 'na']);
 export const uploadProgress = createEnum(['waiting', 'uploading', 'uploaded']);
-export const axiosState = createEnum(['progress', 'success', 'error']);
+export const axiosState = createEnum(['progress', 'success', 'error', 'abort']);
