@@ -10,8 +10,6 @@ const StdMessages = {
       operation === '' ? '' : ` while ${operation}`
     }. Check your internet connection.`,
   IMPORT_ERROR: (filename, reason = undefined) =>
-    `Could not import file '${filename}'! ${StdMessages.CONTACT_SUPPORT}${
-      reason ? ` Reason: ${reason}` : ''
-    }`,
+    `Could not import file '${filename}'!${reason ? ` ${reason}` : ''}`,
 };
 export default StdMessages;

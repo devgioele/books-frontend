@@ -86,11 +86,13 @@ export default function ImageUploader({ droppedImages, onUploadStateChange }) {
         cols={3}
         spacing={theme.spacing(2)}
       >
-        {droppedImages.map((image, index) => (
-          <GridListTile key={index} cols={1}>
-            <DroppedImage image={image} />
-          </GridListTile>
-        ))}
+        {droppedImages
+          .filter((img) => img.status !== uploadProgress.error)
+          .map((image, index) => (
+            <GridListTile key={index} cols={1}>
+              <DroppedImage image={image} />
+            </GridListTile>
+          ))}
       </GridList>
     </div>
   );
@@ -173,7 +175,8 @@ function DroppedImage({ image }) {
           src={URL.createObjectURL(image.file)}
         />
       );
+    case uploadProgress.error:
     default:
-      break;
+      return <img className={classes.img} alt="invalid image" />;
   }
 }

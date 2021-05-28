@@ -53,7 +53,7 @@ export const uploadBookImage = (
   axios
     .post(`${BASE_URL}/books/picture/upload`, fd, withAuth({ cancelToken }))
     .then(successWith(onSuccess, onFailure, 200))
-    .catch(failureWith(onFailure, 413));
+    .catch(failureWith(onFailure, 415, 500));
 };
 
 export const getSellLink = (onSuccess, onFailure, cancelToken, bookId) => {

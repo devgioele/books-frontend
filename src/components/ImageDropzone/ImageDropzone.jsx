@@ -76,31 +76,47 @@ export default function ImageDropzone({
       })),
     ];
   };
-
-  const onUploadStateChange = (imageId, state, data) => {
-    let newImageProps = null;
-
-    switch (state) {
-      case axiosState.progress:
-        newImageProps = { status: uploadProgress.uploading };
-        break;
-      case axiosState.success:
-        addPictureUrl(data.secureUrl);
-        newImageProps = {
-          status: uploadProgress.uploaded,
-          secureUrl: data.secureUrl,
-        };
-        break;
-      case axiosState.error:
-      default:
-        newImageProps = { status: uploadProgress.error };
-        break;
-    }
-
-    // Only change the one image with 'imageId' and leave the others unchanged
+  const removeDroppedImage = (imageId) => {
+    droppedImages.current = droppedImages.current.filter(
+      (img) => img.id !== imageId
+    );
+  };
+  const changeDroppedImage = (imageId, newImageProps) => {
+    // Apply changes
     droppedImages.current = droppedImages.current.map((image) =>
       image.id === imageId ? { ...image, ...newImageProps } : image
     );
+  };
+  const getDroppedImageName = (imageId) => {
+    const matches = droppedImages.current.filter((img) => img.id === imageId);
+    return matches.length === 0 ? undefined : matches[0].file.name;
+  };
+
+  const onUploadStateChange = (imageId, state, data) => {
+    switch (state) {
+      case axiosState.progress:
+        changeDroppedImage(imageId, { status: uploadProgress.uploading });
+        break;
+      case axiosState.success:
+        addPictureUrl(data.secureUrl);
+        changeDroppedImage(imageId, {
+          status: uploadProgress.uploaded,
+          secureUrl: data.secureUrl,
+        });
+        break;
+      case axiosState.error:
+      default: {
+        const imgName = getDroppedImageName(imageId);
+        removeDroppedImage(imageId);
+        enqueueSnackbar(
+          StdMessages.IMPORT_ERROR(imgName, 'Unsupported file format.'),
+          {
+            variant: 'error',
+          }
+        );
+        break;
+      }
+    }
 
     updateBusyness();
     forceUpdate();
