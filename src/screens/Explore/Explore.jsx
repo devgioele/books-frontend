@@ -3,11 +3,26 @@ import { Grid, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ExploreSearch from '../../explore/ExploreSearch';
 import { pageFrame } from '../../theming';
+import PopularBooks from '../../explore/PopularBooks';
+import MayInterestYouBooks from '../../explore/MayInterestYouBooks';
+import RecentlyViewedBooks from '../../explore/RecentlyViewedBooks';
 
 const sections = [
   {
+    title: 'Popular',
+    component: PopularBooks,
+  },
+  {
     title: 'Search',
     component: ExploreSearch,
+  },
+  {
+    title: 'May Interest You',
+    component: MayInterestYouBooks,
+  },
+  {
+    title: 'Recently Viewed',
+    component: RecentlyViewedBooks,
   },
 ];
 
@@ -23,7 +38,7 @@ export default function Explore() {
   const downXSmall = useMediaQuery((theme) => theme.breakpoints.down('xs'));
 
   return (
-    <Grid className={classes.pageFrame} container spacing={downXSmall ? 4 : 8}>
+    <Grid className={classes.pageFrame} container spacing={downXSmall ? 3 : 6}>
       {sections.map((section, index) => (
         <Section key={index} section={section} />
       ))}
