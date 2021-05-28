@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import { uploadBookImage } from 'api/books';
 import { axiosState, uploadProgress } from 'utils/constants';
 import CloudImage from 'components/CloudImage';
-import ConfirmationDialog from '../ConfirmationDialog';
+import ConfirmationDialog from 'components/ConfirmationDialog';
 
 const useStyles = makeStyles((theme) => ({
   iconContainer: {

@@ -126,17 +126,21 @@ export default function ImageDropzone({
       (img) => img.name,
       'Maximum number of images reached.'
     );
+    forceUpdate();
   };
+
   const removeDroppedImage = (imageId) => {
     droppedImages.current = droppedImages.current.filter(
       (img) => img.id !== imageId
     );
+    forceUpdate();
   };
   const changeDroppedImage = (imageId, newImageProps) => {
     // Apply changes
     droppedImages.current = droppedImages.current.map((image) =>
       image.id === imageId ? { ...image, ...newImageProps } : image
     );
+    forceUpdate();
   };
   const getDroppedImageName = (imageId) => {
     const matches = droppedImages.current.filter((img) => img.id === imageId);
