@@ -1,11 +1,17 @@
-import React, { useReducer, useRef } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack';
 import clsx from 'clsx';
 import ImageUploader from 'components/ImageUploader';
 import StdMessages from 'messages/standard';
-import { axiosState, uploadProgress } from 'utils/constants';
+import {
+  axiosState,
+  computeFillingState,
+  fillingState,
+  uploadProgress,
+} from 'utils/constants';
+import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,12 +21,23 @@ const useStyles = makeStyles((theme) => ({
   dropzone: {
     borderRadius: 5,
     borderWidth: 3,
-    borderColor: theme.palette.divider,
     borderStyle: 'dashed',
     outline: 'none',
+    borderColor: theme.palette.divider,
     '&:hover': {
       borderColor: theme.palette.custom.lightGrey,
     },
+  },
+  dropzoneNotEnough: {
+    borderColor: red[500],
+  },
+  dropzoneNotEnoughHover: {
+    '&:hover': {
+      borderColor: red[200],
+    },
+  },
+  dropzoneNotEnoughDrag: {
+    borderColor: red[200],
   },
   dropzoneDrag: {
     borderColor: theme.palette.custom.lightGrey,
@@ -41,7 +58,7 @@ export default function ImageDropzone({
   pictureUrls,
   addPictureUrl,
   removePictureUrl,
-  setBusy,
+  setBlocked,
 }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -56,26 +73,59 @@ export default function ImageDropzone({
     }))
   );
 
-  // If there is any image waiting or uploading, we are busy
-  const updateBusyness = () =>
-    setBusy(
-      droppedImages.current.some(
-        (img) =>
-          img.status === uploadProgress.waiting ||
-          img.status === uploadProgress.uploading
-      )
+  const [filling, setFilling] = useState(
+    computeFillingState(minImages, maxImages, droppedImages.current.length)
+  );
+
+  useEffect(() => {
+    // Update filling
+    const newFilling = computeFillingState(
+      minImages,
+      maxImages,
+      droppedImages.current.length
+    );
+    setFilling(newFilling);
+    /*
+    Block if there are not enough images or
+    there is any image waiting/uploading
+     */
+    setBlocked(
+      newFilling === fillingState.NOT_ENOUGH ||
+        droppedImages.current.some(
+          (img) =>
+            img.status === uploadProgress.waiting ||
+            img.status === uploadProgress.uploading
+        )
+    );
+  }, [droppedImages.current]);
+
+  const rejectFiles = (files, nameExtractor, reason) =>
+    files.forEach((file) =>
+      enqueueSnackbar(StdMessages.IMPORT_ERROR(nameExtractor(file), reason), {
+        variant: 'error',
+      })
     );
 
   const dropImages = (images) => {
-    updateBusyness();
-    droppedImages.current = [
-      ...droppedImages.current,
-      ...images.map((image, index) => ({
-        id: index + droppedImages.current.length,
-        file: image,
-        status: uploadProgress.waiting,
-      })),
-    ];
+    const freeSlots = maxImages - droppedImages.current.length;
+    const importingImages = images.slice(0, freeSlots);
+    const overflowedImages = images.slice(freeSlots);
+
+    if (importingImages.length > 0) {
+      droppedImages.current = [
+        ...droppedImages.current,
+        ...importingImages.map((image, index) => ({
+          id: index + droppedImages.current.length,
+          file: image,
+          status: uploadProgress.waiting,
+        })),
+      ];
+    }
+    rejectFiles(
+      overflowedImages,
+      (img) => img.name,
+      'Maximum number of images reached.'
+    );
   };
   const removeDroppedImage = (imageId) => {
     droppedImages.current = droppedImages.current.filter(
@@ -122,17 +172,15 @@ export default function ImageDropzone({
         break;
       }
     }
-
-    updateBusyness();
     forceUpdate();
   };
 
   const onDrop = (acceptedFiles, fileRejections) => {
     dropImages(acceptedFiles);
-    fileRejections.forEach((fileRejection) =>
-      enqueueSnackbar(StdMessages.IMPORT_ERROR(fileRejection.file.name), {
-        variant: 'error',
-      })
+    rejectFiles(
+      fileRejections,
+      (fileRejection) => fileRejection.file.name,
+      'Invalid file format.'
     );
   };
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -140,12 +188,21 @@ export default function ImageDropzone({
     accept: 'image/jpeg, image/jpg, image/png',
   });
 
+  const dropzoneClasses = () => {
+    if (filling === fillingState.NOT_ENOUGH) {
+      return clsx(
+        classes.dropzone,
+        classes.dropzoneNotEnough,
+        classes.dropzoneNotEnoughHover,
+        isDragActive && classes.dropzoneNotEnoughDrag
+      );
+    }
+    return clsx(classes.dropzone, isDragActive && classes.dropzoneDrag);
+  };
+
   return (
     <div className={classes.root}>
-      <div
-        className={clsx(classes.dropzone, isDragActive && classes.dropzoneDrag)}
-        {...getRootProps()}
-      >
+      <div className={dropzoneClasses()} {...getRootProps()}>
         <input {...getInputProps()} />
         <ImageUploader
           className={classes.content}

@@ -49,7 +49,10 @@ export default function ImageUploader({ droppedImages, onUploadStateChange }) {
   const classes = useStyles();
   const theme = useTheme();
 
-  const [uploadImage] = useStatelessAxios(uploadBookImage);
+  const [uploadImage, cancelAllUploads] = useStatelessAxios(uploadBookImage);
+
+  // Cleanup on unmount
+  useEffect(() => cancelAllUploads, []);
 
   const uploadImageGuarded = (image) => {
     /*

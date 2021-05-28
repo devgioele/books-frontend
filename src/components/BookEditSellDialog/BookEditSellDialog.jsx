@@ -19,7 +19,7 @@ const unwrapEventValue = (block) => (event) => {
 
 export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   const [invalid, setInvalid] = useState(false);
-  const [isBusy, setBusy] = useState(false);
+  const [isBlocked, setBlocked] = useState(false);
   const defaultCondition = bookToEdit?.condition || bookConditions.ok;
   // We store all props of the book in a state, expect for the picture urls.
   // The picture urls are stored in a ref for writing with immediate effect.
@@ -166,7 +166,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
             )}
             <Grid item xs={12}>
               <ImageDropzone
-                minImages={1}
+                minImages={2}
                 maxImages={3}
                 pictureUrls={pictureUrls.current}
                 addPictureUrl={(urlToAdd) => {
@@ -177,7 +177,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                     (url) => url !== urlToRemove
                   );
                 }}
-                setBusy={setBusy}
+                setBlocked={setBlocked}
               />
             </Grid>
           </Grid>
@@ -192,10 +192,10 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
           spacing={2}
         >
           <Grid item>
-            <Button onClick={handleCancel} disabled={isLoading || isBusy}>
+            <Button onClick={handleCancel} disabled={isLoading}>
               Cancel
             </Button>
-            <Button onClick={handleConfirm} disabled={isLoading || isBusy}>
+            <Button onClick={handleConfirm} disabled={isLoading || isBlocked}>
               {bookToEdit ? 'Modify' : 'Sell'}
             </Button>
           </Grid>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import axios from 'axios';
 import StdMessages from 'messages/standard';
 import { useSnackbar } from 'notistack';
@@ -71,20 +71,30 @@ export const useAxios = (
 export const useStatelessAxios = (axiosBlock, operationName = '') => {
   const { enqueueSnackbar } = useSnackbar();
 
-  const [source, setSource] = useState(null);
+  const sources = useRef([]);
+  const removeSource = (sourceToRemove) => {
+    sources.current = sources.current.filter(
+      (source) => source !== sourceToRemove
+    );
+  };
+  const addSource = (sourceToAdd) => {
+    sources.current = [...sources.current, sourceToAdd];
+  };
 
   const fetch = (onStateChange = (state, data) => {}, ...args) => {
     // We use this variable in order to pass the value to the axiosBlock and
     // also to the state as the state propagation is asynchronous.
     const localSource = axios.CancelToken.source();
-    setSource(localSource);
+    addSource(localSource);
 
     onStateChange(axiosState.progress, null);
     axiosBlock(
       (body) => {
+        removeSource(localSource);
         onStateChange(axiosState.success, body);
       },
       (err, expected) => {
+        removeSource(localSource);
         if (expected) {
           onStateChange(axiosState.error, err);
         } else if (isNetworkError(err)) {
@@ -105,9 +115,13 @@ export const useStatelessAxios = (axiosBlock, operationName = '') => {
     );
   };
 
-  const cancelPrevious = () => {
-    if (source != null) source.cancel();
+  const cancelAll = () => {
+    const sourcesCopy = [...sources.current];
+    // Remove all
+    sources.current = [];
+    // Cancel each
+    sourcesCopy.forEach((source) => source.cancel());
   };
 
-  return [fetch, cancelPrevious];
+  return [fetch, cancelAll];
 };

@@ -66,7 +66,7 @@ export default function Sell({ routes }) {
   ] = useAxios(getSoldBooks, 'fetching sold books');
 
   // These two effects are applied only on mounting.
-  // They are only clean up on unmounting.
+  // They are only cleaned up on unmounting.
   useEffect(() => {
     fetchSellingBooks();
     return () => cancelSelling();
