@@ -22,7 +22,14 @@ export default function ConfirmationDialog({
   loadingCancellable,
 }) {
   return (
-    <Dialog fullScreen={false} fullWidth={true} open={true}>
+    <Dialog
+      fullScreen={false}
+      fullWidth={true}
+      open={true}
+      onClose={(event) => {
+        if (loadingCancellable || !isLoading) onCancel(event);
+      }}
+    >
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{details}</DialogContentText>

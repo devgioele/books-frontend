@@ -74,6 +74,7 @@ export const useAxios = (
 
 export const useStatelessAxios = (axiosBlock, operationName = '') => {
   const { enqueueSnackbar } = useSnackbar();
+  const auth = useAuth();
 
   const sources = useRef([]);
   const removeSource = (sourceToRemove) => {
@@ -99,7 +100,10 @@ export const useStatelessAxios = (axiosBlock, operationName = '') => {
       },
       (err, expected) => {
         removeSource(localSource);
-        if (expected) {
+
+        if (err?.response?.status === 401) {
+          auth.logout();
+        } else if (expected) {
           onStateChange(axiosState.error, err);
         } else if (isNetworkError(err)) {
           enqueueSnackbar(`${StdMessages.NETWORK_ERROR(operationName)}`, {

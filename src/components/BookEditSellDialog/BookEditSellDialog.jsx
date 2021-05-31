@@ -166,9 +166,9 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
             )}
             <Grid item xs={12}>
               <ImageDropzone
-                minImages={2}
-                maxImages={3}
-                pictureUrls={pictureUrls.current}
+                minImages={1}
+                maxImages={4}
+                pictureUrlsRef={pictureUrls}
                 addPictureUrl={(urlToAdd) => {
                   pictureUrls.current = [...pictureUrls.current, urlToAdd];
                 }}

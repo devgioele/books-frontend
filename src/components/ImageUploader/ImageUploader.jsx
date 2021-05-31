@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import { uploadBookImage } from 'api/books';
 import { axiosState, uploadProgress } from 'utils/constants';
 import CloudImage from 'components/CloudImage';
-import ConfirmationDialog from '../ConfirmationDialog';
+import ConfirmationDialog from 'components/ConfirmationDialog';
 
 const useStyles = makeStyles((theme) => ({
   iconContainer: {
@@ -132,16 +132,6 @@ function DroppedImage({ image, remove }) {
     }
   };
 
-  const cloudImg = (
-    <CloudImage
-      className={classes.img}
-      alt={altFromStatus(image.status)}
-      url={image.secureUrl}
-      cutExtension={true}
-      onLoad={() => setDownloaded(true)}
-      onClick={handleClick}
-    />
-  );
   const downloadRequired =
     image.status === uploadProgress.uploaded && !image.file;
   const loading =
@@ -179,7 +169,7 @@ function DroppedImage({ image, remove }) {
       )}
       {
         // If not downloaded yet, show preview if it is available
-        !downloaded && image.file && (
+        (!downloadRequired || !downloaded) && image.file && (
           <img
             className={clsx(
               classes.img,
@@ -191,7 +181,20 @@ function DroppedImage({ image, remove }) {
           />
         )
       }
-      {downloadRequired && cloudImg}
+      {downloadRequired && (
+        <CloudImage
+          className={classes.img}
+          alt={altFromStatus(image.status)}
+          url={image.secureUrl}
+          cutExtension={true}
+          /*
+          Warning: This callback can be triggered even if 'downloadRequired' is
+          false and the 'CloudImage' component is not shown.
+           */
+          onLoad={() => setDownloaded(true)}
+          onClick={handleClick}
+        />
+      )}
     </>
   );
 }
