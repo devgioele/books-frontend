@@ -12,7 +12,7 @@ import {
 import { buildObjectFromFields, imprintObject } from 'utils/functions';
 import { useAxios } from 'hooks/axios';
 import { editProfile, uploadProfilePicture } from 'api/profile';
-import ImageDropzone from '../../ImageDropzone';
+import ImageDropzone from 'components/ImageDropzone';
 
 const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
@@ -86,6 +86,7 @@ export default function EditProfileDialog({
                   }
                   setBlocked={setBlocked}
                   uploadEndpoint={uploadProfilePicture}
+                  cols={1}
                 />
               ) : (
                 <TextField

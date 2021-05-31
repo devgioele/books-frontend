@@ -16,7 +16,7 @@ export default function CloudImage({ url, cutExtension, ...remProps }) {
     if it wasn't compatible. Once they find a suitable source,
     they use it to set the src of the img.
      */
-    <picture>
+    <picture style={{ display: 'flex' }}>
       {/*
       avif disabled, because due to avif's long encoding times,
       cloudinary's support is currently limited
@@ -25,7 +25,7 @@ export default function CloudImage({ url, cutExtension, ...remProps }) {
       <source srcSet={`${validUrl}webp`} type="image/webp" />
       <source srcSet={`${validUrl}jp2`} type="image/jp2" />
       <source srcSet={`${validUrl}jxr`} type="image/vnd.ms-photo" />
-      <img {...remProps} />
+      <img {...remProps} style={{ margin: 'auto' }} />
     </picture>
   );
 }

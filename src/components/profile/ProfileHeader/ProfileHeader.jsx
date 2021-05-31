@@ -32,7 +32,7 @@ export default function ProfileHeader({ fields }) {
       <Grid item>
         <Avatar
           className={classes.avatar}
-          src={picture.data}
+          src={!mouseOnAvatar && picture.data}
           onMouseOver={() => setMouseOnAvatar(true)}
           onMouseLeave={() => setMouseOnAvatar(false)}
           onClick={() => history.push(toRoute(EDIT_PROFILE_ROUTE))}

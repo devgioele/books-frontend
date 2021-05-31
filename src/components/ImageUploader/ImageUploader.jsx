@@ -34,9 +34,17 @@ const useStyles = makeStyles((theme) => ({
   gridList: {
     width: '100%',
   },
-  img: {
+  imgContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // alignItems: 'center',
     height: '100%',
     width: '100%',
+  },
+  img: {
+    height: '100%',
+    width: 'auto',
     objectFit: 'scale-down',
   },
   imgLoading: {
@@ -48,6 +56,7 @@ export default function ImageUploader({
   droppedImages,
   onUploadStateChange,
   uploadEndpoint,
+  cols,
 }) {
   const classes = useStyles();
   const theme = useTheme();
@@ -90,7 +99,7 @@ export default function ImageUploader({
       <GridList
         className={classes.gridList}
         cellHeight={100}
-        cols={3}
+        cols={cols}
         spacing={theme.spacing(2)}
       >
         {droppedImages.map((image, index) => (
@@ -142,7 +151,7 @@ function DroppedImage({ image, remove }) {
     (downloadRequired && !downloaded);
 
   return (
-    <>
+    <div className={classes.imgContainer}>
       {showRemove && (
         <ConfirmationDialog
           title="Are you sure you want to remove the image?"
@@ -198,6 +207,6 @@ function DroppedImage({ image, remove }) {
           onClick={handleClick}
         />
       )}
-    </>
+    </div>
   );
 }

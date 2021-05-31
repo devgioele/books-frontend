@@ -60,6 +60,7 @@ export default function ImageDropzone({
   removePictureUrl,
   setBlocked,
   uploadEndpoint,
+  ...gridListArgs
 }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -223,6 +224,7 @@ export default function ImageDropzone({
           droppedImages={droppedImages.current}
           onUploadStateChange={onUploadStateChange}
           uploadEndpoint={uploadEndpoint}
+          {...gridListArgs}
         />
       </div>
       <em style={{ marginTop: '10px' }}>
