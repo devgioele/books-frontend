@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { CircularProgress, Grid } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import ProfileHeader from '../../components/profile/ProfileHeader';
-import ProfileInformation from '../../components/profile/ProfileInformation';
-import { useAxios } from '../../hooks/axios';
-import { getProfileDetails } from '../../api/profile';
-import { PROFILE_ROUTE, renderRoute, toRoute } from '../../routing/helpers';
-import { getFromObject } from '../../utils/functions';
-import CompleteProfileBanner from '../../components/profile/CompleteProfileBanner';
+import ProfileHeader from 'components/profile/ProfileHeader';
+import ProfileInformation from 'components/profile/ProfileInformation';
+import { useAxios } from 'hooks/axios';
+import { getProfileDetails } from 'api/profile';
+import { PROFILE_ROUTE, renderRoute, toRoute } from 'routing/helpers';
+import { getFromObject } from 'utils/functions';
+import CompleteProfileBanner from 'components/profile/CompleteProfileBanner';
 
 const profileFields = [
   {
@@ -20,38 +20,46 @@ const profileFields = [
     name: 'name',
     showInHeader: true,
     showInEditDialog: true,
+    space: 6,
   },
   {
     displayName: 'Surname',
     name: 'surname',
     showInHeader: true,
     showInEditDialog: true,
+    space: 6,
   },
   {
     displayName: 'Picture',
     name: 'profilePicture',
     showInHeader: true,
+    showInEditDialog: true,
+    space: 12,
   },
   {
     displayName: 'Email',
     name: 'email',
     showInEditDialog: true,
+    space: 12,
     isRequired: true,
   },
   {
     displayName: 'Phone Number',
     name: 'contactInformation.phoneNumber',
     showInEditDialog: true,
+    space: 12,
   },
   {
     displayName: 'Telegram',
     name: 'contactInformation.telegramUsername',
     showInEditDialog: true,
+    space: 12,
   },
   {
     displayName: 'Facebook',
     name: 'contactInformation.facebookUsername',
     showInEditDialog: true,
+    space: 12,
   },
 ];
 

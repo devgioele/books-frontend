@@ -10,7 +10,6 @@ import {
   useTheme,
 } from '@material-ui/core';
 import clsx from 'clsx';
-import { uploadBookImage } from 'api/books';
 import { axiosState, uploadProgress } from 'utils/constants';
 import CloudImage from 'components/CloudImage';
 import ConfirmationDialog from 'components/ConfirmationDialog';
@@ -45,11 +44,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ImageUploader({ droppedImages, onUploadStateChange }) {
+export default function ImageUploader({
+  droppedImages,
+  onUploadStateChange,
+  uploadEndpoint,
+}) {
   const classes = useStyles();
   const theme = useTheme();
 
-  const [uploadImage, cancelAllUploads] = useStatelessAxios(uploadBookImage);
+  const [uploadImage, cancelAllUploads] = useStatelessAxios(uploadEndpoint);
 
   // Cleanup on unmount
   useEffect(() => cancelAllUploads, []);

@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { useAxios } from 'hooks/axios';
-import { editBook, sellBook } from 'api/books';
+import { editBook, sellBook, uploadBookImage } from 'api/books';
 import { CircularProgress } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import ImageDropzone from 'components/ImageDropzone';
@@ -65,7 +65,14 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   const handleCancel = () => backToParent(false)();
 
   return (
-    <Dialog fullScreen={false} fullWidth={true} open={true}>
+    <Dialog
+      fullScreen={false}
+      fullWidth={true}
+      open={true}
+      onClose={() => {
+        if (!isLoading) handleCancel();
+      }}
+    >
       <DialogTitle>
         {bookToEdit ? `Modify '${bookToEdit.title}'` : 'Sell a new book'}
       </DialogTitle>
@@ -168,7 +175,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
               <ImageDropzone
                 minImages={1}
                 maxImages={4}
-                pictureUrlsRef={pictureUrls}
+                pictureUrlsRef={pictureUrls.current}
                 addPictureUrl={(urlToAdd) => {
                   pictureUrls.current = [...pictureUrls.current, urlToAdd];
                 }}
@@ -178,6 +185,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                   );
                 }}
                 setBlocked={setBlocked}
+                uploadEndpoint={uploadBookImage}
               />
             </Grid>
           </Grid>

@@ -1,26 +1,46 @@
-import React from 'react';
-import { Avatar, Grid, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Avatar, CircularProgress, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import ProfileTypography from '../ProfileTypography';
+import ProfileTypography from 'components/profile/ProfileTypography';
+import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternateOutlined';
+import { useHistory } from 'react-router-dom';
+import { EDIT_PROFILE_ROUTE, toRoute } from '../../../routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
-  picture: {
+  avatar: {
     width: '150px',
     height: '150px',
     color: theme.palette.primary.dark,
     backgroundColor: theme.palette.primary.main,
   },
+  icon: {
+    color: theme.palette.divider,
+    height: '60px',
+    width: '60px',
+  },
 }));
 
 export default function ProfileHeader({ fields }) {
   const classes = useStyles();
+  const [mouseOnAvatar, setMouseOnAvatar] = useState(false);
+  const history = useHistory();
 
   const [username, name, surname, picture] = fields;
 
   return (
     <Grid container justify="flex-start" alignItems="center" spacing={2}>
       <Grid item>
-        <Avatar className={classes.picture} src={picture.data} />
+        <Avatar
+          className={classes.avatar}
+          src={picture.data}
+          onMouseOver={() => setMouseOnAvatar(true)}
+          onMouseLeave={() => setMouseOnAvatar(false)}
+          onClick={() => history.push(toRoute(EDIT_PROFILE_ROUTE))}
+        >
+          {mouseOnAvatar ? (
+            <AddPhotoIcon className={classes.icon} alt="Profile photo" />
+          ) : undefined}
+        </Avatar>
       </Grid>
       <Grid item>
         <Grid
@@ -54,9 +74,6 @@ export default function ProfileHeader({ fields }) {
           </Grid>
           <Grid item>
             <Typography variant="h6">@{username.data}</Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="subtitle1"></Typography>
           </Grid>
         </Grid>
       </Grid>

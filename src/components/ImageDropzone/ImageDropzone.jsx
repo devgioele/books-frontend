@@ -55,10 +55,11 @@ const useStyles = makeStyles((theme) => ({
 export default function ImageDropzone({
   minImages,
   maxImages,
-  pictureUrlsRef,
+  pictureUrls,
   addPictureUrl,
   removePictureUrl,
   setBlocked,
+  uploadEndpoint,
 }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -66,7 +67,7 @@ export default function ImageDropzone({
 
   // Initialize dropped images with the given picture urls
   const droppedImages = useRef(
-    pictureUrlsRef.current.map((pictureUrl, index) => ({
+    pictureUrls.map((pictureUrl, index) => ({
       id: index,
       status: uploadProgress.uploaded,
       secureUrl: pictureUrl,
@@ -161,6 +162,7 @@ export default function ImageDropzone({
         changeDroppedImage(imageId, { status: uploadProgress.uploading });
         break;
       case axiosState.success:
+        console.log(`ADDING: ${data.secureUrl}`);
         addPictureUrl(data.secureUrl);
         changeDroppedImage(imageId, {
           status: uploadProgress.uploaded,
@@ -220,6 +222,7 @@ export default function ImageDropzone({
           className={classes.content}
           droppedImages={droppedImages.current}
           onUploadStateChange={onUploadStateChange}
+          uploadEndpoint={uploadEndpoint}
         />
       </div>
       <em style={{ marginTop: '10px' }}>
