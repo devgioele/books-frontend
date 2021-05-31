@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ImageDropzone({
   minImages,
   maxImages,
-  pictureUrls,
+  pictureUrlsRef,
   addPictureUrl,
   removePictureUrl,
   setBlocked,
@@ -66,7 +66,7 @@ export default function ImageDropzone({
 
   // Initialize dropped images with the given picture urls
   const droppedImages = useRef(
-    pictureUrls.map((pictureUrl, index) => ({
+    pictureUrlsRef.current.map((pictureUrl, index) => ({
       id: index,
       status: uploadProgress.uploaded,
       secureUrl: pictureUrl,
@@ -106,6 +106,14 @@ export default function ImageDropzone({
       })
     );
 
+  // Generates a new unique id for a dropped image according to the given index
+  const newUniqueDroppedImageId = (index) => {
+    if (droppedImages.current.length === 0) return index;
+    return (
+      droppedImages.current[droppedImages.current.length - 1].id + 1 + index
+    );
+  };
+
   const dropImages = (images) => {
     const freeSlots = maxImages - droppedImages.current.length;
     const importingImages = images.slice(0, freeSlots);
@@ -115,7 +123,7 @@ export default function ImageDropzone({
       droppedImages.current = [
         ...droppedImages.current,
         ...importingImages.map((image, index) => ({
-          id: index + droppedImages.current.length,
+          id: newUniqueDroppedImageId(index),
           file: image,
           status: uploadProgress.waiting,
         })),
