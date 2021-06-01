@@ -7,6 +7,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import DynamicAppBar from '../DynamicAppBar';
+import ContentWithToolbar from '../ContentWithToolbar';
 
 const drawerWidth = 180;
 
@@ -21,15 +22,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-  // Necessary for content to be below app bar
   toolbarPlaceholder: theme.mixins.toolbar,
-  contentContainer: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-  },
-  content: {
-    padding: theme.spacing(3),
-  },
 }));
 
 export default function DrawerLeft({
@@ -68,10 +61,7 @@ export default function DrawerLeft({
           ))}
         </List>
       </Drawer>
-      <div className={classes.contentContainer}>
-        <div className={classes.toolbarPlaceholder} />
-        <main className={classes.content}>{content}</main>
-      </div>
+      <ContentWithToolbar>{content}</ContentWithToolbar>
     </div>
   );
 }

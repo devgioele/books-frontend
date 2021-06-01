@@ -8,6 +8,18 @@ export const getProfileDetails = (onSuccess, onFailure, cancelToken) => {
     .catch(failureWith(onFailure));
 };
 
+export const getProfileDetailsById = (
+  onSuccess,
+  onFailure,
+  cancelToken,
+  userId
+) => {
+  axios
+    .get(`${BASE_URL}/profile/details/${userId}`, withAuth({ cancelToken }))
+    .then(successWith(onSuccess, onFailure, 200))
+    .catch(failureWith(onFailure));
+};
+
 export const editProfile = (
   onSuccess,
   onFailure,

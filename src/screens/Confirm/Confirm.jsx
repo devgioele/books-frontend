@@ -38,10 +38,8 @@ export default function Confirm() {
   }, [transactionId]);
 
   const onRetry = () => {
-    /*
-    We might retry just because the confirmation failed.
-    Therefore, cancel the confirmation to reset 'confirmError'.
-     */
+    // We might retry just because the confirmation failed.
+    // Therefore, cancel the confirmation to reset 'confirmError'.
     cConfirmSell();
     cGetBookByTransaction();
     fGetBookByTransaction(transactionId);

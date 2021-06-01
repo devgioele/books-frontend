@@ -122,3 +122,15 @@ export const getBookByTransaction = (
     .then(successWith(onSuccess, onFailure, 200))
     .catch(failureWith(onFailure, 500));
 };
+
+export const getBookById = (onSuccess, onFailure, cancelToken, bookId) => {
+  axios
+    .get(
+      `${BASE_URL}/books/by-id/${bookId}`,
+      withAuth({
+        cancelToken,
+      })
+    )
+    .then(successWith(onSuccess, onFailure, 200))
+    .catch(failureWith(onFailure, 500));
+};
