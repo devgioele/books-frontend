@@ -86,3 +86,17 @@ export default responsiveFontSizes(
     },
   })
 );
+
+export const pageFrame = (theme) => ({
+  pageFrame: {
+    [theme.breakpoints.up('xs')]: {
+      padding: '20px 6%',
+    },
+    [theme.breakpoints.up('sm')]: {
+      padding: '20px 10%',
+    },
+    [theme.breakpoints.up('md')]: {
+      padding: '20px 10%',
+    },
+  },
+});

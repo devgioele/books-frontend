@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Grid, useTheme, Zoom } from '@material-ui/core';
 import SellBooksList from 'components/SellBooksList';
 import {
+  EDIT_SELL_ROUTE,
+  LINK_SELL_ROUTE,
+  NEW_SELL_ROUTE,
+  REMOVE_SELL_ROUTE,
   renderRoute,
   toRoute,
-  NEW_SELL_ROUTE,
-  EDIT_SELL_ROUTE,
-  REMOVE_SELL_ROUTE,
-  LINK_SELL_ROUTE,
 } from 'routing/helpers';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -16,8 +16,10 @@ import { useHistory } from 'react-router-dom';
 import { useAxios } from 'hooks/axios';
 import { getSellingBooks, getSoldBooks, removeBook } from 'api/books';
 import ConfirmationDialog from 'components/ConfirmationDialog';
+import { pageFrame } from '../../theming';
 
 const useStyles = makeStyles((theme) => ({
+  ...pageFrame(theme),
   fab: {
     position: 'fixed',
     // Thin bottom navigation
@@ -98,7 +100,7 @@ export default function Sell({ routes }) {
       {linkSellRoute &&
         bookToLink &&
         renderRoute(linkSellRoute, { backToParent, bookToLink })}
-      <Grid container>
+      <Grid className={classes.pageFrame} container>
         <Grid item xs={12}>
           <SellBooksList
             loadingSelling={isLoadingSelling}
