@@ -21,7 +21,7 @@ const people = [
   {
     name: 'Gioele De Vitti',
     img:
-      'https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163770/Books/gioele_de_vitti_l35mg9.',
+      'https://res.cloudinary.com/dlfbz4vzv/image/upload/v1622561372/Books/gioele_de_vitti.',
     role: 'Frontend Developer',
     description:
       'Coming from an electronic engineering background, I enjoy developing' +
@@ -31,7 +31,7 @@ const people = [
   {
     name: 'Riccardo Busetti',
     img:
-      'https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/riccardo_busetti_nhobde.',
+      'https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/riccardo_busetti.',
     role: 'Backend Developer',
     description:
       'I come from an IT background working on mainly on mobile ' +
