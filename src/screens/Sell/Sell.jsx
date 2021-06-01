@@ -16,7 +16,7 @@ import { useHistory } from 'react-router-dom';
 import { useAxios } from 'hooks/axios';
 import { getSellingBooks, getSoldBooks, removeBook } from 'api/books';
 import ConfirmationDialog from 'components/ConfirmationDialog';
-import { pageFrame } from '../../theming';
+import { pageFrame } from 'theming';
 
 const useStyles = makeStyles((theme) => ({
   ...pageFrame(theme),
