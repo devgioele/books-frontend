@@ -186,6 +186,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                   );
                 }}
                 setBlocked={setBlocked}
+                preferDownload={false}
                 uploadEndpoint={uploadBookImage}
               />
             </Grid>

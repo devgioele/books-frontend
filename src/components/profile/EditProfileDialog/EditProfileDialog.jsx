@@ -35,26 +35,24 @@ export default function EditProfileDialog({
   );
 
   const updateProfileDetails = (fieldName) => (value) => {
-    console.log(`updating field ${fieldName} with value ${value}`);
     setProfileDetails({
       ...profileDetails,
       [fieldName]: value,
     });
   };
 
-  const handleCancel = () => {
-    backToProfile(false);
-  };
+  const handleCancel = () => backToProfile(false);
 
   const handleUpdate = () => {
-    fEditProfile(imprintObject(profileDetails));
+    // Dirty way for not including the profile picture when editing the profile
+    const cleanProfileDetails = { ...profileDetails };
+    delete cleanProfileDetails.profilePicture;
+    fEditProfile(imprintObject(cleanProfileDetails));
   };
 
   if (!isDataLoaded) {
     handleCancel();
   }
-
-  console.log(`profileDetails = ${JSON.stringify(profileDetails)}`);
 
   return (
     <Dialog
@@ -86,6 +84,7 @@ export default function EditProfileDialog({
                   }
                   setBlocked={setBlocked}
                   uploadEndpoint={uploadProfilePicture}
+                  preferDownload={true}
                   cols={1}
                 />
               ) : (

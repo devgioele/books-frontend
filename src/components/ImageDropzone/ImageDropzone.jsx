@@ -60,6 +60,7 @@ export default function ImageDropzone({
   removePictureUrl,
   setBlocked,
   uploadEndpoint,
+  preferDownload,
   ...gridListArgs
 }) {
   const classes = useStyles();
@@ -163,7 +164,6 @@ export default function ImageDropzone({
         changeDroppedImage(imageId, { status: uploadProgress.uploading });
         break;
       case axiosState.success:
-        console.log(`ADDING: ${data.secureUrl}`);
         addPictureUrl(data.secureUrl);
         changeDroppedImage(imageId, {
           status: uploadProgress.uploaded,
@@ -224,6 +224,7 @@ export default function ImageDropzone({
           droppedImages={droppedImages.current}
           onUploadStateChange={onUploadStateChange}
           uploadEndpoint={uploadEndpoint}
+          preferDownload={preferDownload}
           {...gridListArgs}
         />
       </div>

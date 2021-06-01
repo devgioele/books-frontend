@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+// noinspection JSUnfilteredForInLoop
 
 export const debounce = (func, timeout) => {
   let timer;
@@ -7,18 +7,6 @@ export const debounce = (func, timeout) => {
     timer = setTimeout(() => func.apply(this, args), timeout);
   };
 };
-
-export function useAsync(asyncFn, onSuccess, onFailure) {
-  useEffect(() => {
-    let isMounted = true;
-    asyncFn().then((data) => {
-      if (isMounted) onSuccess(data);
-    });
-    return () => {
-      isMounted = false;
-    };
-  }, [asyncFn, onSuccess]);
-}
 
 export function getFromObject(object, key) {
   const keys = key.split('.');
@@ -48,7 +36,6 @@ function mergeDeep(target, ...sources) {
   const source = sources.shift();
 
   if (isObject(target) && isObject(source)) {
-    // eslint-disable-next-line no-restricted-syntax
     for (const key in source) {
       if (isObject(source[key])) {
         if (!target[key]) Object.assign(target, { [key]: {} });

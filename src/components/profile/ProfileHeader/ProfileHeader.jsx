@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, CircularProgress, Grid, Typography } from '@material-ui/core';
+import { Avatar, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ProfileTypography from 'components/profile/ProfileTypography';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternateOutlined';
@@ -32,7 +32,7 @@ export default function ProfileHeader({ fields }) {
       <Grid item>
         <Avatar
           className={classes.avatar}
-          src={!mouseOnAvatar && picture.data}
+          src={mouseOnAvatar ? undefined : picture.data}
           onMouseOver={() => setMouseOnAvatar(true)}
           onMouseLeave={() => setMouseOnAvatar(false)}
           onClick={() => history.push(toRoute(EDIT_PROFILE_ROUTE))}

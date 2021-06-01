@@ -57,6 +57,7 @@ export default function ImageUploader({
   onUploadStateChange,
   uploadEndpoint,
   cols,
+  preferDownload,
 }) {
   const classes = useStyles();
   const theme = useTheme();
@@ -111,6 +112,7 @@ export default function ImageUploader({
                   secureUrl: image.secureUrl,
                 })
               }
+              preferDownload={preferDownload}
             />
           </GridListTile>
         ))}
@@ -132,7 +134,11 @@ function altFromStatus(imageStatus) {
   }
 }
 
-function DroppedImage({ image, remove }) {
+/*
+If 'preferDownload' is true and the image is uploaded,
+the image is downloaded instead of using the local file.
+ */
+function DroppedImage({ image, remove, preferDownload }) {
   const classes = useStyles();
   const [downloaded, setDownloaded] = useState(false);
   const [showRemove, setShowRemove] = useState(false);
@@ -145,7 +151,7 @@ function DroppedImage({ image, remove }) {
   };
 
   const downloadRequired =
-    image.status === uploadProgress.uploaded && !image.file;
+    image.status === uploadProgress.uploaded && (preferDownload || !image.file);
   const loading =
     image.status === uploadProgress.uploading ||
     (downloadRequired && !downloaded);
