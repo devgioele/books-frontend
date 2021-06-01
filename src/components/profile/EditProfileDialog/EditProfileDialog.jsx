@@ -50,6 +50,10 @@ export default function EditProfileDialog({
     fEditProfile(imprintObject(cleanProfileDetails));
   };
 
+  /*
+  If there is nothing to show, because the user visited this route manually,
+  go back the the profile page
+   */
   if (!isDataLoaded) {
     handleCancel();
   }
@@ -70,7 +74,7 @@ export default function EditProfileDialog({
             <Grid item key={index} xs={field.space}>
               {field.name === 'profilePicture' ? (
                 <ImageDropzone
-                  minImages={1}
+                  minImages={0}
                   maxImages={1}
                   // We embed the single picture into an array
                   pictureUrls={

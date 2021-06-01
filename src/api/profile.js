@@ -33,3 +33,10 @@ export const uploadProfilePicture = (
     .then(successWith(onSuccess, onFailure, 200))
     .catch(failureWith(onFailure, 415, 500));
 };
+
+export const removeProfilePicture = (onSuccess, onFailure, cancelToken) => {
+  axios
+    .delete(`${BASE_URL}/profile/picture/remove`, withAuth({ cancelToken }))
+    .then(successWith(onSuccess, onFailure, 200))
+    .catch(failureWith(onFailure, 415, 500));
+};

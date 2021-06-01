@@ -6,7 +6,7 @@ import ProfileInformation from 'components/profile/ProfileInformation';
 import { useAxios } from 'hooks/axios';
 import { getProfileDetails } from 'api/profile';
 import { PROFILE_ROUTE, renderRoute, toRoute } from 'routing/helpers';
-import { getFromObject } from 'utils/functions';
+import { buildObjectFromFields, getFromObject } from 'utils/functions';
 import CompleteProfileBanner from 'components/profile/CompleteProfileBanner';
 import { pageFrame } from 'theming';
 
@@ -34,7 +34,6 @@ const profileFields = [
     displayName: 'Picture',
     name: 'profilePicture',
     showInHeader: true,
-    showInEditDialog: true,
     space: 12,
   },
   {
@@ -88,7 +87,7 @@ export default function Profile({ routes }) {
     isLoadingProfileDetails,
   ] = useAxios(getProfileDetails);
 
-  const [editProfileRoute] = routes;
+  const [editProfileRoute, editProfilePictureRoute] = routes;
 
   useEffect(() => {
     fGetProfileDetails();
@@ -125,6 +124,12 @@ export default function Profile({ routes }) {
           backToProfile,
           isDataLoaded: !!profileDetails,
           fields: zippedData.filter((field) => field.showInEditDialog),
+        })}
+      {editProfilePictureRoute &&
+        renderRoute(editProfilePictureRoute, {
+          backToProfile,
+          isDataLoaded: !!profileDetails,
+          profilePicture: profileDetails?.profilePicture,
         })}
       <Grid
         className={classes.pageFrame}

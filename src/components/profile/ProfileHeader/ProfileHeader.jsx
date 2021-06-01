@@ -4,7 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import ProfileTypography from 'components/profile/ProfileTypography';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternateOutlined';
 import { useHistory } from 'react-router-dom';
-import { EDIT_PROFILE_ROUTE, toRoute } from '../../../routing/helpers';
+import {
+  EDIT_PROFILE_PICTURE_ROUTE,
+  EDIT_PROFILE_ROUTE,
+  toRoute,
+} from '../../../routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -35,7 +39,7 @@ export default function ProfileHeader({ fields }) {
           src={mouseOnAvatar ? undefined : picture.data}
           onMouseOver={() => setMouseOnAvatar(true)}
           onMouseLeave={() => setMouseOnAvatar(false)}
-          onClick={() => history.push(toRoute(EDIT_PROFILE_ROUTE))}
+          onClick={() => history.push(toRoute(EDIT_PROFILE_PICTURE_ROUTE))}
         >
           {mouseOnAvatar ? (
             <AddPhotoIcon className={classes.icon} alt="Profile photo" />

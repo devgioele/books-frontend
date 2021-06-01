@@ -9,11 +9,14 @@ import BookEditSellDialog from 'components/BookEditSellDialog';
 import { BookRemoveDialog } from 'screens/Sell/Sell.jsx';
 import Confirm from 'screens/Confirm';
 import BookLinkDialog from 'components/BookLinkDialog';
+import EditProfilePictureDialog from 'components/profile/EditProfilePictureDialog';
+import EditProfileDialog from 'components/profile/EditProfileDialog';
 import {
   AUTH_ROUTE,
   BOOK_ROUTE,
   CONFIRM_ROUTE,
   DASHBOARD_ROUTE,
+  EDIT_PROFILE_PICTURE_ROUTE,
   EDIT_PROFILE_ROUTE,
   EDIT_SELL_ROUTE,
   EXPLORE_ROUTE,
@@ -24,7 +27,6 @@ import {
   REMOVE_SELL_ROUTE,
   SELL_ROUTE,
 } from './helpers';
-import EditProfileDialog from '../components/profile/EditProfileDialog';
 import RoutePrivilege from './privileges';
 
 const routes = [
@@ -107,6 +109,12 @@ const routes = [
             isExact: false,
             isProtected: true,
             component: EditProfileDialog,
+          },
+          {
+            path: EDIT_PROFILE_PICTURE_ROUTE,
+            isExact: false,
+            isProtected: true,
+            component: EditProfilePictureDialog,
           },
         ],
       },
