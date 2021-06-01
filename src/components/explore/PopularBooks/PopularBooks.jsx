@@ -5,6 +5,8 @@ import { Grid, Paper, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import { useAxios } from 'hooks/axios';
 import { exploreBooks } from 'api/books';
+import { useHistory } from 'react-router-dom';
+import { BOOK_ROUTE, NEW_SELL_ROUTE, toRoute } from '../../../routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   bookCard: {
@@ -41,8 +43,10 @@ export default function PopularBooks() {
     return () => cExploreBooks();
   }, []);
 
+  console.log(`data = ${JSON.stringify(data)}`);
+
   return (
-    <Carousel>
+    <Carousel interval={10000} animation="slide">
       {data?.popular?.map((book, index) => (
         <PopularBook key={index} book={book} />
       ))}
@@ -52,9 +56,15 @@ export default function PopularBooks() {
 
 function PopularBook({ book }) {
   const classes = useStyles();
+  const history = useHistory();
+  const openBook = () => history.push(toRoute(BOOK_ROUTE, book.bookId));
 
   return (
-    <Paper className={clsx(classes.bookCard)} variant="outlined">
+    <Paper
+      className={clsx(classes.bookCard)}
+      variant="outlined"
+      onClick={openBook}
+    >
       <Grid container justify="space-between" alignItems="center" spacing={2}>
         <Grid item>
           <Grid
@@ -71,15 +81,16 @@ function PopularBook({ book }) {
             </Grid>
             <Grid item>
               <Typography className={classes.bookTitle} variant="h4">
-                {book.currency}
-                {book.amount}
+                {`${book.currency} ${book.amount}`}
               </Typography>
             </Grid>
             <Grid item>
-              <Typography variant="h6">{book.isbn}</Typography>
+              <Typography variant="h6">{book.description}</Typography>
             </Grid>
             <Grid item>
-              <Typography variant="body1">{book.condition}</Typography>
+              <Typography variant="body1">
+                Condition: {book.condition}
+              </Typography>
             </Grid>
           </Grid>
         </Grid>

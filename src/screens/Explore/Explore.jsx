@@ -1,11 +1,11 @@
 import React from 'react';
 import { Grid, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import ExploreSearch from '../../components/explore/ExploreSearch';
-import { pageFrame } from '../../theming';
-import PopularBooks from '../../components/explore/PopularBooks';
-import MayInterestYouBooks from '../../components/explore/MayInterestYouBooks';
-import RecentlyViewedBooks from '../../components/explore/RecentlyViewedBooks';
+import ExploreSearch from 'components/explore/ExploreSearch';
+import { pageFrame } from 'theming';
+import PopularBooks from 'components/explore/PopularBooks';
+import MayInterestYouBooks from 'components/explore/MayInterestYouBooks';
+import RecentlyViewedBooks from 'components/explore/RecentlyViewedBooks';
 
 const sections = [
   {
