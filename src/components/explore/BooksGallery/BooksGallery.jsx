@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { BOOK_ROUTE, toRoute } from 'routing/helpers';
 import { useHistory } from 'react-router-dom';
 
@@ -18,8 +18,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function BooksGallery({ books }) {
-  const classes = useStyles();
-
   return (
     <Grid container spacing={2}>
       {books?.map((book, index) => (
@@ -37,13 +35,28 @@ function Book({ book }) {
   const openBook = () => history.push(toRoute(BOOK_ROUTE, book.bookId));
 
   return (
-    <Grid container alignItems="center" spacing={2} onClick={openBook}>
+    <Grid
+      container
+      alignItems="center"
+      direction="column"
+      spacing={1}
+      onClick={openBook}
+    >
       <Grid item>
         <img
           alt="book cover"
           className={classes.bookCover}
           src={book.pictures[0]}
         />
+      </Grid>
+      <Grid item>
+        <Typography variant="h5">{book.title}</Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="body1">{`${book.currency} ${book.amount}`}</Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="body2">Conditions: {book.condition}</Typography>
       </Grid>
     </Grid>
   );

@@ -32,8 +32,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PopularBooks({ books }) {
-  const classes = useStyles();
-
   return (
     <Carousel interval={10000} animation="slide">
       {books.map((book, index) => (
@@ -69,16 +67,13 @@ function PopularBook({ book }) {
               </Typography>
             </Grid>
             <Grid item>
-              <Typography className={classes.bookTitle} variant="h4">
+              <Typography className={classes.bookTitle} variant="h5">
                 {`${book.currency} ${book.amount}`}
               </Typography>
             </Grid>
             <Grid item>
-              <Typography variant="h6">{book.description}</Typography>
-            </Grid>
-            <Grid item>
               <Typography variant="body1">
-                Condition: {book.condition}
+                Conditions: {book.condition}
               </Typography>
             </Grid>
           </Grid>
