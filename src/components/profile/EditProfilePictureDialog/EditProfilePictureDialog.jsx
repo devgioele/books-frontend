@@ -8,9 +8,9 @@ import {
   DialogTitle,
   Grid,
 } from '@material-ui/core';
-import { editProfile, uploadProfilePicture } from 'api/profile';
+import { removeProfilePicture, uploadProfilePicture } from 'api/profile';
 import ImageDropzone from 'components/ImageDropzone';
-import { useAxios } from '../../../hooks/axios';
+import { useAxios } from 'hooks/axios';
 
 export default function EditProfilePictureDialog({
   backToProfile,
@@ -18,28 +18,19 @@ export default function EditProfilePictureDialog({
   profilePicture,
 }) {
   const [isBlocked, setBlocked] = useState(false);
-  const [imagePresent, setImagePresent] = useState(!!profilePicture);
-  const [fRemovePicture, , , , isLoading] = useAxios(
-    // TODO: add endpoint to remove the profile picture,
-    'remove the profile picture',
-    () => backToProfile(true)
+  const [doRemovePicture, , , , isLoading] = useAxios(
+    removeProfilePicture,
+    'remove the profile picture'
   );
 
-  const handleClose = () => {
-    if (imagePresent) {
-      backToProfile(true);
-    } else {
-      fRemovePicture();
-    }
-  };
-  const handleCancel = () => backToProfile(false);
+  const handleClose = () => backToProfile(true);
 
   /*
   If there is nothing to show, because the user visited this route manually,
   go back the the profile page
    */
   if (!isDataLoaded) {
-    handleCancel();
+    handleClose();
   }
 
   return (
@@ -48,7 +39,7 @@ export default function EditProfilePictureDialog({
       fullWidth={true}
       open={true}
       onClose={() => {
-        if (!isBlocked) handleCancel();
+        if (!isBlocked) handleClose();
       }}
     >
       <DialogTitle>Update your profile picture</DialogTitle>
@@ -60,8 +51,8 @@ export default function EditProfilePictureDialog({
               maxImages={1}
               // We embed the single picture into an array
               pictureUrls={profilePicture ? [profilePicture] : []}
-              addPictureUrl={() => setImagePresent(true)}
-              removePictureUrl={() => setImagePresent(false)}
+              addPictureUrl={() => {}}
+              removePictureUrl={doRemovePicture}
               setBlocked={setBlocked}
               uploadEndpoint={uploadProfilePicture}
               preferDownload={true}
@@ -83,6 +74,17 @@ export default function EditProfilePictureDialog({
               Close
             </Button>
           </Grid>
+          {isLoading && (
+            <Grid item style={{ paddingLeft: '24px' }}>
+              <CircularProgress
+                variant="indeterminate"
+                disableShrink
+                color="secondary"
+                size={20}
+                thickness={4}
+              />
+            </Grid>
+          )}
         </Grid>
       </DialogActions>
     </Dialog>
