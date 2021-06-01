@@ -37,7 +37,7 @@ function Book({ book }) {
   return (
     <Grid
       container
-      alignItems="center"
+      alignItems="flex-start"
       direction="column"
       spacing={1}
       onClick={openBook}
@@ -50,13 +50,8 @@ function Book({ book }) {
         />
       </Grid>
       <Grid item>
-        <Typography variant="h5">{book.title}</Typography>
-      </Grid>
-      <Grid item>
-        <Typography variant="body1">{`${book.currency} ${book.amount}`}</Typography>
-      </Grid>
-      <Grid item>
-        <Typography variant="body2">Conditions: {book.condition}</Typography>
+        <Typography variant="subtitle1">{book.title}</Typography>
+        <Typography variant="subtitle2">{`${book.currency} ${book.amount}`}</Typography>
       </Grid>
     </Grid>
   );
