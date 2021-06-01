@@ -27,9 +27,9 @@ export default function CompleteProfileBanner({ progress }) {
         </Grid>
         <Grid item>
           <Typography variant="body1">
-            Do you know that having a complete profile greatly increases the
-            probability of selling books on this platform? Your profile is now{' '}
-            {progress}% completed, just a few finishing touches.
+            Did you know that having a complete profile greatly increases the
+            chances of selling books? Your profile is now {progress}% completed.
+            Just a few finishing touches!
           </Typography>
         </Grid>
         <Grid item>

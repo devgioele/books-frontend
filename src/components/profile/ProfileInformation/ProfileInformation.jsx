@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import { useHistory } from 'react-router-dom';
-import ProfileTypography from '../ProfileTypography';
-import { EDIT_PROFILE_ROUTE, toRoute } from '../../../routing/helpers';
+import ProfileTypography from 'components/profile/ProfileTypography';
+import { EDIT_PROFILE_ROUTE, toRoute } from 'routing/helpers';
 
 export default function ProfileInformation({ fields }) {
   const history = useHistory();

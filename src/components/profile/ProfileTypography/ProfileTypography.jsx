@@ -1,7 +1,7 @@
 import { Link, Typography } from '@material-ui/core';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { EDIT_PROFILE_ROUTE, toRoute } from '../../../routing/helpers';
+import { EDIT_PROFILE_ROUTE, toRoute } from 'routing/helpers';
 
 export default function ProfileTypography({
   text,

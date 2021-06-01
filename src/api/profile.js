@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { BASE_URL, failureWith, successWith, withAuth } from './base';
 
-// eslint-disable-next-line import/prefer-default-export
 export const getProfileDetails = (onSuccess, onFailure, cancelToken) => {
   axios
     .get(`${BASE_URL}/profile/details`, withAuth({ cancelToken }))
@@ -19,4 +18,18 @@ export const editProfile = (
     .put(`${BASE_URL}/profile/edit`, profileDetails, withAuth({ cancelToken }))
     .then(successWith(onSuccess, onFailure, 200))
     .catch(failureWith(onFailure));
+};
+
+export const uploadProfilePicture = (
+  onSuccess,
+  onFailure,
+  cancelToken,
+  file
+) => {
+  const fd = new FormData();
+  fd.append('profile-picture', file, file.name);
+  axios
+    .post(`${BASE_URL}/profile/picture/upload`, fd, withAuth({ cancelToken }))
+    .then(successWith(onSuccess, onFailure, 200))
+    .catch(failureWith(onFailure, 415, 500));
 };

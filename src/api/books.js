@@ -42,14 +42,9 @@ export const removeBook = (onSuccess, onFailure, cancelToken, bookId) => {
     .catch(failureWith(onFailure));
 };
 
-export const uploadBookImage = (
-  onSuccess,
-  onFailure,
-  cancelToken,
-  bookFile
-) => {
+export const uploadBookImage = (onSuccess, onFailure, cancelToken, file) => {
   const fd = new FormData();
-  fd.append('book-picture', bookFile, bookFile.name);
+  fd.append('book-picture', file, file.name);
   axios
     .post(`${BASE_URL}/books/picture/upload`, fd, withAuth({ cancelToken }))
     .then(successWith(onSuccess, onFailure, 200))

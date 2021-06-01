@@ -10,7 +10,6 @@ import {
   useTheme,
 } from '@material-ui/core';
 import clsx from 'clsx';
-import { uploadBookImage } from 'api/books';
 import { axiosState, uploadProgress } from 'utils/constants';
 import CloudImage from 'components/CloudImage';
 import ConfirmationDialog from 'components/ConfirmationDialog';
@@ -35,9 +34,17 @@ const useStyles = makeStyles((theme) => ({
   gridList: {
     width: '100%',
   },
-  img: {
+  imgContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // alignItems: 'center',
     height: '100%',
     width: '100%',
+  },
+  img: {
+    height: '100%',
+    width: 'auto',
     objectFit: 'scale-down',
   },
   imgLoading: {
@@ -45,11 +52,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ImageUploader({ droppedImages, onUploadStateChange }) {
+export default function ImageUploader({
+  droppedImages,
+  onUploadStateChange,
+  uploadEndpoint,
+  cols,
+  preferDownload,
+}) {
   const classes = useStyles();
   const theme = useTheme();
 
-  const [uploadImage, cancelAllUploads] = useStatelessAxios(uploadBookImage);
+  const [uploadImage, cancelAllUploads] = useStatelessAxios(uploadEndpoint);
 
   // Cleanup on unmount
   useEffect(() => cancelAllUploads, []);
@@ -87,7 +100,7 @@ export default function ImageUploader({ droppedImages, onUploadStateChange }) {
       <GridList
         className={classes.gridList}
         cellHeight={100}
-        cols={3}
+        cols={cols}
         spacing={theme.spacing(2)}
       >
         {droppedImages.map((image, index) => (
@@ -99,6 +112,7 @@ export default function ImageUploader({ droppedImages, onUploadStateChange }) {
                   secureUrl: image.secureUrl,
                 })
               }
+              preferDownload={preferDownload}
             />
           </GridListTile>
         ))}
@@ -120,7 +134,11 @@ function altFromStatus(imageStatus) {
   }
 }
 
-function DroppedImage({ image, remove }) {
+/*
+If 'preferDownload' is true and the image is uploaded,
+the image is downloaded instead of using the local file.
+ */
+function DroppedImage({ image, remove, preferDownload }) {
   const classes = useStyles();
   const [downloaded, setDownloaded] = useState(false);
   const [showRemove, setShowRemove] = useState(false);
@@ -133,13 +151,13 @@ function DroppedImage({ image, remove }) {
   };
 
   const downloadRequired =
-    image.status === uploadProgress.uploaded && !image.file;
+    image.status === uploadProgress.uploaded && (preferDownload || !image.file);
   const loading =
     image.status === uploadProgress.uploading ||
     (downloadRequired && !downloaded);
 
   return (
-    <>
+    <div className={classes.imgContainer}>
       {showRemove && (
         <ConfirmationDialog
           title="Are you sure you want to remove the image?"
@@ -195,6 +213,6 @@ function DroppedImage({ image, remove }) {
           onClick={handleClick}
         />
       )}
-    </>
+    </div>
   );
 }

@@ -11,7 +11,8 @@ import {
 } from '@material-ui/core';
 import { buildObjectFromFields, imprintObject } from 'utils/functions';
 import { useAxios } from 'hooks/axios';
-import { editProfile } from 'api/profile';
+import { editProfile, uploadProfilePicture } from 'api/profile';
+import ImageDropzone from 'components/ImageDropzone';
 
 const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
@@ -25,10 +26,11 @@ export default function EditProfileDialog({
   const [profileDetails, setProfileDetails] = useState(() =>
     buildObjectFromFields(fields)
   );
+  const [isBlocked, setBlocked] = useState(false);
 
   const [fEditProfile, , , , isLoading] = useAxios(
     editProfile,
-    'edit profile',
+    'editing the profile',
     () => backToProfile(true)
   );
 
@@ -39,12 +41,13 @@ export default function EditProfileDialog({
     });
   };
 
-  const handleCancel = () => {
-    backToProfile(false);
-  };
+  const handleCancel = () => backToProfile(false);
 
   const handleUpdate = () => {
-    fEditProfile(imprintObject(profileDetails));
+    // Dirty way for not including the profile picture when editing the profile
+    const cleanProfileDetails = { ...profileDetails };
+    delete cleanProfileDetails.profilePicture;
+    fEditProfile(imprintObject(cleanProfileDetails));
   };
 
   if (!isDataLoaded) {
@@ -52,20 +55,48 @@ export default function EditProfileDialog({
   }
 
   return (
-    <Dialog fullScreen={false} fullWidth={true} open={true}>
+    <Dialog
+      fullScreen={false}
+      fullWidth={true}
+      open={true}
+      onClose={() => {
+        if (!isLoading) handleCancel();
+      }}
+    >
       <DialogTitle>Update your profile</DialogTitle>
       <DialogContent>
         <Grid container spacing={4}>
           {fields.map((field, index) => (
-            <Grid key={index} item xs={12}>
-              <TextField
-                required={field.isRequired}
-                variant="outlined"
-                fullWidth
-                label={field.displayName}
-                defaultValue={profileDetails[field.name]}
-                onChange={unwrapEventValue(updateProfileDetails(field.name))}
-              />
+            <Grid item key={index} xs={field.space}>
+              {field.name === 'profilePicture' ? (
+                <ImageDropzone
+                  minImages={1}
+                  maxImages={1}
+                  // We embed the single picture into an array
+                  pictureUrls={
+                    profileDetails[field.name]
+                      ? [profileDetails[field.name]]
+                      : []
+                  }
+                  addPictureUrl={updateProfileDetails(field.name)}
+                  removePictureUrl={() =>
+                    updateProfileDetails(field.name)(undefined)
+                  }
+                  setBlocked={setBlocked}
+                  uploadEndpoint={uploadProfilePicture}
+                  preferDownload={true}
+                  cols={1}
+                />
+              ) : (
+                <TextField
+                  required={field.isRequired}
+                  variant="outlined"
+                  fullWidth
+                  label={field.displayName}
+                  defaultValue={profileDetails[field.name]}
+                  onChange={unwrapEventValue(updateProfileDetails(field.name))}
+                />
+              )}
             </Grid>
           ))}
         </Grid>
@@ -82,7 +113,7 @@ export default function EditProfileDialog({
             <Button onClick={handleCancel} disabled={isLoading}>
               Cancel
             </Button>
-            <Button onClick={handleUpdate} disabled={isLoading}>
+            <Button onClick={handleUpdate} disabled={isLoading || isBlocked}>
               Update
             </Button>
           </Grid>
