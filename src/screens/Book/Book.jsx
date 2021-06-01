@@ -32,30 +32,36 @@ export default function Book() {
   return (
     <Grid container>
       <DynamicAppBar title={book?.title ?? 'Book'} showBack={true} />
+
       <ContentWithToolbar>
-        <Grid className={classes.pageFrame} container spacing={4}>
-          {isLoadingBook && (
+        {isLoadingBook && (
+          <Grid
+            style={{ height: '100vh' }}
+            container
+            alignItems="center"
+            justify="center"
+          >
             <Grid item>
               <CircularProgress />
             </Grid>
-          )}
-          {!isLoadingBook && book && (
-            <>
-              <Grid item xs={12}>
-                <BookImages book={book} />
-              </Grid>
-              <Grid item xs={12}>
-                <BookDetails book={book} />
-              </Grid>
-              <Grid item xs={12}>
-                <Divider />
-              </Grid>
-              <Grid item xs={12}>
-                <BookSellerDetails book={book} />
-              </Grid>
-            </>
-          )}
-        </Grid>
+          </Grid>
+        )}
+        {!isLoadingBook && book && (
+          <Grid className={classes.pageFrame} container spacing={4}>
+            <Grid item xs={12}>
+              <BookImages book={book} />
+            </Grid>
+            <Grid item xs={12}>
+              <BookDetails book={book} />
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={12}>
+              <BookSellerDetails book={book} />
+            </Grid>
+          </Grid>
+        )}
       </ContentWithToolbar>
     </Grid>
   );
