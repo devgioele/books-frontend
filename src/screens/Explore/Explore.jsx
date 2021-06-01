@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Typography, useMediaQuery } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ExploreSearch from 'components/explore/ExploreSearch';
 import { pageFrame } from 'theming';
 import PopularBooks from 'components/explore/PopularBooks';
+import { useAxios } from 'hooks/axios';
+import { exploreBooks } from 'api/books';
 import MayInterestYouBooks from 'components/explore/MayInterestYouBooks';
 import RecentlyViewedBooks from 'components/explore/RecentlyViewedBooks';
 
@@ -11,6 +13,7 @@ const sections = [
   {
     title: 'Popular',
     component: PopularBooks,
+    getBooks: (data) => data?.popular,
   },
   {
     title: 'Search',
@@ -19,10 +22,12 @@ const sections = [
   {
     title: 'May Interest You',
     component: MayInterestYouBooks,
+    getBooks: (data) => data?.mayInterestYou,
   },
   {
     title: 'Recently Viewed',
     component: RecentlyViewedBooks,
+    getBooks: (data) => data?.recentlyViewed,
   },
 ];
 
@@ -49,18 +54,34 @@ export default function Explore() {
 function Section({ section }) {
   const classes = useStyles();
 
+  const [fExploreBooks, cExploreBooks, data, ,] = useAxios(
+    exploreBooks,
+    'fetching books to explore'
+  );
+
+  useEffect(() => {
+    fExploreBooks();
+    return () => cExploreBooks();
+  }, []);
+
+  const sectionContainsBooks = section.getBooks;
+  const books = sectionContainsBooks && section.getBooks(data);
+
   return (
-    <Grid item xs={12}>
-      <Grid container direction="column" spacing={2}>
-        <Grid item>
-          <Typography className={classes.sectionTitle} variant="h4">
-            {section.title}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <section.component />
+    ((!sectionContainsBooks || (books && books.length > 0)) && (
+      <Grid item xs={12}>
+        <Grid container direction="column" spacing={2}>
+          <Grid item>
+            <Typography className={classes.sectionTitle} variant="h4">
+              {section.title}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <section.component books={books} />
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    )) ||
+    null
   );
 }

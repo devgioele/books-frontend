@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Carousel from 'react-material-ui-carousel';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import clsx from 'clsx';
-import { useAxios } from 'hooks/axios';
-import { exploreBooks } from 'api/books';
 import { useHistory } from 'react-router-dom';
-import { BOOK_ROUTE, NEW_SELL_ROUTE, toRoute } from '../../../routing/helpers';
+import { BOOK_ROUTE, toRoute } from 'routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   bookCard: {
@@ -33,21 +31,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PopularBooks() {
+export default function PopularBooks({ books }) {
   const classes = useStyles();
-
-  const [fExploreBooks, cExploreBooks, data, ,] = useAxios(exploreBooks);
-
-  useEffect(() => {
-    fExploreBooks();
-    return () => cExploreBooks();
-  }, []);
-
-  console.log(`data = ${JSON.stringify(data)}`);
 
   return (
     <Carousel interval={10000} animation="slide">
-      {data?.popular?.map((book, index) => (
+      {books.map((book, index) => (
         <PopularBook key={index} book={book} />
       ))}
     </Carousel>
