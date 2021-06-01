@@ -8,9 +8,9 @@ const useStyles = makeStyles((theme) => ({
     height: '200px',
     objectFit: 'scale-down',
     borderRadius: 3,
-    boxShadow: `1px 1px 5px 1px ${theme.colors.shadowGray}`,
+    boxShadow: `1px 1px 5px 1px ${theme.palette.custom.shadowGray}`,
     '&:hover': {
-      boxShadow: `3px 3px 15px 3px ${theme.colors.shadowGray}`,
+      boxShadow: `3px 3px 15px 3px ${theme.palette.custom.shadowGray}`,
     },
   },
 }));
@@ -35,7 +35,11 @@ function Book({ book }) {
   return (
     <Grid container alignItems="center" spacing={2}>
       <Grid item>
-        <img className={classes.bookCover} src={book.pictures[0]} />
+        <img
+          alt="book cover"
+          className={classes.bookCover}
+          src={book.pictures[0]}
+        />
       </Grid>
     </Grid>
   );

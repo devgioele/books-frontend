@@ -8,6 +8,7 @@ import { getProfileDetails } from 'api/profile';
 import { PROFILE_ROUTE, renderRoute, toRoute } from 'routing/helpers';
 import { getFromObject } from 'utils/functions';
 import CompleteProfileBanner from 'components/profile/CompleteProfileBanner';
+import { pageFrame } from 'theming';
 
 const profileFields = [
   {

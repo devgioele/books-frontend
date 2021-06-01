@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import useAxios from '../../hooks/axios';
-import { exploreBooks } from '../../api/books';
-import BooksGallery from '../BooksGallery';
+import { useAxios } from 'hooks/axios';
+import { exploreBooks } from 'api/books';
+import BooksGallery from 'components/explore/BooksGallery';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -29,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
     height: 'auto',
     objectFit: 'scale-down',
     borderRadius: 6,
-    boxShadow: `1px 1px 5px 1px ${theme.colors.shadowGray}`,
+    boxShadow: `1px 1px 5px 1px ${theme.palette.custom.shadowGray}`,
   },
 }));
 
-export default function RecentlyViewedBooks() {
+export default function MayInterestYouBooks() {
   const classes = useStyles();
 
   const [fExploreBooks, cExploreBooks, data, ,] = useAxios(exploreBooks);
@@ -43,5 +43,5 @@ export default function RecentlyViewedBooks() {
     return () => cExploreBooks();
   }, []);
 
-  return <BooksGallery books={data?.recentlyViewed} />;
+  return <BooksGallery books={data?.mayInterestYou} />;
 }

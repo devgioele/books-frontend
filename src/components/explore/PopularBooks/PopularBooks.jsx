@@ -3,14 +3,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Carousel from 'react-material-ui-carousel';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import clsx from 'clsx';
-import useAxios from '../../hooks/axios';
-import { exploreBooks } from '../../api/books';
+import { useAxios } from 'hooks/axios';
+import { exploreBooks } from 'api/books';
 
 const useStyles = makeStyles((theme) => ({
   bookCard: {
     padding: theme.spacing(2),
     '&:hover': {
-      boxShadow: `0px 10px 25px -5px ${theme.colors.shadowGray}`,
+      boxShadow: `0px 10px 25px -5px ${theme.palette.custom.shadowGray}`,
     },
   },
   bookTitle: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     height: 'auto',
     objectFit: 'scale-down',
     borderRadius: 6,
-    boxShadow: `1px 1px 5px 1px ${theme.colors.shadowGray}`,
+    boxShadow: `1px 1px 5px 1px ${theme.palette.custom.shadowGray}`,
   },
 }));
 
@@ -84,7 +84,11 @@ function PopularBook({ book }) {
           </Grid>
         </Grid>
         <Grid item>
-          <img className={classes.bookCover} src={book.pictures[0]} />
+          <img
+            alt="book cover"
+            className={classes.bookCover}
+            src={book.pictures[0]}
+          />
         </Grid>
       </Grid>
     </Paper>

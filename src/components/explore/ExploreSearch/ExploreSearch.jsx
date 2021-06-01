@@ -3,9 +3,9 @@ import { ClickAwayListener, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchResults from 'components/landing/SearchResults';
 import SearchBar from 'components/landing/SearchBar';
-import useAxios from 'hooks/axios';
+import { useAxios } from 'hooks/axios';
 import { debounce } from 'utils/functions';
-import { searchBookBy } from '../../api/books';
+import { searchBookBy } from 'api/books';
 
 const useStyles = makeStyles((theme) => ({
   searchCard: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     height: 'auto',
     // offset-x | offset-y | blur-radius | spread-radius
     '&:hover': {
-      boxShadow: `0px 10px 25px -5px ${theme.colors.shadowGray}`,
+      boxShadow: `0px 10px 25px -5px ${theme.palette.custom.shadowGray}`,
     },
   },
 }));
