@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useAxios } from 'hooks/axios';
 import { exploreBooks } from 'api/books';
 import { useHistory } from 'react-router-dom';
-import { BOOK_ROUTE, NEW_SELL_ROUTE, toRoute } from '../../../routing/helpers';
+import { BOOK_ROUTE, toRoute } from '../../../routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   bookCard: {
@@ -42,8 +42,6 @@ export default function PopularBooks() {
     fExploreBooks();
     return () => cExploreBooks();
   }, []);
-
-  console.log(`data = ${JSON.stringify(data)}`);
 
   return (
     <Carousel interval={10000} animation="slide">

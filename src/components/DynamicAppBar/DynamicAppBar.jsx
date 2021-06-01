@@ -7,7 +7,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Grid from '@material-ui/core/Grid';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useAuth } from 'hooks/auth';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   appBarBottomNavigation: {
@@ -19,7 +21,12 @@ const useStyles = makeStyles(() => ({
   }),
 }));
 
-export default function DynamicAppBar({ title, variant, drawerWidth }) {
+export default function DynamicAppBar({
+  title,
+  variant,
+  drawerWidth,
+  showBack,
+}) {
   const classes = useStyles({ drawerWidth });
   const scrollTriggerHide = useScrollTrigger({
     threshold: 200,
@@ -29,7 +36,12 @@ export default function DynamicAppBar({ title, variant, drawerWidth }) {
     threshold: 0,
     disableHysteresis: true,
   });
+  const history = useHistory();
   const auth = useAuth();
+
+  const goBack = () => {
+    history.goBack();
+  };
 
   const logout = () => {
     auth.logout();
@@ -54,11 +66,27 @@ export default function DynamicAppBar({ title, variant, drawerWidth }) {
             alignItems="center"
             spacing={2}
           >
-            <Grid item xs={6}>
-              <Typography variant="h6" noWrap>
-                {title}
-              </Typography>
+            <Grid item>
+              <Grid container alignItems="center" spacing={2}>
+                {showBack && (
+                  <Grid item>
+                    <IconButton
+                      aria-label="go back"
+                      color="inherit"
+                      onClick={goBack}
+                    >
+                      <ArrowBackIcon />
+                    </IconButton>
+                  </Grid>
+                )}
+                <Grid item>
+                  <Typography variant="h6" noWrap>
+                    {title}
+                  </Typography>
+                </Grid>
+              </Grid>
             </Grid>
+
             <Grid item>
               <IconButton aria-label="logout" color="inherit" onClick={logout}>
                 <ExitToAppIcon />

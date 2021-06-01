@@ -36,7 +36,7 @@ export default function LandingHeader() {
       alignItems="center"
       spacing={2}
     >
-      <Grid item xs={6}>
+      <Grid item>
         <CloudImage
           className={classes.logo}
           alt="logo extended"
