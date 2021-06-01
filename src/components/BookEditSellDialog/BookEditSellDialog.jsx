@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { useAxios } from 'hooks/axios';
 import { editBook, sellBook, uploadBookImage } from 'api/books';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, useMediaQuery } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import ImageDropzone from 'components/ImageDropzone';
 import { bookConditions } from 'utils/constants';
@@ -17,7 +17,20 @@ const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
 };
 
+const evaluateNumColumns = (upSmall, upSmallMedium, upLarge) => {
+  let cols = 1;
+  if (upLarge) cols = 4;
+  else if (upSmallMedium) cols = 3;
+  else if (upSmall) cols = 2;
+  return cols;
+};
+
 export default function BookEditSellDialog({ backToParent, bookToEdit }) {
+  const upSmall = useMediaQuery((theme) => theme.breakpoints.up('sm'));
+  const upSmallMedium = useMediaQuery((theme) => theme.breakpoints.up('smmd'));
+  const upLarge = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+
+  const cols = evaluateNumColumns(upSmall, upSmallMedium, upLarge);
   const [invalid, setInvalid] = useState(false);
   const [isBlocked, setBlocked] = useState(false);
   const defaultCondition = bookToEdit?.condition || bookConditions.ok;
@@ -175,7 +188,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
               <ImageDropzone
                 minImages={1}
                 maxImages={4}
-                cols={3}
+                cols={cols}
                 pictureUrls={pictureUrls.current}
                 addPictureUrl={(urlToAdd) => {
                   pictureUrls.current = [...pictureUrls.current, urlToAdd];
