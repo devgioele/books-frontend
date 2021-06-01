@@ -18,6 +18,7 @@ export const REMOVE_SELL_ROUTE = `${SELL_ROUTE}/remove`;
 export const LINK_SELL_ROUTE = `${SELL_ROUTE}/link`;
 export const PROFILE_ROUTE = `${DASHBOARD_ROUTE}/profile`;
 export const EDIT_PROFILE_ROUTE = `${PROFILE_ROUTE}/edit`;
+export const EDIT_PROFILE_PICTURE_ROUTE = `${PROFILE_ROUTE}/picture`;
 export const NO_MATCH_ROUTE = '*';
 
 export const toRoute = (routeName, ...params) => {

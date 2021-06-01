@@ -50,6 +50,10 @@ export default function EditProfileDialog({
     fEditProfile(imprintObject(cleanProfileDetails));
   };
 
+  /*
+  If there is nothing to show, because the user visited this route manually,
+  go back the the profile page
+   */
   if (!isDataLoaded) {
     handleCancel();
   }
