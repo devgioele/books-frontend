@@ -71,12 +71,11 @@ function PopularBook({ book }) {
             </Grid>
             <Grid item>
               <Typography className={classes.bookTitle} variant="h4">
-                {book.currency}
-                {book.amount}
+                {`${book.currency} ${book.amount}`}
               </Typography>
             </Grid>
             <Grid item>
-              <Typography variant="h6">{book.isbn}</Typography>
+              <Typography variant="h6">{book.description}</Typography>
             </Grid>
             <Grid item>
               <Typography variant="body1">{book.condition}</Typography>
