@@ -8,6 +8,8 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Skeleton } from '@material-ui/lab';
 import formatStringDate from 'utils/dates';
+import { useHistory } from 'react-router-dom';
+import { BOOK_ROUTE, toRoute } from '../../routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   sectionGrid: {
@@ -166,6 +168,8 @@ export default function SellBooksList({
 
 function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
   const classes = useStyles();
+  const history = useHistory();
+  const openBook = () => history.push(toRoute(BOOK_ROUTE, book.bookId));
 
   return (
     <Grid className={classes.bookContainer} container spacing={2}>
@@ -176,6 +180,7 @@ function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
               className={classes.bookCover}
               src={book.pictures[0]}
               alt="book cover"
+              onClick={openBook}
             />
           </Grid>
           <Grid item>
@@ -187,7 +192,7 @@ function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
               spacing={1}
             >
               <Grid className={classes.bookTitle} item>
-                <Link variant="h6" color="inherit">
+                <Link variant="h6" color="inherit" onClick={openBook}>
                   <b>{book.title}</b>
                 </Link>
               </Grid>

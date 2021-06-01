@@ -4,8 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
-import { EXPLORE_ROUTE, toRoute } from 'routing/helpers';
-import BookCard from '../../BookCard';
+import { BOOK_ROUTE, EXPLORE_ROUTE, toRoute } from 'routing/helpers';
+import BookCard from 'components/BookCard';
 
 const useStyles = makeStyles((theme) => ({
   searchResults: {
@@ -38,7 +38,7 @@ export default function SearchResults({ books, showSignup }) {
           <Grid
             item
             key={index}
-            onClick={() => history.push(toRoute(EXPLORE_ROUTE))}
+            onClick={() => history.push(toRoute(BOOK_ROUTE, book.bookId))}
           >
             <BookCard book={book} />
           </Grid>

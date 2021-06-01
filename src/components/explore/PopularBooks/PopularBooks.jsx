@@ -43,8 +43,10 @@ export default function PopularBooks() {
     return () => cExploreBooks();
   }, []);
 
+  console.log(`data = ${JSON.stringify(data)}`);
+
   return (
-    <Carousel>
+    <Carousel interval={10000} animation="slide">
       {data?.popular?.map((book, index) => (
         <PopularBook key={index} book={book} />
       ))}
@@ -55,7 +57,7 @@ export default function PopularBooks() {
 function PopularBook({ book }) {
   const classes = useStyles();
   const history = useHistory();
-  const openBook = () => history.push(toRoute(BOOK_ROUTE, book.isbn));
+  const openBook = () => history.push(toRoute(BOOK_ROUTE, book.bookId));
 
   return (
     <Paper

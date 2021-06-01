@@ -1,6 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
+import { BOOK_ROUTE, toRoute } from 'routing/helpers';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   bookCover: {
@@ -31,9 +33,11 @@ export default function BooksGallery({ books }) {
 
 function Book({ book }) {
   const classes = useStyles();
+  const history = useHistory();
+  const openBook = () => history.push(toRoute(BOOK_ROUTE, book.bookId));
 
   return (
-    <Grid container alignItems="center" spacing={2}>
+    <Grid container alignItems="center" spacing={2} onClick={openBook}>
       <Grid item>
         <img
           alt="book cover"
