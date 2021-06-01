@@ -125,7 +125,13 @@ export default function SellBooksList({
     },
   ];
 
-  return (
+  const empty = sections.every((section) => !section.showSection);
+
+  return empty ? (
+    <Typography variant="body1">
+      Starting selling a book by clicking on the button below!
+    </Typography>
+  ) : (
     <Grid container direction="column" spacing={6}>
       {sections
         .filter((section) => section.showSection)
