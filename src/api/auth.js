@@ -1,5 +1,22 @@
 import axios from 'axios';
-import { BASE_URL, failureWith, successWith } from './base';
+import { BASE_URL, failureWith, successWith, withAuth } from './base';
+
+export const changePassword = (
+  onSuccess,
+  onFailure,
+  cancelToken,
+  oldPassword,
+  newPassword
+) => {
+  axios
+    .put(
+      `${BASE_URL}/auth/password/change`,
+      { oldPassword, newPassword },
+      withAuth({ cancelToken })
+    )
+    .then(successWith(onSuccess, onFailure, 200))
+    .catch(failureWith(onFailure));
+};
 
 export const checkIdentity = (
   onSuccess,

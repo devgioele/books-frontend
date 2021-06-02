@@ -51,8 +51,9 @@ export const useAxios = (
             variant: 'error',
           });
         } else {
+          const errorDetail = err?.response?.data?.detail ?? err;
           enqueueSnackbar(
-            `${StdMessages.UNEXPECTED(operationName)}\nCause: ${err}`,
+            `${StdMessages.UNEXPECTED(operationName)}\nCause: ${errorDetail}`,
             {
               variant: 'error',
             }
