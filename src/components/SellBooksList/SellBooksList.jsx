@@ -128,7 +128,7 @@ export default function SellBooksList({
   const empty = sections.every((section) => !section.showSection);
 
   return empty ? (
-    <Typography variant="body1">
+    <Typography variant="h6">
       Starting selling a book by clicking on the button below!
     </Typography>
   ) : (

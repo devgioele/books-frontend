@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
+import LockIcon from '@material-ui/icons/Lock';
+import { makeStyles } from '@material-ui/core/styles';
 import { useAxios } from '../../../hooks/axios';
 import { changePassword } from '../../../api/auth';
 import PasswordField from '../../PasswordField';
 
+const useStyles = makeStyles((theme) => ({
+  sectionTitle: {
+    marginBottom: theme.spacing(1),
+  },
+}));
+
 export default function ProfileSecurity() {
+  const classes = useStyles();
+
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
@@ -33,6 +42,9 @@ export default function ProfileSecurity() {
         </Typography>
       </Grid>
       <Grid item>
+        <Typography className={classes.sectionTitle} variant="h6">
+          <b>Change your password</b>
+        </Typography>
         <Grid
           container
           direction="row"
@@ -65,7 +77,7 @@ export default function ProfileSecurity() {
               color="primary"
               variant="contained"
               disableElevation={true}
-              startIcon={<EditIcon />}
+              startIcon={<LockIcon />}
               disabled={isChangingPassword}
               onClick={change}
             >

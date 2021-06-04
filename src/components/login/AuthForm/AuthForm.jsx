@@ -21,6 +21,6 @@ export default function AuthForm({ progress, ...remProps }) {
     case AuthProgress.LOGIN:
       return <LoginForm usernameOrEmail={usernameOrEmail} {...remProps} />;
     default:
-      return <div />;
+      return <></>;
   }
 }

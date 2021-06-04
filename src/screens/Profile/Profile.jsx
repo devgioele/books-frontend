@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CircularProgress, Grid, makeStyles } from '@material-ui/core';
+import { CircularProgress, Divider, Grid, makeStyles } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import ProfileHeader from 'components/profile/ProfileHeader';
 import ProfileInformation from 'components/profile/ProfileInformation';
@@ -159,6 +159,9 @@ export default function Profile({ routes }) {
               <ProfileInformation
                 fields={zippedData.filter((field) => !field.showInHeader)}
               />
+            </Grid>
+            <Grid item>
+              <Divider />
             </Grid>
             <Grid item>
               <ProfileSecurity />

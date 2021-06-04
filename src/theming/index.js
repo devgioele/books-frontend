@@ -38,6 +38,8 @@ export default responsiveFontSizes(
         shadowGray: '#dadada',
         linkBlue: '#2858f4',
         lightGrey: '#989898',
+        facebook: '#1778F2',
+        telegram: '#1778F2',
       },
     },
     typography: {

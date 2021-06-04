@@ -119,6 +119,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
           variant="contained"
           color="primary"
           ref={btnContinue}
+          disableElevation={true}
           onClick={handleSubmit}
         >
           Continue

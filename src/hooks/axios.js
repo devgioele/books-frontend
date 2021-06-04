@@ -42,10 +42,10 @@ export const useAxios = (
         setData(null);
         setError(err);
 
-        if (err?.response?.status === 401) {
-          auth.logout();
-        } else if (expected) {
+        if (expected) {
           onExpectedError(err);
+        } else if (err?.response?.status === 401) {
+          auth.logout();
         } else if (isNetworkError(err)) {
           enqueueSnackbar(`${StdMessages.NETWORK_ERROR(operationName)}`, {
             variant: 'error',

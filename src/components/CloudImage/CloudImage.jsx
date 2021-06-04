@@ -25,7 +25,11 @@ export default function CloudImage({ url, cutExtension, ...remProps }) {
       <source srcSet={`${validUrl}webp`} type="image/webp" />
       <source srcSet={`${validUrl}jp2`} type="image/jp2" />
       <source srcSet={`${validUrl}jxr`} type="image/vnd.ms-photo" />
-      <img {...remProps} style={{ margin: 'auto' }} />
+      <img
+        {...remProps}
+        style={{ margin: 'auto' }}
+        alt={`cloud-image-${validUrl}`}
+      />
     </picture>
   );
 }
