@@ -9,7 +9,9 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Skeleton } from '@material-ui/lab';
 import formatStringDate from 'utils/dates';
 import { useHistory } from 'react-router-dom';
-import { BOOK_ROUTE, toRoute } from '../../routing/helpers';
+import { Player } from '@lottiefiles/react-lottie-player';
+import { BOOK_ROUTE, toRoute } from 'routing/helpers';
+import bookBounceOpen from 'animations/book-bounce-open.json';
 
 const useStyles = makeStyles((theme) => ({
   sectionGrid: {
@@ -128,9 +130,26 @@ export default function SellBooksList({
   const empty = sections.every((section) => !section.showSection);
 
   return empty ? (
-    <Typography variant="h6">
-      Starting selling a book by clicking on the button below!
-    </Typography>
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+      spacing={2}
+      style={{ height: '60vh' }}
+    >
+      <Grid item>
+        <Player
+          autoplay
+          keepLastFrame
+          src={bookBounceOpen}
+          style={{ height: '150px' }}
+        />
+      </Grid>
+      <Grid item>
+        <Typography variant="h6">{`You didn't sell any books yet`}</Typography>
+      </Grid>
+    </Grid>
   ) : (
     <Grid container direction="column" spacing={6}>
       {sections
