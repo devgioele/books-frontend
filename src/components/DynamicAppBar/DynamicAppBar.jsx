@@ -5,11 +5,11 @@ import IconButton from '@material-ui/core/IconButton';
 import { Slide, useScrollTrigger } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Grid from '@material-ui/core/Grid';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useAuth } from 'hooks/auth';
 import { useHistory } from 'react-router-dom';
+import { ExitToAppRounded } from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
   appBarBottomNavigation: {
@@ -89,7 +89,7 @@ export default function DynamicAppBar({
 
             <Grid item>
               <IconButton aria-label="logout" color="inherit" onClick={logout}>
-                <ExitToAppIcon />
+                <ExitToAppRounded />
               </IconButton>
             </Grid>
           </Grid>

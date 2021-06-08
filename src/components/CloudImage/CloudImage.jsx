@@ -3,7 +3,7 @@ import React from 'react';
 export default function CloudImage({
   url,
   cutExtension,
-  style,
+  style = undefined,
   showAlt = true,
   ...remProps
 }) {

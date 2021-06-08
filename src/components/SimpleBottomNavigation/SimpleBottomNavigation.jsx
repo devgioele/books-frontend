@@ -4,7 +4,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import clsx from 'clsx';
 import DynamicAppBar from 'components/DynamicAppBar';
-import ContentWithToolbar from '../ContentWithToolbar';
+import ContentWithToolbar from 'components/ContentWithToolbar';
 
 const useStyles = makeStyles((theme) => ({
   root: {

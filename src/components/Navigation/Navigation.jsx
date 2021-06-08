@@ -1,28 +1,30 @@
 import React, { useMemo } from 'react';
 import DrawerLeft from 'components/DrawerLeft';
-import ExploreIcon from '@material-ui/icons/Explore';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 import { EXPLORE_ROUTE, PROFILE_ROUTE, SELL_ROUTE } from 'routing/helpers';
 import { useMediaQuery } from '@material-ui/core';
 import SimpleBottomNavigation from 'components/SimpleBottomNavigation';
 import routeIsAncestor from 'utils/routing';
+import {
+  AccountCircleRounded,
+  LocalLibraryRounded,
+  MonetizationOnRounded,
+} from '@material-ui/icons';
 
 const sections = [
   {
     route: EXPLORE_ROUTE,
     label: 'Explore',
-    icon: <ExploreIcon />,
+    icon: <LocalLibraryRounded />,
   },
   {
     route: SELL_ROUTE,
     label: 'Sell',
-    icon: <ImportContactsIcon />,
+    icon: <MonetizationOnRounded />,
   },
   {
     route: PROFILE_ROUTE,
     label: 'Profile',
-    icon: <AccountCircleIcon />,
+    icon: <AccountCircleRounded />,
   },
 ];
 
@@ -50,7 +52,7 @@ export default function Navigation({ children, selectedRoute, changeSection }) {
         />
       ) : (
         <DrawerLeft
-          title="Books"
+          title={selectedSection.label}
           content={children}
           selectedSection={selectedSection}
           selectedIndex={selectedIndex}
