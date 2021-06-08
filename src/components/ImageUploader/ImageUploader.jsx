@@ -211,6 +211,7 @@ function DroppedImage({ image, remove, preferDownload }) {
            */
           onLoad={() => setDownloaded(true)}
           onClick={handleClick}
+          style={{ display: 'flex' }}
         />
       )}
     </div>
