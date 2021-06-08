@@ -83,7 +83,7 @@ export default function PasswordField(props) {
         rows={rows}
         rowsMax={rowsMax}
         type={showPassword ? 'text' : 'password'}
-        value={password}
+        value={value ?? password}
         id={id}
         inputRef={inputRef}
         onBlur={onBlur}

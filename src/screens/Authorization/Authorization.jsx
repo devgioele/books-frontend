@@ -28,11 +28,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       padding: '50px 25%',
     },
-    // offset-x | offset-y | blur-radius | spread-radius
-    boxShadow: `0px 1px 3px 0px ${theme.palette.custom.shadowGray}`,
-    '&:hover': {
-      boxShadow: `0px 10px 25px -5px ${theme.palette.custom.shadowGray}`,
-    },
   },
   contentContainer: {
     margin: 'auto',

@@ -35,7 +35,7 @@ export default function BookLinkDialog({ backToParent, bookToLink }) {
       <DialogTitle align="center">
         {isGenerating
           ? `Generating your sell link for '${bookToLink.title}'...`
-          : 'Sell link copied to the clipboard!'}
+          : 'Sell link copied to the clipboard'}
       </DialogTitle>
       <DialogContent>
         <div style={{ padding: 20 }}>

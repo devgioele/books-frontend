@@ -2,16 +2,19 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Carousel from 'react-material-ui-carousel';
 import { Grid, Paper, Typography } from '@material-ui/core';
-import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
 import { BOOK_ROUTE, toRoute } from 'routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   bookCard: {
     padding: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing(4),
+    },
     '&:hover': {
       boxShadow: `0px 10px 25px -5px ${theme.palette.custom.shadowGray}`,
     },
+    borderRadius: 20,
   },
   bookTitle: {
     fontWeight: 'bold',
@@ -26,14 +29,17 @@ const useStyles = makeStyles((theme) => ({
     },
     height: 'auto',
     objectFit: 'scale-down',
-    borderRadius: 6,
-    boxShadow: `1px 1px 5px 1px ${theme.palette.custom.shadowGray}`,
+    borderRadius: 5,
   },
 }));
 
 export default function PopularBooks({ books }) {
   return (
-    <Carousel interval={10000} animation="slide">
+    <Carousel
+      interval={10000}
+      animation="slide"
+      navButtonsAlwaysInvisible={true}
+    >
       {books.map((book, index) => (
         <PopularBook key={index} book={book} />
       ))}
@@ -47,11 +53,7 @@ function PopularBook({ book }) {
   const openBook = () => history.push(toRoute(BOOK_ROUTE, book.bookId));
 
   return (
-    <Paper
-      className={clsx(classes.bookCard)}
-      variant="outlined"
-      onClick={openBook}
-    >
+    <Paper className={classes.bookCard} variant="outlined" onClick={openBook}>
       <Grid container justify="space-between" alignItems="center" spacing={2}>
         <Grid item>
           <Grid
@@ -67,13 +69,13 @@ function PopularBook({ book }) {
               </Typography>
             </Grid>
             <Grid item>
-              <Typography className={classes.bookTitle} variant="h5">
+              <Typography className={classes.bookTitle} variant="h6">
                 {`${book.currency} ${book.amount}`}
               </Typography>
             </Grid>
             <Grid item>
               <Typography variant="body1">
-                Conditions: {book.condition}
+                The book is in <b>{book.condition}</b> conditions
               </Typography>
             </Grid>
           </Grid>

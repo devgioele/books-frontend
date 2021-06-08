@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     },
     height: 'auto',
     objectFit: 'scale-down',
-    borderRadius: 6,
+    borderRadius: 5,
     boxShadow: `1px 1px 5px 1px ${theme.palette.custom.shadowGray}`,
   },
 }));
@@ -24,7 +24,7 @@ export default function BookImages({ book }) {
     <Grid container spacing={2}>
       {book?.pictures?.map((picture, index) => (
         <Grid key={index} item>
-          <img className={classes.bookCover} src={picture} alt="book picture" />
+          <img className={classes.bookCover} src={picture} alt="book cover" />
         </Grid>
       ))}
     </Grid>

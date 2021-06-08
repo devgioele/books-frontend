@@ -64,6 +64,7 @@ export default function LoginForm({ redirect, usernameOrEmail }) {
           color="primary"
           ref={btnContinue}
           onClick={handleSubmit}
+          disableElevation={true}
           disabled={isLoading}
         >
           Continue

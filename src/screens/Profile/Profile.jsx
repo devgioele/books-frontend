@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { CircularProgress, Grid, makeStyles } from '@material-ui/core';
+import { CircularProgress, Divider, Grid, makeStyles } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import ProfileHeader from 'components/profile/ProfileHeader';
 import ProfileInformation from 'components/profile/ProfileInformation';
 import { useAxios } from 'hooks/axios';
 import { getProfileDetails } from 'api/profile';
 import { PROFILE_ROUTE, renderRoute, toRoute } from 'routing/helpers';
-import { buildObjectFromFields, getFromObject } from 'utils/functions';
+import { getFromObject } from 'utils/functions';
 import CompleteProfileBanner from 'components/profile/CompleteProfileBanner';
 import { pageFrame } from 'theming';
+import ProfileSecurity from '../../components/profile/ProfileSecurity';
 
 const profileFields = [
   {
@@ -158,6 +159,12 @@ export default function Profile({ routes }) {
               <ProfileInformation
                 fields={zippedData.filter((field) => !field.showInHeader)}
               />
+            </Grid>
+            <Grid item>
+              <Divider />
+            </Grid>
+            <Grid item>
+              <ProfileSecurity />
             </Grid>
           </>
         )}

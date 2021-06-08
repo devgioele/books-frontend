@@ -10,7 +10,7 @@ import BookCard from 'components/BookCard';
 const useStyles = makeStyles((theme) => ({
   searchResults: {
     position: 'absolute',
-    borderRadius: 10,
+    borderRadius: 20,
     width: '100%',
     marginTop: theme.spacing(2),
     padding: theme.spacing(3),

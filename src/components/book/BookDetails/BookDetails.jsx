@@ -20,12 +20,12 @@ export default function BookDetails({ book }) {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography className={classes.bookTitle} variant="h5">
+            <Typography className={classes.bookTitle} variant="h6">
               {book.currency} {book.amount}
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="h6">{book.isbn}</Typography>
+            <Typography variant="body1">{book.isbn}</Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle2">

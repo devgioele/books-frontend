@@ -68,6 +68,7 @@ export default function IdentityForm({
           variant="contained"
           color="primary"
           ref={btnContinue}
+          disableElevation={true}
           onClick={handleSubmit}
         >
           Continue
