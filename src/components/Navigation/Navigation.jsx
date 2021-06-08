@@ -35,13 +35,13 @@ export default function Navigation({ children, selectedRoute, changeSection }) {
     );
     return [sections[index], index];
   }, [selectedRoute]);
-  const downXSmall = useMediaQuery((theme) =>
+  const downSmallMedium = useMediaQuery((theme) =>
     theme.breakpoints.down(theme.breakpoints.values.smmd)
   );
 
   return (
     <div style={{ width: '100%' }}>
-      {downXSmall ? (
+      {downSmallMedium ? (
         <SimpleBottomNavigation
           title="Books"
           content={children}
