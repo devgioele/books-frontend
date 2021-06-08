@@ -147,7 +147,7 @@ export default function SellBooksList({
         />
       </Grid>
       <Grid item>
-        <Typography variant="h6">{`You didn't sell any books yet`}</Typography>
+        <Typography variant="h6">{`Start selling a book now`}</Typography>
       </Grid>
     </Grid>
   ) : (

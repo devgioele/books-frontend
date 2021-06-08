@@ -8,12 +8,22 @@ import { useAxios } from 'hooks/axios';
 import { exploreBooks } from 'api/books';
 import MayInterestYouBooks from 'components/explore/MayInterestYouBooks';
 import RecentlyViewedBooks from 'components/explore/RecentlyViewedBooks';
+import ExploreWelcome from 'components/explore/ExploreWelcome';
 
 const sections = [
   {
+    title: 'Welcome to the explore page',
+    component: ExploreWelcome,
+    getBooks: (data) =>
+      data?.popular?.length +
+        data?.mayInterestYou?.length +
+        data?.recentlyViewed?.length ===
+      0,
+  },
+  {
     title: 'Popular',
     component: PopularBooks,
-    getBooks: (data) => data?.popular,
+    getBooks: (data) => data?.popular?.length > 0 && data?.popular,
   },
   {
     title: 'Search',
@@ -22,12 +32,14 @@ const sections = [
   {
     title: 'May Interest You',
     component: MayInterestYouBooks,
-    getBooks: (data) => data?.mayInterestYou,
+    getBooks: (data) =>
+      data?.mayInterestYou?.length > 0 && data?.mayInterestYou,
   },
   {
     title: 'Recently Viewed',
     component: RecentlyViewedBooks,
-    getBooks: (data) => data?.recentlyViewed,
+    getBooks: (data) =>
+      data?.recentlyViewed?.length > 0 && data?.recentlyViewed,
   },
 ];
 
@@ -64,11 +76,11 @@ function Section({ section }) {
     return () => cExploreBooks();
   }, []);
 
-  const sectionContainsBooks = section.getBooks;
+  const sectionContainsBooks = !!section.getBooks;
   const books = sectionContainsBooks && section.getBooks(data);
 
   return (
-    ((!sectionContainsBooks || (books && books.length > 0)) && (
+    ((!sectionContainsBooks || books) && (
       <Grid item xs={12}>
         <Grid container direction="column" spacing={2}>
           <Grid item>
