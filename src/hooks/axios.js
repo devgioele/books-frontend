@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import axios from 'axios';
-import STD_MESSAGES from 'messages/standard';
+import StdMessages from 'messages/standard';
 import { useSnackbar } from 'notistack';
+import { axiosState } from 'utils/constants';
+import { useAuth } from './auth';
 
-const useAxios = (
+function isNetworkError(error) {
+  return !!error.isAxiosError && !error.response;
+}
+
+export const useAxios = (
   axiosBlock,
   operationName = '',
   onSuccess = () => {},
@@ -15,6 +21,7 @@ const useAxios = (
   const [source, setSource] = useState(null);
 
   const { enqueueSnackbar } = useSnackbar();
+  const auth = useAuth();
 
   const fetch = (...args) => {
     // We use this variable in order to pass the value to the axiosBlock and
@@ -27,22 +34,31 @@ const useAxios = (
         setIsLoading(false);
         setData(body);
         setError(null);
+
         onSuccess(body);
       },
       (err, expected) => {
         setIsLoading(false);
+        setData(null);
+        setError(err);
+
         if (expected) {
           onExpectedError(err);
+        } else if (err?.response?.status === 401) {
+          auth.logout();
+        } else if (isNetworkError(err)) {
+          enqueueSnackbar(`${StdMessages.NETWORK_ERROR(operationName)}`, {
+            variant: 'error',
+          });
         } else {
+          const errorDetail = err?.response?.data?.detail ?? err;
           enqueueSnackbar(
-            `${STD_MESSAGES.UNEXPECTED(operationName)}\nCause: ${err}`,
+            `${StdMessages.UNEXPECTED(operationName)}\nCause: ${errorDetail}`,
             {
               variant: 'error',
             }
           );
         }
-        setError(err);
-        setData(null);
       },
       localSource.token,
       ...args
@@ -57,4 +73,64 @@ const useAxios = (
   return [fetch, cancelPrevious, data, error, isLoading];
 };
 
-export default useAxios;
+export const useStatelessAxios = (axiosBlock, operationName = '') => {
+  const { enqueueSnackbar } = useSnackbar();
+  const auth = useAuth();
+
+  const sources = useRef([]);
+  const removeSource = (sourceToRemove) => {
+    sources.current = sources.current.filter(
+      (source) => source !== sourceToRemove
+    );
+  };
+  const addSource = (sourceToAdd) => {
+    sources.current = [...sources.current, sourceToAdd];
+  };
+
+  const fetch = (onStateChange = (state, data) => {}, ...args) => {
+    // We use this variable in order to pass the value to the axiosBlock and
+    // also to the state as the state propagation is asynchronous.
+    const localSource = axios.CancelToken.source();
+    addSource(localSource);
+
+    onStateChange(axiosState.progress, null);
+    axiosBlock(
+      (body) => {
+        removeSource(localSource);
+        onStateChange(axiosState.success, body);
+      },
+      (err, expected) => {
+        removeSource(localSource);
+
+        if (err?.response?.status === 401) {
+          auth.logout();
+        } else if (expected) {
+          onStateChange(axiosState.error, err);
+        } else if (isNetworkError(err)) {
+          enqueueSnackbar(`${StdMessages.NETWORK_ERROR(operationName)}`, {
+            variant: 'error',
+          });
+        } else {
+          enqueueSnackbar(
+            `${StdMessages.UNEXPECTED(operationName)}\nCause: ${err}`,
+            {
+              variant: 'error',
+            }
+          );
+        }
+      },
+      localSource.token,
+      ...args
+    );
+  };
+
+  const cancelAll = () => {
+    const sourcesCopy = [...sources.current];
+    // Remove all
+    sources.current = [];
+    // Cancel each
+    sourcesCopy.forEach((source) => source.cancel());
+  };
+
+  return [fetch, cancelAll];
+};

@@ -3,7 +3,7 @@ import { Button, TextField } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { checkIdentity } from 'api/auth';
-import useAxios from 'hooks/axios';
+import { useAxios } from 'hooks/axios';
 import AuthProgress from 'screens/Authorization/authProgress';
 
 const useStyles = makeStyles(() => ({
@@ -50,6 +50,8 @@ export default function IdentityForm({
     >
       <Grid item>
         <TextField
+          username="true"
+          color="secondary"
           className={classes.textField}
           autoFocus={true}
           size="small"
@@ -68,6 +70,7 @@ export default function IdentityForm({
           variant="contained"
           color="primary"
           ref={btnContinue}
+          disableElevation={true}
           onClick={handleSubmit}
         >
           Continue

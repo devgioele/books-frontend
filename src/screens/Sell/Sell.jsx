@@ -1,36 +1,56 @@
 import React, { useEffect, useState } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, useTheme, Zoom } from '@material-ui/core';
 import SellBooksList from 'components/SellBooksList';
 import {
   EDIT_SELL_ROUTE,
+  LINK_SELL_ROUTE,
   NEW_SELL_ROUTE,
   REMOVE_SELL_ROUTE,
   renderRoute,
-  SELL_ROUTE,
   toRoute,
 } from 'routing/helpers';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import useAxios from 'hooks/axios';
+import { useAxios } from 'hooks/axios';
 import { getSellingBooks, getSoldBooks, removeBook } from 'api/books';
 import ConfirmationDialog from 'components/ConfirmationDialog';
+import { pageFrame } from 'theming';
 
 const useStyles = makeStyles((theme) => ({
+  ...pageFrame(theme),
   fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
+    position: 'fixed',
+    // Thin bottom navigation
+    [theme.breakpoints.up('xs')]: {
+      bottom: theme.spacing(9),
+    },
+    // Fat bottom navigation
+    [theme.breakpoints.up('sm')]: {
+      bottom: theme.spacing(10),
+    },
+    // Left drawer
+    [theme.breakpoints.up('smmd')]: {
+      bottom: theme.spacing(2),
+    },
+
     right: theme.spacing(2),
   },
 }));
 
 export default function Sell({ routes }) {
   const classes = useStyles();
+  const theme = useTheme();
+  const transitionDuration = {
+    enter: theme.transitions.duration.enteringScreen,
+    exit: theme.transitions.duration.leavingScreen,
+  };
   const [bookToEdit, setBookToEdit] = useState(undefined);
   const [bookToRemove, setBookToRemove] = useState(undefined);
+  const [bookToLink, setBookToLink] = useState(undefined);
   const history = useHistory();
-  const [newSellRoute, editSellRoute, removeSellRoute] = routes;
+  const [newSellRoute, editSellRoute, removeSellRoute, linkSellRoute] = routes;
 
   const [
     fetchSellingBooks,
@@ -48,7 +68,7 @@ export default function Sell({ routes }) {
   ] = useAxios(getSoldBooks, 'fetching sold books');
 
   // These two effects are applied only on mounting.
-  // They are only clean up on unmounting.
+  // They are only cleaned up on unmounting.
   useEffect(() => {
     fetchSellingBooks();
     return () => cancelSelling();
@@ -61,7 +81,7 @@ export default function Sell({ routes }) {
   }, []);
 
   const backToParent = (doRefresh) => () => {
-    history.push(SELL_ROUTE);
+    history.goBack();
     if (doRefresh) {
       fetchSellingBooks();
       fetchSoldBooks();
@@ -73,17 +93,14 @@ export default function Sell({ routes }) {
       {newSellRoute && renderRoute(newSellRoute, { backToParent })}
       {editSellRoute &&
         bookToEdit &&
-        renderRoute(editSellRoute, {
-          backToParent,
-          bookToEdit,
-        })}
+        renderRoute(editSellRoute, { backToParent, bookToEdit })}
       {removeSellRoute &&
         bookToRemove &&
-        renderRoute(removeSellRoute, {
-          backToParent,
-          bookToRemove,
-        })}
-      <Grid container>
+        renderRoute(removeSellRoute, { backToParent, bookToRemove })}
+      {linkSellRoute &&
+        bookToLink &&
+        renderRoute(linkSellRoute, { backToParent, bookToLink })}
+      <Grid className={classes.pageFrame} container>
         <Grid item xs={12}>
           <SellBooksList
             loadingSelling={isLoadingSelling}
@@ -98,22 +115,36 @@ export default function Sell({ routes }) {
               setBookToRemove(book);
               history.push(toRoute(REMOVE_SELL_ROUTE));
             }}
+            onSellLink={(book) => {
+              setBookToLink(book);
+              history.push(toRoute(LINK_SELL_ROUTE));
+            }}
           />
         </Grid>
       </Grid>
-      <Fab
-        className={classes.fab}
-        color="primary"
-        aria-label="sell-book"
-        onClick={() => history.push(toRoute(NEW_SELL_ROUTE))}
+      <Zoom
+        in={true}
+        timeout={transitionDuration}
+        style={{
+          transitionDelay: `${transitionDuration.exit}ms`,
+        }}
+        unmountOnExit
       >
-        <AddIcon />
-      </Fab>
+        <Fab
+          className={classes.fab}
+          color="primary"
+          elevation={24}
+          aria-label="sell-book"
+          onClick={() => history.push(toRoute(NEW_SELL_ROUTE))}
+        >
+          <AddIcon />
+        </Fab>
+      </Zoom>
     </>
   );
 }
 
-export function SellRemoveDialog({ backToParent, bookToRemove }) {
+export function BookRemoveDialog({ backToParent, bookToRemove }) {
   const [remove, cancelRemoval, , , isLoadingRemoval] = useAxios(
     removeBook,
     'removing book',

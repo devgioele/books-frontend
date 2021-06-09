@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import BookCard from '../BookCard';
-import useStatefulSnackbar from '../../hooks/snackbar';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -31,18 +30,18 @@ export default function ConfirmCard({
   onConfirm,
 }) {
   const classes = useStyles();
+  const error = bookError || confirmError;
 
   return (
     <Paper className={classes.card} variant="outlined">
       <Grid container>
         <Grid item>{isLoadingBook && <CircularProgress />}</Grid>
-        <Grid item>{bookError && <Error onRetry={onRetry} />}</Grid>
+        <Grid item>{error && <Error onRetry={onRetry} />}</Grid>
         <Grid item>
-          {book && (
+          {!error && book && (
             <Success
               book={book}
               confirm={confirm}
-              confirmError={confirmError}
               isLoadingConfirm={isLoadingConfirm}
               onConfirm={onConfirm}
             />
@@ -59,8 +58,11 @@ function Error({ onRetry }) {
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
+        <Typography variant="subtitle1">A problem occurred!</Typography>
         <Typography variant="subtitle2">
-          An error occurred, the transaction might be expired.
+          The transaction might be expired. If that&apos;s the case, ask the
+          seller to create a new sell link for you. Keep in mind that you cannot
+          confirm your own sell links.
         </Typography>
       </Grid>
       <Grid item>
@@ -69,7 +71,7 @@ function Error({ onRetry }) {
           color="primary"
           variant="contained"
           disableElevation={true}
-          onClick={() => onRetry()}
+          onClick={onRetry}
         >
           Try again
         </Button>
@@ -78,13 +80,8 @@ function Error({ onRetry }) {
   );
 }
 
-function Success({ book, confirm, confirmError, isLoadingConfirm, onConfirm }) {
+function Success({ book, confirm, isLoadingConfirm, onConfirm }) {
   const classes = useStyles();
-  useStatefulSnackbar(
-    confirmError,
-    'Error while confirming the selling.',
-    'error'
-  );
 
   return (
     <Grid container direction="column" spacing={2}>

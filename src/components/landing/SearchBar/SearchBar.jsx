@@ -1,8 +1,8 @@
-import SearchIcon from '@material-ui/icons/Search';
 import { CircularProgress, InputBase } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import { SearchRounded } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   inputRoot: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   searchIcon: {
-    color: fade(theme.colors.black, 0.4),
+    color: fade(theme.palette.custom.black, 0.4),
   },
 }));
 
@@ -58,7 +58,7 @@ export default function SearchBar({ onSearching, isLoading }) {
             thickness={4}
           />
         ) : (
-          <SearchIcon className={classes.searchIcon} />
+          <SearchRounded className={classes.searchIcon} />
         )}
       </div>
       <InputBase

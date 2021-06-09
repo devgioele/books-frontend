@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ConfirmCard from 'components/ConfirmCard';
-import useAxios from 'hooks/axios';
+import { useAxios } from 'hooks/axios';
 import { confirmSell, getBookByTransaction } from 'api/books';
 
 const useStyles = makeStyles({
@@ -34,9 +34,13 @@ export default function Confirm() {
   useEffect(() => {
     fGetBookByTransaction(transactionId);
     return () => cGetBookByTransaction();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transactionId]);
 
   const onRetry = () => {
+    // We might retry just because the confirmation failed.
+    // Therefore, cancel the confirmation to reset 'confirmError'.
+    cConfirmSell();
     cGetBookByTransaction();
     fGetBookByTransaction(transactionId);
   };
@@ -56,8 +60,8 @@ export default function Confirm() {
       <Grid item>
         <ConfirmCard
           book={book}
-          confirm={confirm}
           bookError={bookError}
+          confirm={confirm}
           confirmError={confirmError}
           isLoadingBook={isLoadingBook}
           isLoadingConfirm={isLoadingConfirm}

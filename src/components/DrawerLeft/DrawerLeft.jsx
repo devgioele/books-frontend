@@ -1,24 +1,22 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
+import DynamicAppBar from 'components/DynamicAppBar';
+import ContentWithToolbar from 'components/ContentWithToolbar';
+import CloudImage from 'components/CloudImage';
+import clsx from 'clsx';
+import Grid from '@material-ui/core/Grid';
 
 const drawerWidth = 180;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-  },
-  appBar: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
   },
   drawer: {
     width: drawerWidth,
@@ -27,18 +25,11 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-  // Necessary for content to be below app bar
-  toolbarPlaceholder: theme.mixins.toolbar,
-  contentContainer: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-  },
-  content: {
-    padding: theme.spacing(3),
-  },
+  toolbarPlaceholder: theme.mixins.toolbarDrawer,
+  logo: { height: '100%' },
 }));
 
-export default function PermanentDrawerLeft({
+export default function DrawerLeft({
   title,
   content,
   selectedSection,
@@ -49,13 +40,7 @@ export default function PermanentDrawerLeft({
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" noWrap>
-            {title}
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <DynamicAppBar title={title} variant="drawer" drawerWidth={drawerWidth} />
       <Drawer
         className={classes.drawer}
         variant="permanent"
@@ -64,7 +49,22 @@ export default function PermanentDrawerLeft({
         }}
         anchor="left"
       >
-        <div className={classes.toolbarPlaceholder} />
+        <div className={clsx(classes.toolbarPlaceholder)}>
+          <Grid
+            container
+            justify="flex-start"
+            alignItems="center"
+            style={{ height: '100%', marginLeft: '6px' }}
+          >
+            <Grid item style={{ height: '90%' }}>
+              <CloudImage
+                className={classes.logo}
+                alt="logo extended"
+                url="https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/logo_extended_tzumtl."
+              />
+            </Grid>
+          </Grid>
+        </div>
         <Divider />
         <List>
           {sections.map((section) => (
@@ -80,10 +80,7 @@ export default function PermanentDrawerLeft({
           ))}
         </List>
       </Drawer>
-      <div className={classes.contentContainer}>
-        <div className={classes.toolbarPlaceholder} />
-        <main className={classes.content}>{content}</main>
-      </div>
+      <ContentWithToolbar>{content}</ContentWithToolbar>
     </div>
   );
 }

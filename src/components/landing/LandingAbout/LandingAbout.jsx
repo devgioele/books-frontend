@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     width: '150px',
     height: '150px',
     borderRadius: 10,
-    boxShadow: `0px 1px 3px 0px ${theme.colors.shadowGray}`,
+    boxShadow: `0px 1px 3px 0px ${theme.palette.custom.shadowGray}`,
     objectFit: 'cover',
   },
 }));
@@ -21,7 +21,7 @@ const people = [
   {
     name: 'Gioele De Vitti',
     img:
-      'https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163770/Books/gioele_de_vitti_l35mg9.',
+      'https://res.cloudinary.com/dlfbz4vzv/image/upload/v1622561372/Books/gioele_de_vitti.',
     role: 'Frontend Developer',
     description:
       'Coming from an electronic engineering background, I enjoy developing' +
@@ -31,14 +31,14 @@ const people = [
   {
     name: 'Riccardo Busetti',
     img:
-      'https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/riccardo_busetti_nhobde.',
+      'https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/riccardo_busetti.',
     role: 'Backend Developer',
     description:
-      'I come from an IT background working on mainly on mobile ' +
-      'and backend development. I have been interning in different companies ' +
-      'in the past years, working on products used by hundreds and millions of ' +
-      'people worldwide. Currently my areas of interest are distributed systems, ' +
-      'software architecture and scalability.',
+      'I come from an IT background, working mainly on mobile and ' +
+      'backend development. I have been interning in different companies ' +
+      'in the past years, working on products used by hundreds and millions ' +
+      'of people worldwide. I am currently interested in distributed systems, ' +
+      'software architecture, and the scalability of infrastructures.',
   },
 ];
 

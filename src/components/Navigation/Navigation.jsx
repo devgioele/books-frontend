@@ -1,44 +1,47 @@
 import React, { useMemo } from 'react';
-import PermanentDrawerLeft from 'components/PermanentDrawerLeft';
-import ExploreIcon from '@material-ui/icons/Explore';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ImportContactsIcon from '@material-ui/icons/ImportContacts';
+import DrawerLeft from 'components/DrawerLeft';
 import { EXPLORE_ROUTE, PROFILE_ROUTE, SELL_ROUTE } from 'routing/helpers';
 import { useMediaQuery } from '@material-ui/core';
-import SimpleBottomNavigation from '../SimpleBottomNavigation';
+import SimpleBottomNavigation from 'components/SimpleBottomNavigation';
+import routeIsAncestor from 'utils/routing';
+import {
+  AccountCircleRounded,
+  LocalLibraryRounded,
+  MonetizationOnRounded,
+} from '@material-ui/icons';
 
 const sections = [
   {
     route: EXPLORE_ROUTE,
     label: 'Explore',
-    icon: <ExploreIcon />,
+    icon: <LocalLibraryRounded />,
   },
   {
     route: SELL_ROUTE,
     label: 'Sell',
-    icon: <ImportContactsIcon />,
+    icon: <MonetizationOnRounded />,
   },
   {
     route: PROFILE_ROUTE,
     label: 'Profile',
-    icon: <AccountCircleIcon />,
+    icon: <AccountCircleRounded />,
   },
 ];
 
 export default function Navigation({ children, selectedRoute, changeSection }) {
   const [selectedSection, selectedIndex] = useMemo(() => {
-    const index = sections.findIndex(
-      (section) => section.route === selectedRoute
+    const index = sections.findIndex((section) =>
+      routeIsAncestor(section.route, selectedRoute)
     );
     return [sections[index], index];
   }, [selectedRoute]);
-  const downXSmall = useMediaQuery((theme) =>
+  const downSmallMedium = useMediaQuery((theme) =>
     theme.breakpoints.down(theme.breakpoints.values.smmd)
   );
 
   return (
-    <>
-      {downXSmall ? (
+    <div style={{ width: '100%' }}>
+      {downSmallMedium ? (
         <SimpleBottomNavigation
           title="Books"
           content={children}
@@ -48,8 +51,8 @@ export default function Navigation({ children, selectedRoute, changeSection }) {
           changeSection={changeSection}
         />
       ) : (
-        <PermanentDrawerLeft
-          title="Books"
+        <DrawerLeft
+          title={selectedSection.label}
           content={children}
           selectedSection={selectedSection}
           selectedIndex={selectedIndex}
@@ -57,6 +60,6 @@ export default function Navigation({ children, selectedRoute, changeSection }) {
           changeSection={changeSection}
         />
       )}
-    </>
+    </div>
   );
 }

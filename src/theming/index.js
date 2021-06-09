@@ -31,7 +31,16 @@ export default responsiveFontSizes(
         main: '#eae1da',
       },
       secondary: {
-        main: '#b8afa8',
+        main: '#ac9486',
+        light: '#b8afa8',
+      },
+      custom: {
+        black: '#000000',
+        shadowGray: '#dadada',
+        linkBlue: '#2858f4',
+        lightGrey: '#989898',
+        facebook: '#1778F2',
+        telegram: '#1778F2',
       },
     },
     typography: {
@@ -66,10 +75,43 @@ export default responsiveFontSizes(
         fontFamily: 'Roboto',
       },
     },
-    colors: {
-      black: '#000000',
-      shadowGray: '#dadada',
-      linkBlue: '#2858f4',
+    mixins: {
+      toolbarDrawer: {
+        minHeight: '56px',
+        maxHeight: '56px',
+        '@media (min-width: 0px) and (orientation: landscape)': {
+          minHeight: '48px',
+          maxHeight: '48px',
+        },
+        '@media (min-width: 600px)': {
+          minHeight: '64px',
+          maxHeight: '64px',
+        },
+      },
+      // Like the mixins.toolbar of the default material UI theme
+      navigator: {
+        minHeight: '56px',
+        '@media (min-width: 0px) and (orientation: landscape)': {
+          minHeight: '48px',
+        },
+        '@media (min-width: 600px)': {
+          minHeight: '64px',
+        },
+      },
     },
   })
 );
+
+export const pageFrame = (theme) => ({
+  pageFrame: {
+    [theme.breakpoints.up('xs')]: {
+      padding: '20px 6%',
+    },
+    [theme.breakpoints.up('sm')]: {
+      padding: '20px 10%',
+    },
+    [theme.breakpoints.up('md')]: {
+      padding: '20px 10%',
+    },
+  },
+});

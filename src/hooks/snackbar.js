@@ -6,6 +6,7 @@ const useStatefulSnackbar = (value, message, variant) => {
 
   useEffect(() => {
     if (value && message) enqueueSnackbar(message.toString(), { variant });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 };
 

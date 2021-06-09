@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { login } from 'api/auth';
 import PasswordField from 'components/PasswordField';
-import useAxios from 'hooks/axios';
+import { useAxios } from 'hooks/axios';
 import { useAuth } from 'hooks/auth';
 
 const useStyles = makeStyles(() => ({
@@ -48,6 +48,8 @@ export default function LoginForm({ redirect, usernameOrEmail }) {
     >
       <Grid item>
         <PasswordField
+          color="secondary"
+          current-password="true"
           className={classes.textField}
           autoFocus={true}
           variant="outlined"
@@ -64,6 +66,7 @@ export default function LoginForm({ redirect, usernameOrEmail }) {
           color="primary"
           ref={btnContinue}
           onClick={handleSubmit}
+          disableElevation={true}
           disabled={isLoading}
         >
           Continue

@@ -8,8 +8,16 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Skeleton } from '@material-ui/lab';
 import formatStringDate from 'utils/dates';
+import { useHistory } from 'react-router-dom';
+import { Player } from '@lottiefiles/react-lottie-player';
+import { BOOK_ROUTE, toRoute } from 'routing/helpers';
+import bookBounceOpen from 'animations/book-bounce-open.json';
+import VerticalRectangular from 'components/VerticalRectangular';
 
 const useStyles = makeStyles((theme) => ({
+  sectionGrid: {
+    marginTop: -theme.spacing(3),
+  },
   sectionHeader: {
     fontWeight: 'bold',
     marginBottom: -theme.spacing(1),
@@ -24,24 +32,15 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
     },
   },
-  bookTitle: {
-    [theme.breakpoints.up('sm')]: {
-      width: '400px',
-    },
-    [theme.breakpoints.up('md')]: {
-      width: '500px',
-    },
-  },
   bookCover: {
     [theme.breakpoints.up('xs')]: {
       width: '100px',
+      height: '150px',
     },
     [theme.breakpoints.up('md')]: {
       width: '120px',
+      height: '180px',
     },
-    height: 'auto',
-    objectFit: 'scale-down',
-    borderRadius: 5,
   },
   sellButton: {
     backgroundColor: fade(theme.palette.success.main, 0.2),
@@ -106,6 +105,7 @@ export default function SellBooksList({
   soldBooks,
   onEdit,
   onRemove,
+  onSellLink,
 }) {
   const classes = useStyles();
 
@@ -115,30 +115,58 @@ export default function SellBooksList({
       data: sellingBooks,
       isLoading: loadingSelling,
       isSold: false,
-      showSection: sellingBooks.length > 0,
+      showSection: loadingSelling || (sellingBooks && sellingBooks.length > 0),
     },
     {
       title: 'Sold',
       data: soldBooks,
       isLoading: loadingSold,
       isSold: true,
-      showSection: soldBooks.length > 0,
+      showSection: loadingSold || (soldBooks && soldBooks.length > 0),
     },
   ];
 
-  return (
-    <Grid container direction="column" alignItems="center" spacing={4}>
+  const empty = sections.every((section) => !section.showSection);
+
+  return empty ? (
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+      spacing={2}
+      style={{ height: '60vh' }}
+    >
+      <Grid item>
+        <Player
+          autoplay
+          keepLastFrame
+          src={bookBounceOpen}
+          style={{ height: '150px' }}
+        />
+      </Grid>
+      <Grid item>
+        <Typography variant="h6">{`Start selling a book now`}</Typography>
+      </Grid>
+    </Grid>
+  ) : (
+    <Grid container direction="column" spacing={6}>
       {sections
         .filter((section) => section.showSection)
         .map((section, sectionIndex) => (
-          <Grid key={sectionIndex} item>
-            <Grid container direction="column" spacing={4}>
+          <Grid key={sectionIndex} item xs={12}>
+            <Grid
+              container
+              className={classes.sectionGrid}
+              direction="column"
+              spacing={4}
+            >
               <Grid item>
                 <Typography className={classes.sectionHeader} variant="h4">
                   {section.title}
                 </Typography>
               </Grid>
-              {loadingSelling ? (
+              {section.isLoading ? (
                 <Grid item>
                   <SkeletonBook isSold={section.isSold} />
                 </Grid>
@@ -150,6 +178,7 @@ export default function SellBooksList({
                       book={book}
                       onEdit={onEdit}
                       onRemove={onRemove}
+                      onSellLink={onSellLink}
                     />
                   </Grid>
                 ))
@@ -161,96 +190,103 @@ export default function SellBooksList({
   );
 }
 
-function Book({ isSold, book, onEdit, onRemove }) {
+function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
   const classes = useStyles();
+  const history = useHistory();
+  const openBook = () => history.push(toRoute(BOOK_ROUTE, book.bookId));
 
   return (
-    <Grid
-      className={classes.bookContainer}
-      container
-      justify="flex-start"
-      alignItems="center"
-      spacing={2}
-    >
-      <Grid item>
-        <img
-          className={classes.bookCover}
-          src={book.pictures[0]}
-          alt="book cover"
-        />
-      </Grid>
-      <Grid item>
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="flex-start"
-          spacing={1}
-        >
-          <Grid className={classes.bookTitle} item>
-            <Link variant="h6" color="inherit">
-              <b>{book.title}</b>
-            </Link>
-          </Grid>
-          <Grid
-            className={isSold ? classes.soldText : classes.sellingText}
-            item
-          >
-            <Typography variant="h6">
-              {`${book.currency} ${book.price}`}
-            </Typography>
+    <Grid className={classes.bookContainer} container spacing={2}>
+      <Grid item xs={12}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item>
+            <VerticalRectangular className={classes.bookCover}>
+              <img
+                src={book.pictures[0]}
+                alt={`book cover of ${book.title}`}
+                onClick={openBook}
+              />
+            </VerticalRectangular>
           </Grid>
           <Grid item>
-            <Typography variant="body1">
-              {isSold
-                ? `Sold to ${book.buyer} on ${formatStringDate(book.saleDate)}`
-                : `Publication date: ${formatStringDate(book.publicationDate)}`}
-            </Typography>
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="flex-start"
+              spacing={1}
+            >
+              <Grid item>
+                <Link variant="h6" color="inherit" onClick={openBook}>
+                  <b>{book.title}</b>
+                </Link>
+              </Grid>
+              <Grid
+                className={isSold ? classes.soldText : classes.sellingText}
+                item
+              >
+                <Typography variant="h6">
+                  {`${book.currency} ${book.amount}`}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="body1">
+                  {isSold
+                    ? `Sold to ${book.buyer} on ${formatStringDate(
+                        book.saleDate
+                      )}`
+                    : `Publication date: ${formatStringDate(
+                        book.publicationDate
+                      )}`}
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
-          {!isSold && (
-            <Grid style={{ width: '100%' }} item>
-              <Grid container direction="column" spacing={1}>
-                <Grid item>
-                  <Grid container spacing={1}>
-                    <Grid item xs={12} sm={6}>
-                      <Button
-                        className={classes.editButton}
-                        variant="contained"
-                        disableElevation={true}
-                        startIcon={<CreateIcon />}
-                        onClick={() => onEdit(book)}
-                      >
-                        Edit
-                      </Button>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Button
-                        className={classes.removeButton}
-                        variant="contained"
-                        disableElevation={true}
-                        startIcon={<DeleteForeverIcon />}
-                        onClick={() => onRemove(book)}
-                      >
-                        Remove
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
+        </Grid>
+      </Grid>
+      {!isSold && (
+        <Grid item xs={12}>
+          <Grid container direction="column" spacing={1}>
+            <Grid item>
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={6}>
                   <Button
-                    className={classes.sellButton}
+                    className={classes.editButton}
                     variant="contained"
                     disableElevation={true}
-                    startIcon={<ShareIcon />}
+                    startIcon={<CreateIcon />}
+                    onClick={() => onEdit(book)}
                   >
-                    Share Sell Link
+                    Edit
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Button
+                    className={classes.removeButton}
+                    variant="contained"
+                    disableElevation={true}
+                    startIcon={<DeleteForeverIcon />}
+                    onClick={() => onRemove(book)}
+                  >
+                    Remove
                   </Button>
                 </Grid>
               </Grid>
             </Grid>
-          )}
+            <Grid item xs={12}>
+              <Button
+                className={classes.sellButton}
+                variant="contained"
+                disableElevation={true}
+                startIcon={<ShareIcon />}
+                onClick={() => onSellLink(book)}
+              >
+                Share Sell Link
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </Grid>
   );
 }
@@ -259,60 +295,58 @@ function SkeletonBook({ isSold }) {
   const classes = useStyles();
 
   return (
-    <Grid
-      className={classes.bookContainer}
-      container
-      justify="flex-start"
-      alignItems="center"
-      spacing={2}
-    >
-      <Grid item>
-        <Skeleton className={classes.skeletonCover} variant="rect" />
+    <Grid className={classes.bookContainer} container spacing={2}>
+      <Grid item xs={12}>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Skeleton className={classes.skeletonCover} variant="rect" />
+          </Grid>
+          <Grid item>
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="flex-start"
+              spacing={1}
+            >
+              <Grid className={classes.skeletonTitle} item>
+                <Typography variant="h6">
+                  <Skeleton />
+                </Typography>
+              </Grid>
+              <Grid className={classes.skeletonSubtitle} item>
+                <Typography variant="h6">
+                  <Skeleton />
+                </Typography>
+              </Grid>
+              <Grid className={classes.skeletonSubtitle} item>
+                <Typography variant="body1">
+                  <Skeleton />
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid item>
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="flex-start"
-          spacing={1}
-        >
-          <Grid className={classes.skeletonTitle} item>
-            <Typography variant="h6">
-              <Skeleton />
-            </Typography>
-          </Grid>
-          <Grid className={classes.skeletonSubtitle} item>
-            <Typography variant="h6">
-              <Skeleton />
-            </Typography>
-          </Grid>
-          <Grid className={classes.skeletonSubtitle} item>
-            <Typography variant="body1">
-              <Skeleton />
-            </Typography>
-          </Grid>
-          {!isSold && (
-            <Grid style={{ width: '100%' }} item>
-              <Grid container direction="column" spacing={1}>
-                <Grid item>
-                  <Grid container spacing={1}>
-                    <Grid item xs={12} sm={6}>
-                      <Skeleton variant="rect" />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Skeleton variant="rect" />
-                    </Grid>
-                  </Grid>
+      {!isSold && (
+        <Grid item xs={12}>
+          <Grid container direction="column" spacing={1}>
+            <Grid item>
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={6}>
+                  <Skeleton variant="rect" />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6}>
                   <Skeleton variant="rect" />
                 </Grid>
               </Grid>
             </Grid>
-          )}
+            <Grid item xs={12}>
+              <Skeleton variant="rect" />
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </Grid>
   );
 }

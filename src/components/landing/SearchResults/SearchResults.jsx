@@ -4,25 +4,24 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
-import { EXPLORE_ROUTE, toRoute } from 'routing/helpers';
-import BookCard from '../../BookCard';
+import { BOOK_ROUTE, EXPLORE_ROUTE, toRoute } from 'routing/helpers';
+import BookCard from 'components/BookCard';
 
 const useStyles = makeStyles((theme) => ({
   searchResults: {
     position: 'absolute',
-    borderRadius: 10,
+    borderRadius: 20,
     width: '100%',
     marginTop: theme.spacing(2),
     padding: theme.spacing(3),
     // offset-x | offset-y | blur-radius | spread-radius
-    boxShadow: `0px 1px 3px 0px ${theme.colors.shadowGray}`,
     '&:hover': {
-      boxShadow: `0px 20px 25px -5px ${theme.colors.shadowGray}`,
+      boxShadow: `0px 20px 25px -5px ${theme.palette.custom.shadowGray}`,
     },
   },
 }));
 
-export default function SearchResults({ books }) {
+export default function SearchResults({ books, showSignup }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -39,15 +38,19 @@ export default function SearchResults({ books }) {
           <Grid
             item
             key={index}
-            onClick={() => history.push(toRoute(EXPLORE_ROUTE))}
+            onClick={() => history.push(toRoute(BOOK_ROUTE, book.bookId))}
           >
             <BookCard book={book} />
           </Grid>
         ))}
-        <Divider light />
-        <Grid item>
-          <SeeMore />
-        </Grid>
+        {showSignup && (
+          <>
+            <Divider light />
+            <Grid item>
+              <SeeMore />
+            </Grid>
+          </>
+        )}
       </Grid>
     </Paper>
   );

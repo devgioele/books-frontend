@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { LOCAL_STORAGE_TOKEN_KEY } from '../utils/environment';
+import { LOCAL_STORAGE_TOKEN_KEY } from 'utils/environment';
 
 const localStorageAuth = {
   login(onSuccess, token) {
@@ -34,7 +34,7 @@ export function useProvideAuth() {
       setToken(null);
     });
 
-  const isLoggedIn = () => token;
+  const isLoggedIn = () => !!token;
 
   return {
     token,
