@@ -40,16 +40,24 @@ export default function CompleteProfileBanner({ progress }) {
         spacing={2}
       >
         <Grid item xs={12} sm={4}>
-          <Player
+          <div
             className={clsx(
               classes.animation,
               downSmall && classes.animationSmall
             )}
-            autoplay
-            loop
-            keepLastFrame
-            src={profilePasswordUnlock}
-          />
+          >
+            <Player
+              className={clsx(
+                classes.animation,
+                downSmall && classes.animationSmall
+              )}
+              style={!downSmall && { marginLeft: '-20%' }}
+              autoplay
+              loop
+              keepLastFrame
+              src={profilePasswordUnlock}
+            />
+          </div>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Grid container direction="column" spacing={1}>
