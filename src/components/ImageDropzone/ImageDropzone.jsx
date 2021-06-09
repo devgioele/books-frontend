@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ImageDropzone({
   minImages,
   maxImages,
+  explanation,
   pictureUrls,
   addPictureUrl,
   removePictureUrl,
@@ -231,6 +232,7 @@ export default function ImageDropzone({
       <em style={{ marginTop: '10px' }}>
         Only *.jpeg, *.jpg and *.png images are accepted.
       </em>
+      <em>{explanation}</em>
     </div>
   );
 }

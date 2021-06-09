@@ -49,6 +49,7 @@ export default function EditProfilePictureDialog({
             <ImageDropzone
               minImages={0}
               maxImages={1}
+              explanation="The picture is cropped down to a square."
               // We embed the single picture into an array
               pictureUrls={profilePicture ? [profilePicture] : []}
               addPictureUrl={() => {}}

@@ -188,6 +188,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
               <ImageDropzone
                 minImages={1}
                 maxImages={4}
+                explanation="Pictures look best with a ratio of 2:3."
                 cols={cols}
                 pictureUrls={pictureUrls.current}
                 addPictureUrl={(urlToAdd) => {

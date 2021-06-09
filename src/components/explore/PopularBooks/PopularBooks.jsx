@@ -4,6 +4,7 @@ import Carousel from 'react-material-ui-carousel';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { BOOK_ROUTE, toRoute } from 'routing/helpers';
+import VerticalRectangular from '../../VerticalRectangular';
 
 const useStyles = makeStyles((theme) => ({
   bookCard: {
@@ -20,16 +21,14 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
   },
   bookCover: {
-    width: 'auto',
     [theme.breakpoints.up('xs')]: {
+      width: '100px',
       height: '150px',
     },
     [theme.breakpoints.up('sm')]: {
+      width: '133px',
       height: '200px',
     },
-    height: 'auto',
-    objectFit: 'scale-down',
-    borderRadius: 5,
   },
 }));
 
@@ -81,11 +80,9 @@ function PopularBook({ book }) {
           </Grid>
         </Grid>
         <Grid item>
-          <img
-            alt="book cover"
-            className={classes.bookCover}
-            src={book.pictures[0]}
-          />
+          <VerticalRectangular className={classes.bookCover}>
+            <img alt="book cover" src={book.pictures[0]} />
+          </VerticalRectangular>
         </Grid>
       </Grid>
     </Paper>
