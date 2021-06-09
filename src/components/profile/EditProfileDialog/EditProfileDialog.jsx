@@ -11,8 +11,7 @@ import {
 } from '@material-ui/core';
 import { buildObjectFromFields, imprintObject } from 'utils/functions';
 import { useAxios } from 'hooks/axios';
-import { editProfile, uploadProfilePicture } from 'api/profile';
-import ImageDropzone from 'components/ImageDropzone';
+import { editProfile } from 'api/profile';
 
 const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
@@ -26,7 +25,6 @@ export default function EditProfileDialog({
   const [profileDetails, setProfileDetails] = useState(() =>
     buildObjectFromFields(fields)
   );
-  const [isBlocked, setBlocked] = useState(false);
 
   const [fEditProfile, , , , isLoading] = useAxios(
     editProfile,
@@ -69,29 +67,10 @@ export default function EditProfileDialog({
     >
       <DialogTitle>Update your profile</DialogTitle>
       <DialogContent>
-        <Grid container spacing={4}>
-          {fields.map((field, index) => (
-            <Grid item key={index} xs={field.space}>
-              {field.name === 'profilePicture' ? (
-                <ImageDropzone
-                  minImages={0}
-                  maxImages={1}
-                  // We embed the single picture into an array
-                  pictureUrls={
-                    profileDetails[field.name]
-                      ? [profileDetails[field.name]]
-                      : []
-                  }
-                  addPictureUrl={updateProfileDetails(field.name)}
-                  removePictureUrl={() =>
-                    updateProfileDetails(field.name)(undefined)
-                  }
-                  setBlocked={setBlocked}
-                  uploadEndpoint={uploadProfilePicture}
-                  preferDownload={true}
-                  cols={1}
-                />
-              ) : (
+        <div style={{ padding: 20 }}>
+          <Grid container spacing={4}>
+            {fields.map((field, index) => (
+              <Grid item key={index} xs={field.space}>
                 <TextField
                   required={field.isRequired}
                   variant="outlined"
@@ -100,10 +79,10 @@ export default function EditProfileDialog({
                   defaultValue={profileDetails[field.name]}
                   onChange={unwrapEventValue(updateProfileDetails(field.name))}
                 />
-              )}
-            </Grid>
-          ))}
-        </Grid>
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       </DialogContent>
       <DialogActions>
         <Grid
@@ -117,7 +96,7 @@ export default function EditProfileDialog({
             <Button onClick={handleCancel} disabled={isLoading}>
               Cancel
             </Button>
-            <Button onClick={handleUpdate} disabled={isLoading || isBlocked}>
+            <Button onClick={handleUpdate} disabled={isLoading}>
               Update
             </Button>
           </Grid>
