@@ -1,17 +1,24 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import clsx from 'clsx';
 import DynamicAppBar from 'components/DynamicAppBar';
 import ContentWithToolbar from 'components/ContentWithToolbar';
+import { createMuiTheme } from '@material-ui/core';
+import theme from 'theming';
 
-const useStyles = makeStyles((theme) => ({
+const navTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: theme.palette.secondary.main,
+    },
+  },
+});
+
+const useStyles = makeStyles(() => ({
   root: {
     width: '100%',
   },
-  // Necessary for content to be above navigator
-  navigatorPlaceholder: theme.mixins.navigator,
   navigator: {
     background: theme.palette.background.default,
     /*
@@ -24,7 +31,21 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     // offset-x | offset-y | blur-radius | spread-radius
     boxShadow: `0px 0px 5px 2px ${theme.palette.shadowGray}`,
+    // Necessary for content to be above navigator
+    ...theme.mixins.navigator,
   },
+  // actionRoot: {
+  //   color: 'green',
+  //   '&$selected': {
+  //     color: 'red',
+  //   },
+  // },
+  // actionSelected: {
+  //   color: 'red',
+  //   '&$selected': {
+  //     color: 'red',
+  //   },
+  // },
 }));
 
 export default function SimpleBottomNavigation({
@@ -40,20 +61,27 @@ export default function SimpleBottomNavigation({
     <div className={classes.root}>
       <DynamicAppBar title={title} variant="bottomNavigation" />
       <ContentWithToolbar>{content}</ContentWithToolbar>
-      <BottomNavigation
-        className={clsx(classes.navigatorPlaceholder, classes.navigator)}
-        value={selectedIndex}
-        onChange={(event, newIndex) => changeSection(sections[newIndex].route)}
-        showLabels
-      >
-        {sections.map((section) => (
-          <BottomNavigationAction
-            key={section.label}
-            label={section.label}
-            icon={section.icon}
-          />
-        ))}
-      </BottomNavigation>
+      <MuiThemeProvider theme={navTheme}>
+        <BottomNavigation
+          className={classes.navigator}
+          value={selectedIndex}
+          onChange={(event, newIndex) =>
+            changeSection(sections[newIndex].route)
+          }
+        >
+          {sections.map((section) => (
+            <BottomNavigationAction
+              key={section.label}
+              label={section.label}
+              icon={section.icon}
+              // classes={{
+              //   root: classes.actionRoot,
+              //   selected: classes.actionSelected,
+              // }}
+            />
+          ))}
+        </BottomNavigation>
+      </MuiThemeProvider>
     </div>
   );
 }
