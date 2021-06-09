@@ -149,6 +149,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 color="secondary"
                 variant="outlined"
                 fullWidth
+                multiline={true}
                 error={invalid}
                 label="Description"
                 defaultValue={bookToEdit?.description}

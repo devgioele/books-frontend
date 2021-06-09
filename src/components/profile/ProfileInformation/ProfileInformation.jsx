@@ -24,7 +24,7 @@ export default function ProfileInformation({ fields }) {
         >
           <Grid item>
             <Typography variant="h4">
-              <b>Personal Information</b>
+              <b>Personal information</b>
             </Typography>
           </Grid>
           <Grid item>

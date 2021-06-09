@@ -30,13 +30,13 @@ const sections = [
     component: ExploreSearch,
   },
   {
-    title: 'May Interest You',
+    title: 'May interest you',
     component: MayInterestYouBooks,
     getBooks: (data) =>
       data?.mayInterestYou?.length > 0 && data?.mayInterestYou,
   },
   {
-    title: 'Recently Viewed',
+    title: 'Recently viewed',
     component: RecentlyViewedBooks,
     getBooks: (data) =>
       data?.recentlyViewed?.length > 0 && data?.recentlyViewed,

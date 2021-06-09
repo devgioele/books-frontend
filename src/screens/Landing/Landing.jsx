@@ -19,9 +19,9 @@ const features = [
     icon: <EmojiEmotionsIcon />,
     title: 'Simple',
     description:
-      'Books has been designed to be simple and hassle free. Smart ' +
-      'sections such as Explore give you the ability to easily discover new' +
-      'books that may interest you.',
+      'Books has been designed to be simple and hassle-free. ' +
+      'Smart sections such as Explore give you the ability to easily ' +
+      'discover new books that may interest you.',
   },
   {
     icon: <MoneyOffIcon />,
@@ -36,13 +36,13 @@ const features = [
     description:
       'Privacy and security are our priorities. We do not store critical user' +
       ' information on our servers. Data collection is kept to the bare' +
-      ' essential and is not shared with third parties.',
+      ' essentials and is not shared with third parties.',
   },
   {
     icon: <HeartIcon />,
     title: 'Passion Driven',
     description:
-      'Books has been developed by booklovers that were frustrated by ' +
+      'Books has been developed by book lovers that were frustrated by ' +
       'current solutions on the market. We decided to jump ' +
       'on this challenge and to create the platform of our dreams.',
   },
@@ -87,7 +87,7 @@ export default function Landing() {
 
         <Grid item>
           <Typography className={classes.sectionTitle} variant="h4">
-            Search an amazing book
+            Search a book
           </Typography>
         </Grid>
         <Grid item className={classes.searchBar}>
@@ -130,7 +130,7 @@ export default function Landing() {
 
         <Grid item>
           <Typography className={classes.sectionTitle} variant="h4">
-            About Us
+            About us
           </Typography>
         </Grid>
         <Grid item>

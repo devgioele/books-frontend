@@ -56,7 +56,7 @@ export default function LandingWelcome() {
           </Grid>
           <Grid item>
             <Typography variant="h4">
-              Discover and sell amazing books with ease.
+              Discover and sell amazing books with ease
             </Typography>
           </Grid>
         </Grid>
