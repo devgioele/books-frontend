@@ -59,84 +59,88 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      justify="flex-start"
-      alignItems="stretch"
-      spacing={2}
-      onKeyPress={(e) => {
-        if (e.key === 'Enter') btnContinue.current.click();
-      }}
-    >
-      <Grid item>
-        <TextField
-          color="secondary"
-          fullWidth
-          autoFocus={true}
-          defaultValue={initEmail}
-          id="email"
-          variant="outlined"
-          size="small"
-          label="Email"
-          error={invalid}
-          onChange={updateNewUser('email')}
-        />
+    <form>
+      <Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="stretch"
+        spacing={2}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') btnContinue.current.click();
+        }}
+      >
+        <Grid item>
+          <TextField
+            email="true"
+            color="secondary"
+            fullWidth
+            autoFocus={true}
+            defaultValue={initEmail}
+            id="email"
+            variant="outlined"
+            size="small"
+            label="Email"
+            error={invalid}
+            onChange={updateNewUser('email')}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            username="true"
+            color="secondary"
+            fullWidth
+            defaultValue={initUsername}
+            id="username"
+            variant="outlined"
+            size="small"
+            label="Username"
+            helperText="At least 3 characters long"
+            error={invalid}
+            onChange={updateNewUser('username')}
+          />
+        </Grid>
+        <Grid item>
+          <PasswordField
+            color="secondary"
+            fullWidth
+            id="password"
+            variant="outlined"
+            size="small"
+            label="Password"
+            helperText="At least 7 characters long"
+            value={newUser.password}
+            error={invalid}
+            onChange={updateNewUser('password')}
+          />
+        </Grid>
+        <Grid item>
+          <PasswordField
+            color="secondary"
+            fullWidth
+            id="passwordConfirmed"
+            variant="outlined"
+            size="small"
+            label="Confirm password"
+            value={newUser.passwordConfirmed}
+            error={!passwordConfirmed}
+            helperText={passwordConfirmed ? '' : 'Passwords do not match.'}
+            onChange={updateNewUser('passwordConfirmed')}
+          />
+        </Grid>
+        <Grid item>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            ref={btnContinue}
+            disableElevation={true}
+            onClick={handleSubmit}
+          >
+            Continue
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item>
-        <TextField
-          color="secondary"
-          fullWidth
-          defaultValue={initUsername}
-          id="username"
-          variant="outlined"
-          size="small"
-          label="Username"
-          helperText="At least 3 characters long"
-          error={invalid}
-          onChange={updateNewUser('username')}
-        />
-      </Grid>
-      <Grid item>
-        <PasswordField
-          color="secondary"
-          fullWidth
-          id="password"
-          variant="outlined"
-          size="small"
-          label="Password"
-          helperText="At least 7 characters long"
-          value={newUser.password}
-          error={invalid}
-          onChange={updateNewUser('password')}
-        />
-      </Grid>
-      <Grid item>
-        <PasswordField
-          color="secondary"
-          fullWidth
-          id="passwordConfirmed"
-          variant="outlined"
-          size="small"
-          label="Confirm password"
-          value={newUser.passwordConfirmed}
-          error={!passwordConfirmed}
-          helperText={passwordConfirmed ? '' : 'Passwords do not match.'}
-          onChange={updateNewUser('passwordConfirmed')}
-        />
-      </Grid>
-      <Grid item>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          ref={btnContinue}
-          disableElevation={true}
-          onClick={handleSubmit}
-        >
-          Continue
-        </Button>
-      </Grid>
-    </Grid>
+    </form>
   );
 }

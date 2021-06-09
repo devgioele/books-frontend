@@ -34,7 +34,7 @@ export default function CloudImage({
       <img
         {...remProps}
         style={{ margin: 'auto' }}
-        alt={showAlt ?? `cloud-image-${validUrl}`}
+        alt={showAlt ? `cloud-image-${validUrl}` : 'cloud-image'}
       />
     </picture>
   );
