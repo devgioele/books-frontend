@@ -10,10 +10,17 @@ import {
 } from '@material-ui/core';
 import { Player } from '@lottiefiles/react-lottie-player';
 import profilePasswordUnlock from 'animations/profile-password-unlock.json';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   card: {
     padding: theme.spacing(2),
+  },
+  animation: {
+    height: '200px',
+  },
+  animationSmall: {
+    height: '150px',
   },
 }));
 
@@ -28,19 +35,23 @@ export default function CompleteProfileBanner({ progress }) {
       <Grid
         container
         direction={downSmall ? 'column' : 'row'}
-        justify="space-between"
+        justify="center"
         alignItems="center"
+        spacing={2}
       >
         <Grid item xs={12} sm={4}>
           <Player
+            className={clsx(
+              classes.animation,
+              downSmall && classes.animationSmall
+            )}
             autoplay
             loop
             keepLastFrame
             src={profilePasswordUnlock}
-            style={downSmall ? { height: '150px' } : { height: '200px' }}
           />
         </Grid>
-        <Grid item xs={12} sm={8}>
+        <Grid item xs={12} sm={6}>
           <Grid container direction="column" spacing={1}>
             <Grid item>
               <Typography variant="h6">
