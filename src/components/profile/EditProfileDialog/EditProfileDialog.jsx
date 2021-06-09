@@ -8,6 +8,7 @@ import {
   DialogTitle,
   Grid,
   TextField,
+  useMediaQuery,
 } from '@material-ui/core';
 import { buildObjectFromFields, imprintObject } from 'utils/functions';
 import { useAxios } from 'hooks/axios';
@@ -22,6 +23,10 @@ export default function EditProfileDialog({
   isDataLoaded,
   fields,
 }) {
+  const downSmall = useMediaQuery((theme) =>
+    theme.breakpoints.down(theme.breakpoints.values.sm)
+  );
+
   const [profileDetails, setProfileDetails] = useState(() =>
     buildObjectFromFields(fields)
   );
@@ -58,7 +63,7 @@ export default function EditProfileDialog({
 
   return (
     <Dialog
-      fullScreen={false}
+      fullScreen={downSmall}
       fullWidth={true}
       open={true}
       onClose={() => {

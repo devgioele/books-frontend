@@ -9,10 +9,36 @@ import {
   Grid,
   Link,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@material-ui/core';
 
 const creditsCollection = [
+  {
+    type: 'Libraries',
+    list: [
+      {
+        name: 'React',
+        refLabel: 'React website',
+        ref: 'https://reactjs.org',
+      },
+      {
+        name: 'Material-UI',
+        refLabel: 'Material-UI website',
+        ref: 'https://material-ui.com',
+      },
+      {
+        name: 'React Router',
+        refLabel: 'React Router website',
+        ref: 'https://reactrouter.com',
+      },
+      {
+        name: 'Axios',
+        refLabel: 'Axios website',
+        ref: 'https://axios-http.com/docs/intro',
+      },
+    ],
+  },
   {
     type: 'Images',
     list: [
@@ -72,15 +98,22 @@ export default function LandingCredits() {
 
 function CreditsDialog({ open, onClose }) {
   const theme = useTheme();
+  const downSmall = useMediaQuery((innerTheme) =>
+    innerTheme.breakpoints.down(innerTheme.breakpoints.values.sm)
+  );
 
   return (
-    <Dialog fullScreen={false} fullWidth={false} open={open} onClose={onClose}>
-      <DialogTitle>Credentials</DialogTitle>
+    <Dialog
+      fullScreen={downSmall}
+      fullWidth={false}
+      open={open}
+      onClose={onClose}
+    >
       <DialogContent>
         <Grid container direction="column" spacing={2}>
           {creditsCollection.map((credits, index) => (
             <Grid item xs={12} key={index}>
-              <Typography variant="h4">{credits.type}</Typography>
+              <Typography variant="h6">{credits.type}</Typography>
               <Grid
                 container
                 direction="column"

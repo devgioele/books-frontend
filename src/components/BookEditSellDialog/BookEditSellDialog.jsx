@@ -26,6 +26,9 @@ const evaluateNumColumns = (upSmall, upSmallMedium, upLarge) => {
 };
 
 export default function BookEditSellDialog({ backToParent, bookToEdit }) {
+  const downSmall = useMediaQuery((theme) =>
+    theme.breakpoints.down(theme.breakpoints.values.sm)
+  );
   const upSmall = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const upSmallMedium = useMediaQuery((theme) => theme.breakpoints.up('smmd'));
   const upLarge = useMediaQuery((theme) => theme.breakpoints.up('lg'));
@@ -79,7 +82,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
 
   return (
     <Dialog
-      fullScreen={false}
+      fullScreen={downSmall}
       fullWidth={true}
       open={true}
       onClose={() => {
@@ -92,6 +95,26 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
       <DialogContent>
         <div style={{ padding: 20 }}>
           <Grid container spacing={4}>
+            <Grid item xs={12}>
+              <ImageDropzone
+                minImages={1}
+                maxImages={4}
+                explanation="Pictures look best with a ratio of 2:3."
+                cols={cols}
+                pictureUrls={pictureUrls.current}
+                addPictureUrl={(urlToAdd) => {
+                  pictureUrls.current = [...pictureUrls.current, urlToAdd];
+                }}
+                removePictureUrl={(urlToRemove) => {
+                  pictureUrls.current = pictureUrls.current.filter(
+                    (url) => url !== urlToRemove
+                  );
+                }}
+                setBlocked={setBlocked}
+                preferDownload={false}
+                uploadEndpoint={uploadBookImage}
+              />
+            </Grid>
             {!bookToEdit && (
               <Grid item xs={12}>
                 <TextField
@@ -191,26 +214,6 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                 />
               </Grid>
             )}
-            <Grid item xs={12}>
-              <ImageDropzone
-                minImages={1}
-                maxImages={4}
-                explanation="Pictures look best with a ratio of 2:3."
-                cols={cols}
-                pictureUrls={pictureUrls.current}
-                addPictureUrl={(urlToAdd) => {
-                  pictureUrls.current = [...pictureUrls.current, urlToAdd];
-                }}
-                removePictureUrl={(urlToRemove) => {
-                  pictureUrls.current = pictureUrls.current.filter(
-                    (url) => url !== urlToRemove
-                  );
-                }}
-                setBlocked={setBlocked}
-                preferDownload={false}
-                uploadEndpoint={uploadBookImage}
-              />
-            </Grid>
           </Grid>
         </div>
       </DialogContent>
