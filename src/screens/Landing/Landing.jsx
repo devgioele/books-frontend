@@ -11,7 +11,8 @@ import HeartIcon from '@material-ui/icons/Favorite';
 import LandingWelcome from 'components/landing/LandingWelcome';
 import LandingHeader from 'components/landing/LandingHeader';
 import LandingAbout from 'components/landing/LandingAbout';
-import { pageFrame } from '../../theming';
+import { pageFrame } from 'theming';
+import LandingCredits from 'components/landing/LandingCredits';
 
 const features = [
   {
@@ -134,6 +135,9 @@ export default function Landing() {
         </Grid>
         <Grid item>
           <LandingAbout />
+        </Grid>
+        <Grid item>
+          <LandingCredits />
         </Grid>
       </Grid>
     </Grid>
