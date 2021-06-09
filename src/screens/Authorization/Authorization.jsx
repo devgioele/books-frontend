@@ -44,7 +44,9 @@ export default function Authorization() {
   const [progress, setProgress] = useState(COMPILATION_PROGRESS.IDENTITY);
 
   const redirect = () => {
-    if (location.state && location.state.from) {
+    // If the user has been redirected to the auth page from another page,
+    // go back there
+    if (location.state?.from) {
       history.replace(location.state.from);
     } else {
       history.push(EXPLORE_ROUTE);

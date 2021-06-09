@@ -4,6 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import { signup } from 'api/auth';
 import PasswordField from 'components/PasswordField';
 import { useAxios } from 'hooks/axios';
+import { useSnackbar } from 'notistack';
+import StdMessages from '../../../messages/standard';
 
 function exactMatch(text, regex) {
   const matches = text.match(regex);
@@ -11,6 +13,7 @@ function exactMatch(text, regex) {
 }
 
 export default function SignupForm({ redirect, usernameOrEmail }) {
+  const { enqueueSnackbar } = useSnackbar();
   const [invalid, setInvalid] = useState(false);
   const btnContinue = useRef(null);
 
@@ -39,7 +42,12 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
   const [doSignup, cancelSignup] = useAxios(
     signup,
     'signing up',
-    () => redirect(),
+    () => {
+      enqueueSnackbar(StdMessages.SIGNUP_DONE, {
+        variant: 'success',
+      });
+      redirect();
+    },
     () => setInvalid(true)
   );
 
