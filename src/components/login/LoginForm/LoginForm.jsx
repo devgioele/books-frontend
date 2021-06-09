@@ -36,44 +36,42 @@ export default function LoginForm({ redirect, usernameOrEmail }) {
 
   const handleSubmit = () => fetch(usernameOrEmail, password);
   return (
-    <form>
-      <Grid
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="stretch"
-        spacing={2}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') btnContinue.current.click();
-        }}
-      >
-        <Grid item>
-          <PasswordField
-            color="secondary"
-            current-password="true"
-            className={classes.textField}
-            autoFocus={true}
-            variant="outlined"
-            size="small"
-            label="Password"
-            onChange={updatePassword}
-            error={invalid}
-          />
-        </Grid>
-        <Grid item>
-          <Button
-            className={classes.btn}
-            variant="contained"
-            color="primary"
-            ref={btnContinue}
-            onClick={handleSubmit}
-            disableElevation={true}
-            disabled={isLoading}
-          >
-            Continue
-          </Button>
-        </Grid>
+    <Grid
+      container
+      direction="column"
+      justify="flex-start"
+      alignItems="stretch"
+      spacing={2}
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') btnContinue.current.click();
+      }}
+    >
+      <Grid item>
+        <PasswordField
+          color="secondary"
+          current-password="true"
+          className={classes.textField}
+          autoFocus={true}
+          variant="outlined"
+          size="small"
+          label="Password"
+          onChange={updatePassword}
+          error={invalid}
+        />
       </Grid>
-    </form>
+      <Grid item>
+        <Button
+          className={classes.btn}
+          variant="contained"
+          color="primary"
+          ref={btnContinue}
+          onClick={handleSubmit}
+          disableElevation={true}
+          disabled={isLoading}
+        >
+          Continue
+        </Button>
+      </Grid>
+    </Grid>
   );
 }

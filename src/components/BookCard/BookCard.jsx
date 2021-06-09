@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import VerticalRectangular from '../VerticalRectangular';
 
 const useStyles = makeStyles((theme) => ({
   bookCover: {
@@ -35,11 +36,9 @@ export default function BookCard(props) {
       <Grid item>
         <Grid container justify="flex-start" alignItems="center" spacing={2}>
           <Grid item>
-            <img
-              className={classes.bookCover}
-              src={book.pictures[0]}
-              alt="book cover"
-            />
+            <VerticalRectangular className={classes.bookCover}>
+              <img src={book.pictures[0]} alt="book cover" />
+            </VerticalRectangular>
           </Grid>
           <Grid item>
             <Grid
