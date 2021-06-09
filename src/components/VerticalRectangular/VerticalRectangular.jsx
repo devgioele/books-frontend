@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.main,
     borderRadius: 5,
   },
   item: {

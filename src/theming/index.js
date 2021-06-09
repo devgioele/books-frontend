@@ -31,7 +31,8 @@ export default responsiveFontSizes(
         main: '#eae1da',
       },
       secondary: {
-        main: '#b8afa8',
+        main: '#ac9486',
+        light: '#b8afa8',
       },
       custom: {
         black: '#000000',

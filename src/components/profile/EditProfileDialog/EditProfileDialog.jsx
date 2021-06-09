@@ -73,6 +73,7 @@ export default function EditProfileDialog({
               <Grid item key={index} xs={field.space}>
                 <TextField
                   required={field.isRequired}
+                  color="secondary"
                   variant="outlined"
                   fullWidth
                   label={field.displayName}

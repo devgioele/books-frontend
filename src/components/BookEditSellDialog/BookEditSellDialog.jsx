@@ -96,6 +96,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
               <Grid item xs={12}>
                 <TextField
                   required
+                  color="secondary"
                   variant="outlined"
                   fullWidth
                   error={invalid}
@@ -109,6 +110,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
               <Grid item xs={12}>
                 <TextField
                   required
+                  color="secondary"
                   variant="outlined"
                   fullWidth
                   error={invalid}
@@ -121,6 +123,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
             <Grid item xs={12}>
               <TextField
                 required
+                color="secondary"
                 variant="outlined"
                 fullWidth
                 error={invalid}
@@ -132,6 +135,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
             <Grid item xs={6}>
               <TextField
                 required
+                color="secondary"
                 variant="outlined"
                 fullWidth
                 error={invalid}
@@ -143,6 +147,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
             <Grid item xs={6}>
               <TextField
                 required
+                color="secondary"
                 variant="outlined"
                 fullWidth
                 error={invalid}
@@ -162,6 +167,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                   <TextField
                     {...params}
                     required
+                    color="secondary"
                     label="Condition"
                     variant="outlined"
                   />
@@ -175,6 +181,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
               <Grid item xs={12}>
                 <TextField
                   required
+                  color="secondary"
                   variant="outlined"
                   fullWidth
                   error={invalid}

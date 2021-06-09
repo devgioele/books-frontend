@@ -71,6 +71,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
     >
       <Grid item>
         <TextField
+          color="secondary"
           fullWidth
           autoFocus={true}
           defaultValue={initEmail}
@@ -84,6 +85,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
       </Grid>
       <Grid item>
         <TextField
+          color="secondary"
           fullWidth
           defaultValue={initUsername}
           id="username"
@@ -97,6 +99,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
       </Grid>
       <Grid item>
         <PasswordField
+          color="secondary"
           fullWidth
           id="password"
           variant="outlined"
@@ -110,6 +113,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
       </Grid>
       <Grid item>
         <PasswordField
+          color="secondary"
           fullWidth
           id="passwordConfirmed"
           variant="outlined"
