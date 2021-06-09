@@ -201,7 +201,11 @@ function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
         <Grid container spacing={2} alignItems="center">
           <Grid item>
             <VerticalRectangular className={classes.bookCover}>
-              <img src={book.pictures[0]} alt="book cover" onClick={openBook} />
+              <img
+                src={book.pictures[0]}
+                alt={`book cover of ${book.title}`}
+                onClick={openBook}
+              />
             </VerticalRectangular>
           </Grid>
           <Grid item>

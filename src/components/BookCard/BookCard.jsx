@@ -40,7 +40,7 @@ export default function BookCard(props) {
         <Grid container justify="flex-start" alignItems="center" spacing={2}>
           <Grid item>
             <VerticalRectangular className={classes.bookCover}>
-              <img src={book.pictures[0]} alt="book cover" />
+              <img src={book.pictures[0]} alt={`book cover of ${book.title}`} />
             </VerticalRectangular>
           </Grid>
           <Grid item>

@@ -24,7 +24,7 @@ export default function BookImages({ book }) {
       {book?.pictures?.map((picture, index) => (
         <Grid key={index} item>
           <VerticalRectangular className={classes.bookCover}>
-            <img src={picture} alt="book cover" />
+            <img src={picture} alt={`book cover ${index} of ${book.title}`} />
           </VerticalRectangular>
         </Grid>
       ))}

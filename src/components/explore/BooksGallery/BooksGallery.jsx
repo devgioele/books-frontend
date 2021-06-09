@@ -63,7 +63,7 @@ function Book({ book }) {
     >
       <Grid item xs={12}>
         <VerticalRectangular className={classes.bookCover}>
-          <img alt="book cover" src={book.pictures[0]} />
+          <img alt={`book cover of ${book.title}`} src={book.pictures[0]} />
         </VerticalRectangular>
       </Grid>
       <Grid item xs={12}>

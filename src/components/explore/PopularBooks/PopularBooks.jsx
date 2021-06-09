@@ -81,7 +81,7 @@ function PopularBook({ book }) {
         </Grid>
         <Grid item>
           <VerticalRectangular className={classes.bookCover}>
-            <img alt="book cover" src={book.pictures[0]} />
+            <img alt={`book cover of ${book.title}`} src={book.pictures[0]} />
           </VerticalRectangular>
         </Grid>
       </Grid>
