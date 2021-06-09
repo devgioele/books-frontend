@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('smmd')]: {
       borderRadius: 20,
       width: '800px',
-      height: '670px',
+      height: '690px',
     },
     [theme.breakpoints.up('sm')]: {
       padding: '50px 25%',
