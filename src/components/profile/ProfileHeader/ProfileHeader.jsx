@@ -4,11 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ProfileTypography from 'components/profile/ProfileTypography';
 import AddPhotoIcon from '@material-ui/icons/AddPhotoAlternateOutlined';
 import { useHistory } from 'react-router-dom';
-import {
-  EDIT_PROFILE_PICTURE_ROUTE,
-  EDIT_PROFILE_ROUTE,
-  toRoute,
-} from '../../../routing/helpers';
+import { EDIT_PROFILE_PICTURE_ROUTE, toRoute } from 'routing/helpers';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {

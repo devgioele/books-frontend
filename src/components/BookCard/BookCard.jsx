@@ -1,21 +1,25 @@
 import React from 'react';
 import { Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import VerticalRectangular from '../VerticalRectangular';
 
 const useStyles = makeStyles((theme) => ({
   bookCover: {
     [theme.breakpoints.up('xs')]: {
       width: '50px',
+      height: '66px',
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: '70px',
+      height: '93px',
     },
     height: 'auto',
     objectFit: 'scale-down',
     borderRadius: 5,
     boxShadow: `1px 1px 5px 1px ${theme.palette.custom.shadowGray}`,
     '&:hover': {
-      outline: `3px solid ${theme.palette.primary.dark}`,
+      // Old style -> outline: `3px solid ${theme.palette.primary.dark}`,
+      boxShadow: `2px 2px 5px 2px ${theme.palette.custom.shadowGray}`,
     },
   },
 }));
@@ -35,11 +39,9 @@ export default function BookCard(props) {
       <Grid item>
         <Grid container justify="flex-start" alignItems="center" spacing={2}>
           <Grid item>
-            <img
-              className={classes.bookCover}
-              src={book.pictures[0]}
-              alt="book cover"
-            />
+            <VerticalRectangular className={classes.bookCover}>
+              <img src={book.pictures[0]} alt={`book cover of ${book.title}`} />
+            </VerticalRectangular>
           </Grid>
           <Grid item>
             <Grid

@@ -34,11 +34,11 @@ const people = [
       'https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/riccardo_busetti.',
     role: 'Backend Developer',
     description:
-      'I come from an IT background working on mainly on mobile ' +
-      'and backend development. I have been interning in different companies ' +
-      'in the past years, working on products used by hundreds and millions of ' +
-      'people worldwide. Currently my areas of interest are distributed systems, ' +
-      'software architecture and scalability.',
+      'I come from an IT background, working mainly on mobile and ' +
+      'backend development. I have been interning in different companies ' +
+      'in the past years, working on products used by hundreds and millions ' +
+      'of people worldwide. I am currently interested in distributed systems, ' +
+      'software architecture, and the scalability of infrastructures.',
   },
 ];
 

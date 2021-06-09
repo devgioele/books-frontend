@@ -31,7 +31,8 @@ export default responsiveFontSizes(
         main: '#eae1da',
       },
       secondary: {
-        main: '#b8afa8',
+        main: '#ac9486',
+        light: '#b8afa8',
       },
       custom: {
         black: '#000000',
@@ -75,13 +76,25 @@ export default responsiveFontSizes(
       },
     },
     mixins: {
+      toolbarDrawer: {
+        minHeight: '56px',
+        maxHeight: '56px',
+        '@media (min-width: 0px) and (orientation: landscape)': {
+          minHeight: '48px',
+          maxHeight: '48px',
+        },
+        '@media (min-width: 600px)': {
+          minHeight: '64px',
+          maxHeight: '64px',
+        },
+      },
       // Like the mixins.toolbar of the default material UI theme
       navigator: {
         minHeight: '56px',
-        '@media (min-width:0px) and (orientation: landscape)': {
+        '@media (min-width: 0px) and (orientation: landscape)': {
           minHeight: '48px',
         },
-        '@media (min-width:600px)': {
+        '@media (min-width: 600px)': {
           minHeight: '64px',
         },
       },

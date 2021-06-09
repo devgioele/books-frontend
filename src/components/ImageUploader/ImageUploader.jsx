@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    // alignItems: 'center',
     height: '100%',
     width: '100%',
   },
@@ -211,6 +210,7 @@ function DroppedImage({ image, remove, preferDownload }) {
            */
           onLoad={() => setDownloaded(true)}
           onClick={handleClick}
+          style={{ display: 'flex' }}
         />
       )}
     </div>

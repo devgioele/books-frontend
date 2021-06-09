@@ -6,8 +6,11 @@ import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
-import DynamicAppBar from '../DynamicAppBar';
-import ContentWithToolbar from '../ContentWithToolbar';
+import DynamicAppBar from 'components/DynamicAppBar';
+import ContentWithToolbar from 'components/ContentWithToolbar';
+import CloudImage from 'components/CloudImage';
+import clsx from 'clsx';
+import Grid from '@material-ui/core/Grid';
 
 const drawerWidth = 180;
 
@@ -22,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-  toolbarPlaceholder: theme.mixins.toolbar,
+  toolbarPlaceholder: theme.mixins.toolbarDrawer,
+  logo: { height: '100%' },
 }));
 
 export default function DrawerLeft({
@@ -45,7 +49,22 @@ export default function DrawerLeft({
         }}
         anchor="left"
       >
-        <div className={classes.toolbarPlaceholder} />
+        <div className={clsx(classes.toolbarPlaceholder)}>
+          <Grid
+            container
+            justify="flex-start"
+            alignItems="center"
+            style={{ height: '100%', marginLeft: '6px' }}
+          >
+            <Grid item style={{ height: '90%' }}>
+              <CloudImage
+                className={classes.logo}
+                alt="logo extended"
+                url="https://res.cloudinary.com/dlfbz4vzv/image/upload/v1618163769/Books/logo_extended_tzumtl."
+              />
+            </Grid>
+          </Grid>
+        </div>
         <Divider />
         <List>
           {sections.map((section) => (

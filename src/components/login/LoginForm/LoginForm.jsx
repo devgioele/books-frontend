@@ -48,6 +48,8 @@ export default function LoginForm({ redirect, usernameOrEmail }) {
     >
       <Grid item>
         <PasswordField
+          color="secondary"
+          current-password="true"
           className={classes.textField}
           autoFocus={true}
           variant="outlined"

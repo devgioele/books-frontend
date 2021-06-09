@@ -54,6 +54,7 @@ export default function ProfileSecurity() {
         >
           <Grid item>
             <PasswordField
+              color="secondary"
               variant="outlined"
               size="small"
               label="Old password"
@@ -64,6 +65,7 @@ export default function ProfileSecurity() {
           </Grid>
           <Grid item>
             <PasswordField
+              color="secondary"
               variant="outlined"
               size="small"
               label="New password"

@@ -9,7 +9,10 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Skeleton } from '@material-ui/lab';
 import formatStringDate from 'utils/dates';
 import { useHistory } from 'react-router-dom';
-import { BOOK_ROUTE, toRoute } from '../../routing/helpers';
+import { Player } from '@lottiefiles/react-lottie-player';
+import { BOOK_ROUTE, toRoute } from 'routing/helpers';
+import bookBounceOpen from 'animations/book-bounce-open.json';
+import VerticalRectangular from 'components/VerticalRectangular';
 
 const useStyles = makeStyles((theme) => ({
   sectionGrid: {
@@ -29,17 +32,15 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
     },
   },
-  bookTitle: {},
   bookCover: {
     [theme.breakpoints.up('xs')]: {
       width: '100px',
+      height: '150px',
     },
     [theme.breakpoints.up('md')]: {
       width: '120px',
+      height: '180px',
     },
-    height: 'auto',
-    objectFit: 'scale-down',
-    borderRadius: 5,
   },
   sellButton: {
     backgroundColor: fade(theme.palette.success.main, 0.2),
@@ -128,9 +129,26 @@ export default function SellBooksList({
   const empty = sections.every((section) => !section.showSection);
 
   return empty ? (
-    <Typography variant="h6">
-      Starting selling a book by clicking on the button below!
-    </Typography>
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+      spacing={2}
+      style={{ height: '60vh' }}
+    >
+      <Grid item>
+        <Player
+          autoplay
+          keepLastFrame
+          src={bookBounceOpen}
+          style={{ height: '150px' }}
+        />
+      </Grid>
+      <Grid item>
+        <Typography variant="h6">{`Start selling a book now`}</Typography>
+      </Grid>
+    </Grid>
   ) : (
     <Grid container direction="column" spacing={6}>
       {sections
@@ -182,12 +200,13 @@ function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
       <Grid item xs={12}>
         <Grid container spacing={2} alignItems="center">
           <Grid item>
-            <img
-              className={classes.bookCover}
-              src={book.pictures[0]}
-              alt="book cover"
-              onClick={openBook}
-            />
+            <VerticalRectangular className={classes.bookCover}>
+              <img
+                src={book.pictures[0]}
+                alt={`book cover of ${book.title}`}
+                onClick={openBook}
+              />
+            </VerticalRectangular>
           </Grid>
           <Grid item>
             <Grid
@@ -197,7 +216,7 @@ function Book({ isSold, book, onEdit, onRemove, onSellLink }) {
               alignItems="flex-start"
               spacing={1}
             >
-              <Grid className={classes.bookTitle} item>
+              <Grid item>
                 <Link variant="h6" color="inherit" onClick={openBook}>
                   <b>{book.title}</b>
                 </Link>

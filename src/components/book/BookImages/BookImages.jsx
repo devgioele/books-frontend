@@ -1,18 +1,17 @@
 import React from 'react';
 import { Grid, makeStyles } from '@material-ui/core';
+import VerticalRectangular from 'components/VerticalRectangular';
 
 const useStyles = makeStyles((theme) => ({
   bookCover: {
-    width: 'auto',
     [theme.breakpoints.up('xs')]: {
+      width: '100px',
       height: '150px',
     },
     [theme.breakpoints.up('sm')]: {
+      width: '133px',
       height: '200px',
     },
-    height: 'auto',
-    objectFit: 'scale-down',
-    borderRadius: 5,
     boxShadow: `1px 1px 5px 1px ${theme.palette.custom.shadowGray}`,
   },
 }));
@@ -24,7 +23,9 @@ export default function BookImages({ book }) {
     <Grid container spacing={2}>
       {book?.pictures?.map((picture, index) => (
         <Grid key={index} item>
-          <img className={classes.bookCover} src={picture} alt="book cover" />
+          <VerticalRectangular className={classes.bookCover}>
+            <img src={picture} alt={`book cover ${index} of ${book.title}`} />
+          </VerticalRectangular>
         </Grid>
       ))}
     </Grid>

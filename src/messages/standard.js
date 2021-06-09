@@ -11,5 +11,6 @@ const StdMessages = {
     }. Check your internet connection.`,
   IMPORT_ERROR: (filename, reason = undefined) =>
     `Could not import file '${filename}'!${reason ? ` ${reason}` : ''}`,
+  SIGNUP_DONE: 'Signed up! You are ready to go!',
 };
 export default StdMessages;

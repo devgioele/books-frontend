@@ -1,6 +1,12 @@
 import React from 'react';
 
-export default function CloudImage({ url, cutExtension, ...remProps }) {
+export default function CloudImage({
+  url,
+  cutExtension,
+  style = undefined,
+  showAlt = true,
+  ...remProps
+}) {
   let validUrl = url;
   /*
   If the given url ends with an extension, like .jpg,
@@ -16,7 +22,7 @@ export default function CloudImage({ url, cutExtension, ...remProps }) {
     if it wasn't compatible. Once they find a suitable source,
     they use it to set the src of the img.
      */
-    <picture style={{ display: 'flex' }}>
+    <picture style={style}>
       {/*
       avif disabled, because due to avif's long encoding times,
       cloudinary's support is currently limited
@@ -28,7 +34,7 @@ export default function CloudImage({ url, cutExtension, ...remProps }) {
       <img
         {...remProps}
         style={{ margin: 'auto' }}
-        alt={`cloud-image-${validUrl}`}
+        alt={showAlt ? `cloud-image-${validUrl}` : 'cloud-image'}
       />
     </picture>
   );

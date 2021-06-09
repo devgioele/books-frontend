@@ -50,6 +50,8 @@ export default function IdentityForm({
     >
       <Grid item>
         <TextField
+          username="true"
+          color="secondary"
           className={classes.textField}
           autoFocus={true}
           size="small"
