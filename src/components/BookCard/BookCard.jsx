@@ -6,16 +6,13 @@ import VerticalRectangular from '../VerticalRectangular';
 const useStyles = makeStyles((theme) => ({
   bookCover: {
     [theme.breakpoints.up('xs')]: {
-      width: '50px',
-      height: '66px',
+      width: '53px',
+      height: '80px',
     },
     [theme.breakpoints.up('md')]: {
-      width: '70px',
-      height: '93px',
+      width: '66px',
+      height: '100px',
     },
-    height: 'auto',
-    objectFit: 'scale-down',
-    borderRadius: 5,
     boxShadow: `1px 1px 5px 1px ${theme.palette.custom.shadowGray}`,
     '&:hover': {
       // Old style -> outline: `3px solid ${theme.palette.primary.dark}`,
@@ -63,10 +60,12 @@ export default function BookCard(props) {
                 </Link>
               </Grid>
               <Grid item>
-                <Typography variant="body2">{book.isbn}</Typography>
+                <Typography variant="body1">{book.isbn}</Typography>
               </Grid>
               <Grid item>
-                <Typography variant="subtitle1">{book.condition}</Typography>
+                <Typography variant="subtitle2">
+                  The book is in <b>{book.condition}</b> condition
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
