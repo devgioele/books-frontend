@@ -33,6 +33,7 @@ export default function CloudImage({
       <source srcSet={`${validUrl}jxr`} type="image/vnd.ms-photo" />
       <img
         {...remProps}
+        src={url}
         style={{ margin: 'auto' }}
         alt={showAlt ? `cloud-image-${validUrl}` : 'cloud-image'}
       />
