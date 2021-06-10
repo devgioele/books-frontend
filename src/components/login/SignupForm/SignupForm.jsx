@@ -48,7 +48,14 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
       });
       redirect();
     },
-    () => setInvalid(true)
+    (error) => {
+      if (error?.response?.status === 512) {
+        enqueueSnackbar(error.response.data?.detail, {
+          variant: 'error',
+        });
+      }
+      setInvalid(true);
+    }
   );
 
   const handleSubmit = () => {
