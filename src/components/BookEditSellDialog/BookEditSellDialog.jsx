@@ -64,8 +64,8 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
     fetchCurrencies();
     return cancelCurrencies;
   }, []);
-  const currencySymbolFromName = (name) =>
-    currencies?.filter((currency) => currency.name === name)[0]?.symbol;
+  const currencyFromSymbol = (symbol) =>
+    currencies?.filter((currency) => currency.symbol === symbol)[0];
 
   const defaultCondition = bookToEdit?.condition || bookConditions.ok;
   // We store all props of the book in a state, expect for the picture urls.
@@ -87,11 +87,15 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
 
   // We compute the default currency at the beginning and
   // once 'currencies' has been fetched
-  const defaultCurrencyName = useMemo(() => {
-    const newDefaultName =
-      bookToEdit?.currency || (currencies && currencies[0]?.name);
-    updateBook('currency')(currencySymbolFromName(newDefaultName));
-    return newDefaultName;
+  const defaultCurrencyLabel = useMemo(() => {
+    const newDefaultSymbol =
+      bookToEdit?.currency || (currencies && currencies[0]?.symbol);
+    const newDefaultCurrency = currencyFromSymbol(newDefaultSymbol);
+    updateBook('currency')(newDefaultCurrency?.symbol);
+    return (
+      newDefaultCurrency &&
+      `${newDefaultCurrency.symbol} ${newDefaultCurrency.name}`
+    );
   }, [currencies]);
   const pictureUrls = useRef(bookToEdit?.pictures || []);
 
@@ -222,10 +226,12 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                       label="Currency"
                     />
                   )}
-                  options={currencies.map((currency) => currency.name)}
-                  defaultValue={defaultCurrencyName}
+                  options={currencies.map(
+                    (currency) => `${currency.symbol} ${currency.name}`
+                  )}
+                  defaultValue={defaultCurrencyLabel}
                   onChange={(event, value) =>
-                    updateBook('currency')(currencySymbolFromName(value))
+                    updateBook('currency')(value.split(' ')[0])
                   }
                 />
               )}
