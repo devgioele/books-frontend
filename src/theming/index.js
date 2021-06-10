@@ -86,6 +86,11 @@ export default responsiveFontSizes(
           borderRadius: 20,
         },
       },
+      MuiOutlinedInput: {
+        root: {
+          borderRadius: 20,
+        },
+      },
     },
     mixins: {
       toolbarDrawer: {
