@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,6 +12,9 @@ import { CircularProgress, useMediaQuery } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import ImageDropzone from 'components/ImageDropzone';
 import { bookConditions } from 'utils/constants';
+import { useSnackbar } from 'notistack';
+import StdMessages from 'messages/standard';
+import loadCurrencies from 'api/currencies';
 
 const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
@@ -32,11 +35,41 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   const upSmall = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const upSmallMedium = useMediaQuery((theme) => theme.breakpoints.up('smmd'));
   const upLarge = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+  const { enqueueSnackbar } = useSnackbar();
 
   const cols = evaluateNumColumns(upSmall, upSmallMedium, upLarge);
   const [invalid, setInvalid] = useState(false);
   const [isBlocked, setBlocked] = useState(false);
+  const [currenciesYetToFetch, setCurrenciesYetToFetch] = useState(true);
+  const [
+    fetchCurrencies,
+    cancelCurrencies,
+    currenciesData,
+    ,
+    isLoadingCurrencies,
+  ] = useAxios(
+    loadCurrencies,
+    'loading currencies',
+    () => setCurrenciesYetToFetch(false),
+    () => {
+      enqueueSnackbar(StdMessages.CURRENCIES_ERROR(), {
+        variant: 'error',
+      });
+      backToParent(false)();
+    }
+  );
+  const currencies = useMemo(
+    () => currenciesData?.currencies.map((currency) => currency.name),
+    [currenciesData]
+  );
+  // Fetch currencies on mounting and cancel on unmounting
+  useEffect(() => {
+    fetchCurrencies();
+    return cancelCurrencies;
+  }, []);
+
   const defaultCondition = bookToEdit?.condition || bookConditions.ok;
+
   // We store all props of the book in a state, expect for the picture urls.
   // The picture urls are stored in a ref for writing with immediate effect.
   const [currentBook, setNewBook] = useState({
@@ -45,7 +78,6 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
     amount: bookToEdit?.amount,
     condition: defaultCondition,
   });
-  const pictureUrls = useRef(bookToEdit?.pictures || []);
   const updateBook = (fieldName) => (value) => {
     setInvalid(false);
     const bookGen = {
@@ -54,6 +86,13 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
     };
     setNewBook(bookGen);
   };
+  // We recompute the default currency once 'currencies' has been fetched
+  const defaultCurrency = useMemo(() => {
+    const newDefault = bookToEdit?.currency || (currencies && currencies[0]);
+    updateBook('currency')(newDefault);
+    return newDefault;
+  }, [bookToEdit, currencies]);
+  const pictureUrls = useRef(bookToEdit?.pictures || []);
 
   const [sell, , , , isLoadingSell] = useAxios(
     sellBook,
@@ -67,7 +106,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
     backToParent(true),
     () => setInvalid(true)
   );
-  const isLoading = isLoadingSell || isLoadingEdit;
+  const isLoading = isLoadingSell || isLoadingEdit || isLoadingCurrencies;
   const handleConfirm = () => {
     // Merge state and ref
     const currentBookWithPictures = currentBook;
@@ -157,16 +196,32 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                required
-                color="secondary"
-                variant="outlined"
-                fullWidth
-                error={invalid}
-                label="Currency"
-                defaultValue={bookToEdit?.currency}
-                onChange={unwrapEventValue(updateBook('currency'))}
-              />
+              {currenciesYetToFetch || isLoadingCurrencies ? (
+                <TextField
+                  required
+                  disabled={true}
+                  color="secondary"
+                  variant="outlined"
+                  label="Currency"
+                />
+              ) : (
+                <Autocomplete
+                  fullWidth
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      required
+                      error={invalid}
+                      color="secondary"
+                      variant="outlined"
+                      label="Currency"
+                    />
+                  )}
+                  options={currencies}
+                  defaultValue={defaultCurrency}
+                  onChange={(event, value) => updateBook('currency')(value)}
+                />
+              )}
             </Grid>
             <Grid item xs={6}>
               <TextField
@@ -191,6 +246,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                   <TextField
                     {...params}
                     required
+                    error={invalid}
                     color="secondary"
                     label="Condition"
                     variant="outlined"
