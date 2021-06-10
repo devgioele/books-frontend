@@ -35,11 +35,19 @@ const useStyles = makeStyles((theme) => ({
   bookCover: {
     [theme.breakpoints.up('xs')]: {
       width: '100px',
+      minWidth: '100px',
+      maxWidth: '100px',
       height: '150px',
+      minHeight: '150px',
+      maxHeight: '150px',
     },
     [theme.breakpoints.up('md')]: {
       width: '120px',
+      minWidth: '120px',
+      maxWidth: '120px',
       height: '180px',
+      minHeight: '180px',
+      maxHeight: '180px',
     },
   },
   sellButton: {
