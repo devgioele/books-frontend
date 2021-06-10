@@ -75,6 +75,23 @@ export default responsiveFontSizes(
         fontFamily: 'Roboto',
       },
     },
+    overrides: {
+      MuiButton: {
+        root: {
+          borderRadius: 20,
+        },
+      },
+      MuiFilledInput: {
+        root: {
+          borderRadius: 20,
+        },
+      },
+      MuiOutlinedInput: {
+        root: {
+          borderRadius: 20,
+        },
+      },
+    },
     mixins: {
       toolbarDrawer: {
         minHeight: '56px',

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   bookContainer: {
     [theme.breakpoints.up('md')]: {
       backgroundColor: theme.palette.background.paper,
-      borderRadius: 10,
+      borderRadius: 20,
       borderWidth: 1,
       borderColor: theme.palette.divider,
       borderStyle: 'solid',

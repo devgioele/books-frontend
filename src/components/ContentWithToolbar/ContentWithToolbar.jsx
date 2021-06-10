@@ -12,11 +12,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ContentWithToolbar({ children }) {
+export default function ContentWithToolbar({ hasBottomNavigation, children }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.contentContainer}>
+    <div
+      className={classes.contentContainer}
+      style={hasBottomNavigation ? { paddingBottom: 48 } : {}}
+    >
       <div className={classes.toolbarPlaceholder} />
       <main className={classes.content}>{children}</main>
     </div>

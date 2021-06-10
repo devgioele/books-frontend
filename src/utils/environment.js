@@ -1,4 +1,4 @@
-export const DEBUG = true;
+export const DEBUG = false;
 
 export const BASE_URL_DEV = 'http://localhost:7000';
 
