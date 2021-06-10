@@ -11,6 +11,7 @@ import { getSellLink } from 'api/books';
 import { Box, CircularProgress } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { green } from '@material-ui/core/colors';
+import { themedBorderRadius } from '../../theming';
 
 export default function BookLinkDialog({ backToParent, bookToLink }) {
   const [link, setLink] = useState('');
@@ -31,7 +32,12 @@ export default function BookLinkDialog({ backToParent, bookToLink }) {
   }, []);
 
   return (
-    <Dialog open={true}>
+    <Dialog
+      PaperProps={{
+        style: { borderRadius: themedBorderRadius },
+      }}
+      open={true}
+    >
       <DialogTitle align="center">
         {isGenerating
           ? `Generating your sell link for '${bookToLink.title}'...`

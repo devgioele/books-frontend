@@ -8,11 +8,13 @@ import {
   Typography,
 } from '@material-ui/core';
 import BookCard from '../BookCard';
+import { themedBorderRadius } from '../../theming';
 
 const useStyles = makeStyles((theme) => ({
   card: {
     padding: theme.spacing(2),
     margin: theme.spacing(2),
+    borderRadius: themedBorderRadius,
   },
   cardButton: {
     width: '100%',

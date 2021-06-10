@@ -11,6 +11,7 @@ import {
 import { removeProfilePicture, uploadProfilePicture } from 'api/profile';
 import ImageDropzone from 'components/ImageDropzone';
 import { useAxios } from 'hooks/axios';
+import { themedBorderRadius } from '../../../theming';
 
 export default function EditProfilePictureDialog({
   backToProfile,
@@ -35,6 +36,9 @@ export default function EditProfilePictureDialog({
 
   return (
     <Dialog
+      PaperProps={{
+        style: { borderRadius: themedBorderRadius },
+      }}
       fullScreen={false}
       fullWidth={true}
       open={true}

@@ -15,6 +15,7 @@ import { bookConditions } from 'utils/constants';
 import { useSnackbar } from 'notistack';
 import StdMessages from 'messages/standard';
 import loadCurrencies from 'api/currencies';
+import { themedBorderRadius } from '../../theming';
 
 const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
@@ -121,6 +122,9 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
 
   return (
     <Dialog
+      PaperProps={{
+        style: { borderRadius: themedBorderRadius },
+      }}
       fullScreen={downSmall}
       fullWidth={true}
       open={true}
