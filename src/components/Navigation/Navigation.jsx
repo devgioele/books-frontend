@@ -52,7 +52,7 @@ export default function Navigation({ children, selectedRoute, changeSection }) {
         />
       ) : (
         <DrawerLeft
-          title={selectedSection.label}
+          title={selectedSection?.label}
           content={children}
           selectedSection={selectedSection}
           selectedIndex={selectedIndex}
