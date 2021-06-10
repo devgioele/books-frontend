@@ -5,8 +5,6 @@ import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   child: {
-    width: '100%',
-    height: '100%',
     objectFit: 'cover',
     backgroundColor: theme.palette.primary.main,
   },
