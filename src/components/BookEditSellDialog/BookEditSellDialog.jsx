@@ -44,7 +44,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
   const [
     fetchCurrencies,
     cancelCurrencies,
-    currenciesData,
+    currencies,
     ,
     isLoadingCurrencies,
   ] = useAxios(
@@ -58,18 +58,15 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
       backToParent(false)();
     }
   );
-  const currencies = useMemo(
-    () => currenciesData?.map((currency) => currency.name),
-    [currenciesData]
-  );
   // Fetch currencies on mounting and cancel on unmounting
   useEffect(() => {
     fetchCurrencies();
     return cancelCurrencies;
   }, []);
+  const currencySymbolFromName = (name) =>
+    currencies?.filter((currency) => currency.name === name)[0]?.symbol;
 
   const defaultCondition = bookToEdit?.condition || bookConditions.ok;
-
   // We store all props of the book in a state, expect for the picture urls.
   // The picture urls are stored in a ref for writing with immediate effect.
   const [currentBook, setNewBook] = useState({
@@ -87,14 +84,14 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
     setNewBook(bookGen);
   };
 
-  console.log(`currentBook = ${JSON.stringify(currentBook)}`);
-
-  // We recompute the default currency once 'currencies' has been fetched
-  const defaultCurrency = useMemo(() => {
-    const newDefault = bookToEdit?.currency || (currencies && currencies[0]);
-    updateBook('currency')(newDefault);
-    return newDefault;
-  }, [bookToEdit, currencies]);
+  // We compute the default currency at the beginning and
+  // once 'currencies' has been fetched
+  const defaultCurrencyName = useMemo(() => {
+    const newDefaultName =
+      bookToEdit?.currency || (currencies && currencies[0]?.name);
+    updateBook('currency')(currencySymbolFromName(newDefaultName));
+    return newDefaultName;
+  }, [currencies]);
   const pictureUrls = useRef(bookToEdit?.pictures || []);
 
   const [sell, , , , isLoadingSell] = useAxios(
@@ -220,9 +217,11 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                       label="Currency"
                     />
                   )}
-                  options={currencies}
-                  defaultValue={defaultCurrency}
-                  onChange={(event, value) => updateBook('currency')(value)}
+                  options={currencies.map((currency) => currency.name)}
+                  defaultValue={defaultCurrencyName}
+                  onChange={(event, value) =>
+                    updateBook('currency')(currencySymbolFromName(value))
+                  }
                 />
               )}
             </Grid>
