@@ -59,7 +59,7 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
     }
   );
   const currencies = useMemo(
-    () => currenciesData?.currencies.map((currency) => currency.name),
+    () => currenciesData?.map((currency) => currency.name),
     [currenciesData]
   );
   // Fetch currencies on mounting and cancel on unmounting
@@ -86,6 +86,9 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
     };
     setNewBook(bookGen);
   };
+
+  console.log(`currentBook = ${JSON.stringify(currentBook)}`);
+
   // We recompute the default currency once 'currencies' has been fetched
   const defaultCurrency = useMemo(() => {
     const newDefault = bookToEdit?.currency || (currencies && currencies[0]);
