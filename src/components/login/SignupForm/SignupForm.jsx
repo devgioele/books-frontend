@@ -43,7 +43,7 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
     signup,
     'signing up',
     () => {
-      enqueueSnackbar(StdMessages.SIGNUP_DONE, {
+      enqueueSnackbar(StdMessages.SIGNUP_DONE(), {
         variant: 'success',
       });
       redirect();
