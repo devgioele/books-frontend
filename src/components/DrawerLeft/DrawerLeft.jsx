@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbarPlaceholder: theme.mixins.toolbarDrawer,
   logo: { height: '100%' },
+  selectedSection: {
+    color: theme.palette.secondary.main,
+  },
 }));
 
 export default function DrawerLeft({
@@ -70,11 +73,18 @@ export default function DrawerLeft({
           {sections.map((section) => (
             <ListItem
               button
+              className={section === selectedSection && classes.selectedSection}
               key={section.label}
               selected={section === selectedSection}
               onClick={() => changeSection(section.route)}
             >
-              <ListItemIcon>{section.icon}</ListItemIcon>
+              <ListItemIcon
+                className={
+                  section === selectedSection && classes.selectedSection
+                }
+              >
+                {section.icon}
+              </ListItemIcon>
               <ListItemText primary={section.label} />
             </ListItem>
           ))}

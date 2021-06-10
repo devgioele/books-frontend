@@ -38,18 +38,6 @@ const useStyles = makeStyles(() => ({
     // Necessary for content to be above navigator
     ...theme.mixins.navigator,
   },
-  // actionRoot: {
-  //   color: 'green',
-  //   '&$selected': {
-  //     color: 'red',
-  //   },
-  // },
-  // actionSelected: {
-  //   color: 'red',
-  //   '&$selected': {
-  //     color: 'red',
-  //   },
-  // },
 }));
 
 export default function SimpleBottomNavigation({
@@ -80,10 +68,6 @@ export default function SimpleBottomNavigation({
               key={section.label}
               label={section.label}
               icon={section.icon}
-              // classes={{
-              //   root: classes.actionRoot,
-              //   selected: classes.actionSelected,
-              // }}
             />
           ))}
         </BottomNavigation>
