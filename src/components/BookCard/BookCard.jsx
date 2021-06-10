@@ -13,9 +13,6 @@ const useStyles = makeStyles((theme) => ({
       width: '70px',
       height: '93px',
     },
-    height: 'auto',
-    objectFit: 'scale-down',
-    borderRadius: 5,
     boxShadow: `1px 1px 5px 1px ${theme.palette.custom.shadowGray}`,
     '&:hover': {
       // Old style -> outline: `3px solid ${theme.palette.primary.dark}`,
@@ -66,7 +63,7 @@ export default function BookCard(props) {
                 <Typography variant="body2">{book.isbn}</Typography>
               </Grid>
               <Grid item>
-                <Typography variant="subtitle1">{book.condition}</Typography>
+                <Typography variant="subtitle1">{`Conditions: ${book.condition}`}</Typography>
               </Grid>
             </Grid>
           </Grid>

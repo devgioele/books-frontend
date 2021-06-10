@@ -87,7 +87,7 @@ function Success({ book, confirm, isLoadingConfirm, onConfirm }) {
     <Grid container direction="column" spacing={2}>
       <Grid item>
         <Typography variant="subtitle2">
-          You have been request to confirm the selling of {book.title}.
+          You are asked to confirm the selling of {book.title}.
         </Typography>
       </Grid>
       <Grid item>
