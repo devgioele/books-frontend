@@ -9,10 +9,9 @@ import { CssBaseline } from '@material-ui/core';
 import Main from 'Main.jsx';
 
 ReactDOM.render(
-  // Enable strict mode for debugging
-  <React.StrictMode>
+  <>
     <CssBaseline />
     <Main />
-  </React.StrictMode>,
+  </>,
   document.getElementById('root')
 );
