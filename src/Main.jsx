@@ -12,7 +12,7 @@ export default function Main() {
     <MuiThemeProvider theme={theme}>
       <SnackbarProvider maxSnack={3}>
         <ProvideAuth>
-          <Router>
+          <Router basename="/books-frontend">
             <Routes routes={routes} />
           </Router>
         </ProvideAuth>
