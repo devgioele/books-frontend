@@ -10,17 +10,17 @@ export const bookConditions = createEnum(['great', 'good', 'ok', 'bad', 'na']);
 export const uploadProgress = createEnum(['waiting', 'uploading', 'uploaded']);
 export const axiosState = createEnum(['progress', 'success', 'error', 'abort']);
 /*
-FULL = no free space
-NOT_ENOUGH = not enough items
-ENOUGH = enough items and there is still free space
+full = no free space
+notEnough = not enough items
+enough = enough items and there is still free space
  */
-export const fillingState = createEnum(['FULL', 'NOT_ENOUGH', 'ENOUGH']);
+export const fillingState = createEnum(['full', 'notEnough', 'enough']);
 export const computeFillingState = (min, max, value) => {
   if (value === max) {
-    return fillingState.FULL;
+    return fillingState.full;
   }
   if (value < min) {
-    return fillingState.NOT_ENOUGH;
+    return fillingState.notEnough;
   }
-  return fillingState.ENOUGH;
+  return fillingState.enough;
 };

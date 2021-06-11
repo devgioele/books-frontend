@@ -38,7 +38,7 @@ export const signup = (onSuccess, onFailure, cancelToken, newUser) => {
       password: newUser.password,
     })
     .then(successWith(onSuccess, onFailure, 200))
-    .catch(failureWith(onFailure, 422));
+    .catch(failureWith(onFailure, 422, 512));
 };
 
 export const login = (

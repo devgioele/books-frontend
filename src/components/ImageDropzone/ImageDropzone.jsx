@@ -94,7 +94,7 @@ export default function ImageDropzone({
     there is any image waiting/uploading
      */
     setBlocked(
-      newFilling === fillingState.NOT_ENOUGH ||
+      newFilling === fillingState.notEnough ||
         droppedImages.current.some(
           (img) =>
             img.status === uploadProgress.waiting ||
@@ -105,7 +105,7 @@ export default function ImageDropzone({
 
   const rejectFiles = (files, nameExtractor, reason) =>
     files.forEach((file) =>
-      enqueueSnackbar(StdMessages.IMPORT_ERROR(nameExtractor(file), reason), {
+      enqueueSnackbar(`${file} - ${reason}`, {
         variant: 'error',
       })
     );
@@ -136,7 +136,7 @@ export default function ImageDropzone({
     rejectFiles(
       overflowedImages,
       (img) => img.name,
-      'Maximum number of images reached.'
+      StdMessages.MAX_NUMBER_IMAGES()
     );
     forceUpdate();
   };
@@ -179,12 +179,9 @@ export default function ImageDropzone({
       default: {
         const imgName = getDroppedImageName(imageId);
         removeDroppedImage(imageId);
-        enqueueSnackbar(
-          StdMessages.IMPORT_ERROR(imgName, 'Unsupported file format.'),
-          {
-            variant: 'error',
-          }
-        );
+        enqueueSnackbar(`${imgName} - ${StdMessages.UNSUPPORTED_FORMAT()}`, {
+          variant: 'error',
+        });
         break;
       }
     }
@@ -196,7 +193,7 @@ export default function ImageDropzone({
     rejectFiles(
       fileRejections,
       (fileRejection) => fileRejection.file.name,
-      'Invalid file format.'
+      StdMessages.INVALID_FORMAT()
     );
   };
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -205,7 +202,7 @@ export default function ImageDropzone({
   });
 
   const dropzoneClasses = () => {
-    if (filling === fillingState.NOT_ENOUGH) {
+    if (filling === fillingState.notEnough) {
       return clsx(
         classes.dropzone,
         classes.dropzoneNotEnough,
