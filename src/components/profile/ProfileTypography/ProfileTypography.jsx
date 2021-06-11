@@ -5,7 +5,7 @@ import { EDIT_PROFILE_ROUTE, toRoute } from 'routing/helpers';
 
 export default function ProfileTypography({
   text,
-  errorText = 'Missing information, complete your profile.',
+  errorText = 'Missing information',
   show,
   successVariant = 'body1',
   errorVariant = 'body1',

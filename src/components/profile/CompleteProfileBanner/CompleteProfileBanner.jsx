@@ -15,6 +15,7 @@ import clsx from 'clsx';
 const useStyles = makeStyles((theme) => ({
   card: {
     padding: theme.spacing(2),
+    borderRadius: 20,
   },
   animation: {
     height: '200px',

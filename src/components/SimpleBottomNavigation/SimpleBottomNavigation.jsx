@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
     width: '100%',
   },
   navigator: {
-    background: theme.palette.background.default,
+    background: theme.palette.background.paper,
     /*
     We use viewport width instead of page width, because the page includes
     the scroll bar, which is not always visible.
@@ -29,23 +29,15 @@ const useStyles = makeStyles(() => ({
     width: '100vw',
     position: 'fixed',
     bottom: 0,
+    borderWidth: 1,
+    borderColor: theme.palette.divider,
+    borderStyle: 'solid',
+    zIndex: 1,
     // offset-x | offset-y | blur-radius | spread-radius
-    boxShadow: `0px 0px 5px 2px ${theme.palette.shadowGray}`,
+    boxShadow: `0px 0px 5px 2px ${theme.palette.primary}`,
     // Necessary for content to be above navigator
     ...theme.mixins.navigator,
   },
-  // actionRoot: {
-  //   color: 'green',
-  //   '&$selected': {
-  //     color: 'red',
-  //   },
-  // },
-  // actionSelected: {
-  //   color: 'red',
-  //   '&$selected': {
-  //     color: 'red',
-  //   },
-  // },
 }));
 
 export default function SimpleBottomNavigation({
@@ -60,7 +52,9 @@ export default function SimpleBottomNavigation({
   return (
     <div className={classes.root}>
       <DynamicAppBar title={title} variant="bottomNavigation" />
-      <ContentWithToolbar>{content}</ContentWithToolbar>
+      <ContentWithToolbar hasBottomNavigation={true}>
+        {content}
+      </ContentWithToolbar>
       <MuiThemeProvider theme={navTheme}>
         <BottomNavigation
           className={classes.navigator}
@@ -74,10 +68,6 @@ export default function SimpleBottomNavigation({
               key={section.label}
               label={section.label}
               icon={section.icon}
-              // classes={{
-              //   root: classes.actionRoot,
-              //   selected: classes.actionSelected,
-              // }}
             />
           ))}
         </BottomNavigation>

@@ -43,12 +43,19 @@ export default function SignupForm({ redirect, usernameOrEmail }) {
     signup,
     'signing up',
     () => {
-      enqueueSnackbar(StdMessages.SIGNUP_DONE, {
+      enqueueSnackbar(StdMessages.SIGNUP_DONE(), {
         variant: 'success',
       });
       redirect();
     },
-    () => setInvalid(true)
+    (error) => {
+      if (error?.response?.status === 512) {
+        enqueueSnackbar(error.response.data?.detail, {
+          variant: 'error',
+        });
+      }
+      setInvalid(true);
+    }
   );
 
   const handleSubmit = () => {

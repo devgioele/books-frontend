@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function CloudImage({
   url,
   cutExtension,
   style = undefined,
-  showAlt = true,
+  onLoad = () => {},
   ...remProps
 }) {
+  const [imgProps, setImgProps] = useState({});
   let validUrl = url;
   /*
   If the given url ends with an extension, like .jpg,
@@ -32,9 +33,15 @@ export default function CloudImage({
       <source srcSet={`${validUrl}jp2`} type="image/jp2" />
       <source srcSet={`${validUrl}jxr`} type="image/vnd.ms-photo" />
       <img
-        {...remProps}
+        onError={() => {
+          setImgProps({ src: url, alt: 'missing cloud-image' });
+          onLoad();
+        }}
+        src={imgProps.src}
         style={{ margin: 'auto' }}
-        alt={showAlt ? `cloud-image-${validUrl}` : 'cloud-image'}
+        alt={imgProps.alt || `cloud-image-${url}`}
+        onLoad={onLoad}
+        {...remProps}
       />
     </picture>
   );

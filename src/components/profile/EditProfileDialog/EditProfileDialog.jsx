@@ -13,6 +13,7 @@ import {
 import { buildObjectFromFields, imprintObject } from 'utils/functions';
 import { useAxios } from 'hooks/axios';
 import { editProfile } from 'api/profile';
+import { themedBorderRadius } from '../../../theming';
 
 const unwrapEventValue = (block) => (event) => {
   block(event.target.value);
@@ -63,6 +64,9 @@ export default function EditProfileDialog({
 
   return (
     <Dialog
+      PaperProps={{
+        style: { borderRadius: themedBorderRadius },
+      }}
       fullScreen={downSmall}
       fullWidth={true}
       open={true}

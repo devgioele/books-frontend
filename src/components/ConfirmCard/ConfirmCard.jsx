@@ -8,11 +8,13 @@ import {
   Typography,
 } from '@material-ui/core';
 import BookCard from '../BookCard';
+import { themedBorderRadius } from '../../theming';
 
 const useStyles = makeStyles((theme) => ({
   card: {
     padding: theme.spacing(2),
     margin: theme.spacing(2),
+    borderRadius: themedBorderRadius,
   },
   cardButton: {
     width: '100%',
@@ -86,8 +88,8 @@ function Success({ book, confirm, isLoadingConfirm, onConfirm }) {
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
-        <Typography variant="subtitle2">
-          You have been request to confirm the selling of {book.title}.
+        <Typography variant="body1">
+          You are asked to confirm the selling of <b>{book.title}</b>
         </Typography>
       </Grid>
       <Grid item>

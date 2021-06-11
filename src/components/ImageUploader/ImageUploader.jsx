@@ -201,7 +201,6 @@ function DroppedImage({ image, remove, preferDownload }) {
       {downloadRequired && (
         <CloudImage
           className={classes.img}
-          alt={altFromStatus(image.status)}
           url={image.secureUrl}
           cutExtension={true}
           /*

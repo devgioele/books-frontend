@@ -14,6 +14,9 @@ import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 /**
  * More info: [https://material-ui.com/customization/default-theme/]
  */
+
+export const themedBorderRadius = 20;
+
 export default responsiveFontSizes(
   createMuiTheme({
     breakpoints: {
@@ -73,6 +76,23 @@ export default responsiveFontSizes(
       },
       subtitle2: {
         fontFamily: 'Roboto',
+      },
+    },
+    overrides: {
+      MuiButton: {
+        root: {
+          borderRadius: themedBorderRadius,
+        },
+      },
+      MuiFilledInput: {
+        root: {
+          borderRadius: themedBorderRadius,
+        },
+      },
+      MuiOutlinedInput: {
+        root: {
+          borderRadius: themedBorderRadius,
+        },
       },
     },
     mixins: {

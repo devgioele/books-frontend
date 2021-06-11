@@ -7,6 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import { CircularProgress } from '@material-ui/core';
+import { themedBorderRadius } from '../../theming';
 
 const sanitizeEvent = (block) => (event) => {
   event.stopPropagation();
@@ -23,6 +24,9 @@ export default function ConfirmationDialog({
 }) {
   return (
     <Dialog
+      PaperProps={{
+        style: { borderRadius: themedBorderRadius },
+      }}
       fullScreen={false}
       fullWidth={true}
       open={true}
