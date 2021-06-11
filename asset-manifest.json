@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.js": "/books-frontend/static/js/main.f5e0095f.chunk.js",
+    "main.js.map": "/books-frontend/static/js/main.f5e0095f.chunk.js.map",
+    "runtime-main.js": "/books-frontend/static/js/runtime-main.1fe3e4fc.js",
+    "runtime-main.js.map": "/books-frontend/static/js/runtime-main.1fe3e4fc.js.map",
+    "static/css/2.b7e47256.chunk.css": "/books-frontend/static/css/2.b7e47256.chunk.css",
+    "static/js/2.e610f3b4.chunk.js": "/books-frontend/static/js/2.e610f3b4.chunk.js",
+    "static/js/2.e610f3b4.chunk.js.map": "/books-frontend/static/js/2.e610f3b4.chunk.js.map",
+    "index.html": "/books-frontend/index.html",
+    "static/css/2.b7e47256.chunk.css.map": "/books-frontend/static/css/2.b7e47256.chunk.css.map",
+    "static/js/2.e610f3b4.chunk.js.LICENSE.txt": "/books-frontend/static/js/2.e610f3b4.chunk.js.LICENSE.txt",
+    "static/media/300.css": "/books-frontend/static/media/roboto-vietnamese-300-normal.54344cce.woff2",
+    "static/media/400.css": "/books-frontend/static/media/roboto-vietnamese-400-normal.52cebac0.woff2",
+    "static/media/500.css": "/books-frontend/static/media/roboto-vietnamese-500-normal.a46e5fcd.woff2",
+    "static/media/700.css": "/books-frontend/static/media/roboto-vietnamese-700-normal.cfedd72c.woff2"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1fe3e4fc.js",
+    "static/css/2.b7e47256.chunk.css",
+    "static/js/2.e610f3b4.chunk.js",
+    "static/js/main.f5e0095f.chunk.js"
+  ]
+}
