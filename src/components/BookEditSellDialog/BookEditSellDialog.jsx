@@ -230,9 +230,9 @@ export default function BookEditSellDialog({ backToParent, bookToEdit }) {
                     (currency) => `${currency.symbol} ${currency.name}`
                   )}
                   defaultValue={defaultCurrencyLabel}
-                  onChange={(event, value) =>
-                    updateBook('currency')(value.split(' ')[0])
-                  }
+                  onChange={(event, value) => {
+                    if (value) updateBook('currency')(value.split(' ')[0]);
+                  }}
                 />
               )}
             </Grid>
