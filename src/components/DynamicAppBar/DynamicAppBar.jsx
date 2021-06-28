@@ -19,6 +19,14 @@ const useStyles = makeStyles(() => ({
     width: `calc(100% - ${props.drawerWidth}px)`,
     marginLeft: props.drawerWidth,
   }),
+  appBarTitle: {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    margin: 0,
+    padding: 0,
+    textOverflow: 'ellipsis',
+    width: '100%',
+  },
 }));
 
 export default function DynamicAppBar({
@@ -61,36 +69,50 @@ export default function DynamicAppBar({
         <Toolbar>
           <Grid
             container
-            direction="row"
             justify="space-between"
             alignItems="center"
             spacing={2}
           >
-            <Grid item>
+            <Grid item xs={10}>
               <Grid container alignItems="center" spacing={2}>
                 {showBack && (
-                  <Grid item>
-                    <IconButton
-                      aria-label="go back"
-                      color="inherit"
-                      onClick={goBack}
-                    >
-                      <ArrowBackIcon />
-                    </IconButton>
+                  <Grid item xs={1}>
+                    <Grid container justify="center">
+                      <IconButton
+                        aria-label="go back"
+                        color="inherit"
+                        onClick={goBack}
+                      >
+                        <ArrowBackIcon />
+                      </IconButton>
+                    </Grid>
                   </Grid>
                 )}
-                <Grid item>
-                  <Typography variant="h6" noWrap>
-                    {title}
-                  </Typography>
+                <Grid item xs={10}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <Typography variant="h6" className={classes.appBarTitle}>
+                      {title}
+                    </Typography>
+                  </div>
                 </Grid>
               </Grid>
             </Grid>
 
-            <Grid item>
-              <IconButton aria-label="logout" color="inherit" onClick={logout}>
-                <ExitToAppRounded />
-              </IconButton>
+            <Grid item xs={1}>
+              <Grid container justify="center">
+                <IconButton
+                  aria-label="logout"
+                  color="inherit"
+                  onClick={logout}
+                >
+                  <ExitToAppRounded />
+                </IconButton>
+              </Grid>
             </Grid>
           </Grid>
         </Toolbar>
