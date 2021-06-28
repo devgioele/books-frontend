@@ -67,7 +67,7 @@ function PopularBook({ book }) {
         alignItems="center"
         spacing={2}
       >
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12} sm={8}>
           <Grid
             container
             direction="column"
