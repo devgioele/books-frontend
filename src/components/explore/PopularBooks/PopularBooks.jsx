@@ -1,10 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Carousel from 'react-material-ui-carousel';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography, useMediaQuery } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { BOOK_ROUTE, toRoute } from 'routing/helpers';
-import VerticalRectangular from '../../VerticalRectangular';
+import VerticalRectangular from 'components/VerticalRectangular';
 
 const useStyles = makeStyles((theme) => ({
   bookCard: {
@@ -18,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
   },
   bookTitle: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    lineHeight: '1.1em',
+    maxHeight: '2.2em',
     fontWeight: 'bold',
   },
   bookCover: {
@@ -35,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PopularBooks({ books }) {
   return (
     <Carousel
-      interval={10000}
+      interval={1000000}
       animation="slide"
       navButtonsAlwaysInvisible={true}
     >
@@ -48,13 +52,22 @@ export default function PopularBooks({ books }) {
 
 function PopularBook({ book }) {
   const classes = useStyles();
+  const downSmall = useMediaQuery((theme) =>
+    theme.breakpoints.down(theme.breakpoints.values.sm)
+  );
   const history = useHistory();
   const openBook = () => history.push(toRoute(BOOK_ROUTE, book.bookId));
 
   return (
     <Paper className={classes.bookCard} variant="outlined" onClick={openBook}>
-      <Grid container justify="space-between" alignItems="center" spacing={2}>
-        <Grid item>
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+        spacing={2}
+      >
+        <Grid item xs={12} sm={9}>
           <Grid
             container
             direction="column"
@@ -79,10 +92,22 @@ function PopularBook({ book }) {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>
-          <VerticalRectangular className={classes.bookCover}>
-            <img alt={`book cover of ${book.title}`} src={book.pictures[0]} />
-          </VerticalRectangular>
+        <Grid item xs={12} sm={3}>
+          <Grid
+            container
+            direction="row"
+            justify={downSmall ? 'center' : 'flex-end'}
+            alignItems="center"
+          >
+            <Grid item>
+              <VerticalRectangular className={classes.bookCover}>
+                <img
+                  alt={`book cover of ${book.title}`}
+                  src={book.pictures[0]}
+                />
+              </VerticalRectangular>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Paper>
