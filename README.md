@@ -2,6 +2,8 @@
 
 The frontend of the Books platform developed in React.
 
+[Live on GitHub pages](https://devgioele.github.io/books-frontend)
+
 _Note: This document is still in WIP, thus some information might be missing or outdated._
 
 ## Table of contents
